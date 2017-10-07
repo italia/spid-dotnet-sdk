@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SpidNetSdk
+namespace SpidNetSdk.OidConnect
 {
-    public class Class1
+    class SPIDOicd : SPIDProvider
     {
     }
 }
