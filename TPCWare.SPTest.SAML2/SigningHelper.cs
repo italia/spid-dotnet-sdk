@@ -8,7 +8,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Security.Cryptography;
 using log4net;
 
-namespace TPCWare.SPTest.SAML.Security.Saml
+namespace TPCWare.SPTest.SAML2
 {
     public static class SigningHelper {
         public enum SignatureType {

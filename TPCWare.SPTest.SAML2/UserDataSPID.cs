@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TPCWare.SPTest.SAML
+namespace TPCWare.SPTest.SAML2
 {
    public class UserDataSPID
     { 

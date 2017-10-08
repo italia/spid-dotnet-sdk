@@ -8,9 +8,8 @@ using System.Security.Cryptography.X509Certificates;
 using System.Security.Cryptography.Xml;
 using System.Xml.Serialization;
 using System.IO;
-using TPCWare.SPTest.SAML.Security.Saml;
 
-namespace TPCWare.SPTest.SAML.Security.Saml20
+namespace TPCWare.SPTest.SAML2
 {
     public static class SamlHelper
     {
@@ -293,10 +292,10 @@ namespace TPCWare.SPTest.SAML.Security.Saml20
         public static string GetPostSamlRequest(string UUID, string Destination, string ConsumerServiceURL, int SecurityLevel,
                                                 string certFile, string certPassword,
                                                 StoreLocation storeLocation, StoreName storeName,
-                                                X509FindType findType, object findValue, string IdentityProvider)
+                                                X509FindType findType, object findValue, string IdentityProvider, int Enviroment)
         {
             return GetPostSamlRequest(UUID, Destination, ConsumerServiceURL, SecurityLevel, certFile, certPassword,
-                                      storeLocation, storeName, findType, findValue, SigningHelper.SignatureType.Request, IdentityProvider);
+                                      storeLocation, storeName, findType, findValue, SigningHelper.SignatureType.Request, IdentityProvider, Enviroment);
         }
 
         /// <summary>
@@ -316,7 +315,7 @@ namespace TPCWare.SPTest.SAML.Security.Saml20
         public static string GetPostSamlRequest(string UUID, string Destination, string ConsumerServiceURL, int SecurityLevel,
                                                 string certFile, string certPassword,
                                                 StoreLocation storeLocation, StoreName storeName,
-                                                X509FindType findType, object findValue, SigningHelper.SignatureType signatureType, string IdentityProvider)
+                                                X509FindType findType, object findValue, SigningHelper.SignatureType signatureType, string IdentityProvider, int Enviroment)
         {
             AuthnRequestType MyRequest = new AuthnRequestType
             {
@@ -346,7 +345,7 @@ namespace TPCWare.SPTest.SAML.Security.Saml20
                 MyRequest.ForceAuthnSpecified = true;
             }
             MyRequest.Destination = Destination;
-            MyRequest.AssertionConsumerServiceIndex = 1;
+            MyRequest.AssertionConsumerServiceIndex = (ushort)Enviroment ;
             MyRequest.AssertionConsumerServiceIndexSpecified = true;
             MyRequest.AttributeConsumingServiceIndex = 1;
             MyRequest.AttributeConsumingServiceIndexSpecified = true;

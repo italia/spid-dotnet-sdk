@@ -1,6 +1,3 @@
 C:\Users\MLPS\Source\Repos\spidnet\TPCWare.SPTest.SAML2\bin\Debug\netstandard2.0\TPCWare.SPTest.SAML2.deps.json
 C:\Users\MLPS\Source\Repos\spidnet\TPCWare.SPTest.SAML2\obj\Debug\netstandard2.0\TPCWare.SPTest.SAML2.csprojResolveAssemblyReference.cache
 C:\Users\MLPS\Source\Repos\spidnet\TPCWare.SPTest.SAML2\obj\Debug\netstandard2.0\TPCWare.SPTest.SAML2.AssemblyInfo.cs
-C:\Users\MLPS\Source\Repos\spid-dotnet-sdk\TPCWare.SPTest.SAML2\bin\Debug\netstandard2.0\TPCWare.SPTest.SAML2.deps.json
-C:\Users\MLPS\Source\Repos\spid-dotnet-sdk\TPCWare.SPTest.SAML2\obj\Debug\netstandard2.0\TPCWare.SPTest.SAML2.csprojResolveAssemblyReference.cache
-C:\Users\MLPS\Source\Repos\spid-dotnet-sdk\TPCWare.SPTest.SAML2\obj\Debug\netstandard2.0\TPCWare.SPTest.SAML2.AssemblyInfo.cs

@@ -5,7 +5,7 @@ using System.Text;
 using System.Xml;
 using System.Security.Cryptography.Xml;
 
-namespace TPCWare.SPTest.SAML.Security.Saml
+namespace TPCWare.SPTest.SAML2
 {
     /// <summary>
     /// SamlSignedXml - Class is used to sign xml, basically the when the ID is retreived the correct ID is used.  

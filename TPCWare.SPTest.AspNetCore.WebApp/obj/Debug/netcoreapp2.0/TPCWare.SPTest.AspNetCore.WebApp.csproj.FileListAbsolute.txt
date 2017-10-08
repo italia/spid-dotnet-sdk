@@ -1,0 +1,5 @@
+C:\Users\MLPS\Source\Repos\spidnet\TPCWare.SPTest.AspNetCore.WebApp\bin\Debug\netcoreapp2.0\TPCWare.SPTest.AspNetCore.WebApp.deps.json
+C:\Users\MLPS\Source\Repos\spidnet\TPCWare.SPTest.AspNetCore.WebApp\bin\Debug\netcoreapp2.0\TPCWare.SPTest.AspNetCore.WebApp.runtimeconfig.json
+C:\Users\MLPS\Source\Repos\spidnet\TPCWare.SPTest.AspNetCore.WebApp\bin\Debug\netcoreapp2.0\TPCWare.SPTest.AspNetCore.WebApp.runtimeconfig.dev.json
+C:\Users\MLPS\Source\Repos\spidnet\TPCWare.SPTest.AspNetCore.WebApp\obj\Debug\netcoreapp2.0\TPCWare.SPTest.AspNetCore.WebApp.csprojResolveAssemblyReference.cache
+C:\Users\MLPS\Source\Repos\spidnet\TPCWare.SPTest.AspNetCore.WebApp\obj\Debug\netcoreapp2.0\TPCWare.SPTest.AspNetCore.WebApp.AssemblyInfo.cs
