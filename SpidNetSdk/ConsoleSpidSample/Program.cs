@@ -11,9 +11,14 @@ namespace ConsoleSpidSample
     {
         static void Main(string[] args)
         {
-            var p = SPIDProvidersFactory.GetSamlProvider(SPIDProviders.MyIdP);
+            AppSettings app = new AppSettings() {
+                AssertionConsumerServiceUrl = "redirectTarget",
+                Issuer = "spid-console"
+            };
 
-            p.GetSamlRedirect();
+            var p = SPIDProvidersFactory.GetProvider("MyIdP", app);
+
+            p.GetRedirect();
 
             // navigate that url, follow redirects, show IdP web form, intercept consumer redirection and consume it
         }

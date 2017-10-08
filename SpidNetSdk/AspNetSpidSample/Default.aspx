@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="Hack_Spid.Default" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="Default" %>
 
 <!DOCTYPE html>
 
@@ -12,7 +12,7 @@
 <body>
     <form id="form1" runat="server">
     <div>
-        <asp:Button ID="Button1" runat="server" Text="Button" OnCommand="Button1_Command" />
+        <asp:Button ID="SpidButton" runat="server" Text="Accedi con SPID" OnCommand="SpidButton_Command" />
     </div>
     </form>
 </body>

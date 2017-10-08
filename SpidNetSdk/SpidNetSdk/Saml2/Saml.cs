@@ -41,10 +41,10 @@ namespace SpidNetSdk.Saml2
     public class Response
     {
         private XmlDocument xmlDoc;
-        private AccountSettings accountSettings;
+        private SamlAccountSettings accountSettings;
         private Certificate certificate;
 
-        public Response(AccountSettings accountSettings)
+        public Response(SamlAccountSettings accountSettings)
         {
             this.accountSettings = accountSettings;
             certificate = new Certificate();
@@ -136,14 +136,14 @@ namespace SpidNetSdk.Saml2
         public string id;
         private string issue_instant;
         private AppSettings appSettings;
-        private AccountSettings accountSettings;
+        private SamlAccountSettings accountSettings;
 
         public enum AuthRequestFormat
         {
             Base64 = 1
         }
 
-        public AuthRequest(AppSettings appSettings, AccountSettings accountSettings)
+        public AuthRequest(AppSettings appSettings, SamlAccountSettings accountSettings)
         {
             this.appSettings = appSettings;
             this.accountSettings = accountSettings;

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SpidNetSdk.Saml2
+namespace SpidNetSdk
 {
     public class AppSettings
     {

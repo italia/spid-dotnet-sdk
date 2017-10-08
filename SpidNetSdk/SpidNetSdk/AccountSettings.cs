@@ -6,8 +6,7 @@ using System.Threading.Tasks;
 
 namespace SpidNetSdk
 {
-    public abstract class SPIDProvider
+    public abstract class AccountSettings
     {
-
     }
 }

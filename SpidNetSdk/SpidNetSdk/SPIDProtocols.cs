@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SpidNetSdk
 {
-    enum SPIDProtocols
+    public enum SPIDProtocols
     {
         OIDC,
         SAML2

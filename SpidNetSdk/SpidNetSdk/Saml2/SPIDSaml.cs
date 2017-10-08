@@ -8,13 +8,13 @@ namespace SpidNetSdk.Saml2
 {
     public class SPIDSaml : SPIDProvider
     {
-        private AccountSettings accountSettings;
-        private AppSettings appSettings;
+        private SamlAccountSettings accountSettings;
 
-        public SPIDSaml(AccountSettings account, AppSettings app)
+        public SPIDSaml(SamlAccountSettings account, AppSettings app)
         {
             this.accountSettings = account;
-            this.appSettings = app;
+            base.appSettings = app;
+            base.proto = SPIDProtocols.SAML2;
         }
 
         public string GetNameID(string respBase64)
@@ -29,6 +29,10 @@ namespace SpidNetSdk.Saml2
             else throw new Exception("invalid response received from IdP");
         }
 
+        public override string GetRedirect()
+        {
+            return this.GetSamlRedirect();
+        }
 
         public string GetSamlRedirect()
         {
@@ -38,6 +42,11 @@ namespace SpidNetSdk.Saml2
 
             return accountSettings.IdpSsoTargetUrl + "?SAMLRequest="
                 + System.Web.HttpUtility.UrlDecode(req.GetRequest(AuthRequest.AuthRequestFormat.Base64));
+        }
+
+        public override string Consume(object authResponse)
+        {
+            return this.GetNameID((string)authResponse);
         }
     }
 }

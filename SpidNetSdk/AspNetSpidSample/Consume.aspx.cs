@@ -15,23 +15,21 @@ using System.Xml;
 
 using SpidNetSdk;
 using System.IO;
+using SpidNetSdk.Saml2;
 
-//using OneLogin.Saml;
-
-public partial class _Default : System.Web.UI.Page 
+public partial class Default : System.Web.UI.Page 
 {
     protected void Page_Load(object sender, EventArgs e)
     {
         // replace with an instance of the users account.
-        AccountSettings accountSettings = new AccountSettings("https://identityserver-spidtest.apps.justcodeon.it:9443/samlsso", File.ReadAllText(Server.MapPath("~/certificate.txt"))); //link dell'identity provider
+        SPIDProvider provider = SPIDProvidersFactory.GetProvider("MyIdP", null);
 
-        SpidNetSdk.Response samlResponse = new SpidNetSdk.Response(accountSettings);
-        samlResponse.LoadXmlFromBase64(Request.Form["SAMLResponse"]);
+        string result = provider.Consume(Request.Form["SAMLResponse"]);
 
-        if (samlResponse.IsValid())
+        if (result != "")
         {
             Response.Write("OK!");
-            Response.Write(samlResponse.GetNameID());
+            Response.Write(result);
         }
         else
         {
