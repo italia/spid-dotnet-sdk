@@ -8,9 +8,8 @@ namespace SpidNetSdk
 {
     public abstract class SPIDProvider
     {
-        public SPIDProtocols Protocol { get { return this.proto; } }
+        public SPIDProtocols Protocol { get; protected set; }
 
-        protected SPIDProtocols proto;
         protected AppSettings appSettings;
 
         public abstract string GetRedirect();

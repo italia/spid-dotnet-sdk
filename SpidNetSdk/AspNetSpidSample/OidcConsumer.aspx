@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="AspNetSpidSample.Default" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="OidcConsumer.aspx.cs" Inherits="AspNetSpidSample.OidcConsumer" %>
 
 <!DOCTYPE html>
 
@@ -10,7 +10,6 @@
 <body>
     <form id="form1" runat="server">
         <div>
-            <asp:Button ID="LoginButton" runat="server" Text="Accedi con SPID" OnCommand="LoginButton_Command" />
         </div>
     </form>
 </body>

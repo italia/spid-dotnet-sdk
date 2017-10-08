@@ -1,4 +1,6 @@
-﻿using System;
+﻿using IdentityModel.OidcClient.Browser;
+using SpidNetSdk.OidConnect.Browsers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,8 +10,14 @@ namespace SpidNetSdk
 {
     public class AppSettings
     {
-        public string AssertionConsumerServiceUrl { get; set; } // "http://localhost:49573/SamlConsumer/Consume.aspx";
+        public string Issuer { get; set; }
 
-        public string Issuer { get; set; } // "test-app";
+        public string SamlAssertionConsumerServiceUrl { get; set; }
+        public string SpKeysPath { get; set; }
+        public string SpKeysPassword { get; set; }
+
+        public string OidcScope { get; set; }
+        public string OidcCallbackUri { get; set; }
+        public IBrowser OidcBrowser { get; set; }
     }
 }

@@ -4,6 +4,11 @@ using System.IO;
 using System.Xml;
 using System.Security.Cryptography.X509Certificates;
 using System.Security.Cryptography.Xml;
+using System.Text;
+using System.IO.Compression;
+using Org.BouncyCastle.Pkcs;
+using Org.BouncyCastle.Crypto;
+using Org.BouncyCastle.Security;
 
 /// <summary>
 /// Summary description for saml
@@ -140,7 +145,9 @@ namespace SpidNetSdk.Saml2
 
         public enum AuthRequestFormat
         {
-            Base64 = 1
+            CompressedBase64 = 0,
+            Base64 = 1,
+            Plain = 2
         }
 
         public AuthRequest(AppSettings appSettings, SamlAccountSettings accountSettings)
@@ -166,22 +173,28 @@ namespace SpidNetSdk.Saml2
                     xw.WriteAttributeString("Version", "2.0");
                     xw.WriteAttributeString("IssueInstant", issue_instant);
                     xw.WriteAttributeString("ProtocolBinding", "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-REDIRECT");
-                    xw.WriteAttributeString("AssertionConsumerServiceURL", appSettings.AssertionConsumerServiceUrl);
+                    xw.WriteAttributeString("AssertionConsumerServiceURL", appSettings.SamlAssertionConsumerServiceUrl);
+                    //xw.WriteAttributeString("saml","xmlns", "urn:oasis:names:tc:SAML:2.0:assertion");
+                    xw.WriteAttributeString("Destination", accountSettings.IdpSsoBaseUrl);
+                    xw.WriteAttributeString("AttributeConsumingServiceIndex", "1");
 
+                    //xw.WriteStartElement("saml", "Issuer", "urn:oasis:names:tc:SAML:2.0:assertion");
                     xw.WriteStartElement("saml", "Issuer", "urn:oasis:names:tc:SAML:2.0:assertion");
+                    xw.WriteAttributeString("NameQualifier", appSettings.Issuer);
+                    xw.WriteAttributeString("Format", "urn:oasis:names:tc:SAML:2.0:nameid-format:entity");
                     xw.WriteString(appSettings.Issuer);
                     xw.WriteEndElement();
 
                     xw.WriteStartElement("samlp", "NameIDPolicy", "urn:oasis:names:tc:SAML:2.0:protocol");
-                    xw.WriteAttributeString("Format", "urn:oasis:names:tc:SAML:2.0:nameid-format:unspecified");
-                    xw.WriteAttributeString("AllowCreate", "true");
+                    xw.WriteAttributeString("Format", "urn:oasis:names:tc:SAML:2.0:nameid-format:transient");
+                    //xw.WriteAttributeString("AllowCreate", "true");
                     xw.WriteEndElement();
 
                     xw.WriteStartElement("samlp", "RequestedAuthnContext", "urn:oasis:names:tc:SAML:2.0:protocol");
                     xw.WriteAttributeString("Comparison", "exact");
 
                     xw.WriteStartElement("saml", "AuthnContextClassRef", "urn:oasis:names:tc:SAML:2.0:assertion");
-                    xw.WriteString("urn:oasis:names:tc:SAML:2.0:ac:classes:PasswordProtectedTransport");
+                    xw.WriteString("https://www.spid.gov.it/SpidL2");
                     xw.WriteEndElement();
 
                     xw.WriteEndElement(); // RequestedAuthnContext
@@ -189,15 +202,69 @@ namespace SpidNetSdk.Saml2
                     xw.WriteEndElement();
                 }
 
-                if (format == AuthRequestFormat.Base64)
-                {
-                    byte[] toEncodeAsBytes = System.Text.ASCIIEncoding.ASCII.GetBytes(sw.ToString());
-                    return System.Convert.ToBase64String(toEncodeAsBytes);
-                }
+                string xmlText = sw.ToString();
 
-                return null;
+                switch (format)
+                {
+                    case AuthRequestFormat.CompressedBase64:
+                        return this.compressString(xmlText);
+                    case AuthRequestFormat.Base64:
+                        byte[] toEncodeAsBytes = Encoding.UTF8.GetBytes(xmlText);
+                        return Convert.ToBase64String(toEncodeAsBytes);
+                    case AuthRequestFormat.Plain:
+                    default:
+                        return xmlText;
+                }
             }
+        }
+
+        private string compressString(string uncompressedString)
+        {
+            var compressedStream = new MemoryStream();
+            var uncompressedStream = new MemoryStream(Encoding.UTF8.GetBytes(uncompressedString));
+
+            using (var compressorStream = new DeflateStream(compressedStream, CompressionMode.Compress, true))
+            {
+                uncompressedStream.CopyTo(compressorStream);
+            }
+
+            return Convert.ToBase64String(compressedStream.ToArray());
+        }
+
+        public string GetSignature(string input, string keyPath, string password)
+        {
+            char[] passwordChars = password.ToCharArray();
+
+            using (StreamReader reader = new StreamReader(File.OpenRead(  keyPath)))
+            {
+                Pkcs12Store store = new Pkcs12Store(reader.BaseStream, passwordChars);
+                foreach (string n in store.Aliases)
+                {
+                    if (store.IsKeyEntry(n))
+                    {
+                        AsymmetricKeyEntry keyEntry = store.GetKey(n);
+
+                        if (keyEntry.Key.IsPrivate)
+                        {
+                            //var kp = (AsymmetricCipherKeyPair)pr.ReadObject();
+
+                            ISigner sig = SignerUtilities.GetSigner("SHA256withRSA");
+                            sig.Init(true, keyEntry.Key);
+
+                            byte[] data = Encoding.UTF8.GetBytes(input);
+                            sig.BlockUpdate(data, 0, data.Length);
+                            byte[] computedSigBytes = sig.GenerateSignature();
+                            string computedSig = Convert.ToBase64String(computedSigBytes);
+
+                            //RsaPrivateCrtKeyParameters parameters = keyEntry.Key as RsaPrivateCrtKeyParameters;
+                            return computedSig;
+                        }
+                    }
+                }
+            }
+            throw new Exception("Signature generation failure");
         }
     }
 }
+
 

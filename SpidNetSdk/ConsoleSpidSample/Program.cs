@@ -12,7 +12,7 @@ namespace ConsoleSpidSample
         static void Main(string[] args)
         {
             AppSettings app = new AppSettings() {
-                AssertionConsumerServiceUrl = "redirectTarget",
+                SamlAssertionConsumerServiceUrl = "redirectTarget",
                 Issuer = "spid-console"
             };
 

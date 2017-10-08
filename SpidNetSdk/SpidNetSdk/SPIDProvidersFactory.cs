@@ -16,8 +16,27 @@ namespace SpidNetSdk
                 SPIDProtocols.SAML2,
                 new SamlAccountSettings()
                 {
-                    Certificate = "blablabla",
-                    IdpSsoTargetUrl = "https://app.onelogin.com/saml/signon/20219"
+                    Certificate =   "-----BEGIN CERTIFICATE-----" +
+                                    "MIICNTCCAZ6gAwIBAgIES343gjANBgkqhkiG9w0BAQUFADBVMQswCQYDVQQGEwJVUzELMAkGA1UE\n" +
+                                    "CAwCQ0ExFjAUBgNVBAcMDU1vdW50YWluIFZpZXcxDTALBgNVBAoMBFdTTzIxEjAQBgNVBAMMCWxv\n" +
+                                    "Y2FsaG9zdDAeFw0xMDAyMTkwNzAyMjZaFw0zNTAyMTMwNzAyMjZaMFUxCzAJBgNVBAYTAlVTMQsw\n" +
+                                    "CQYDVQQIDAJDQTEWMBQGA1UEBwwNTW91bnRhaW4gVmlldzENMAsGA1UECgwEV1NPMjESMBAGA1UE\n" +
+                                    "AwwJbG9jYWxob3N0MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCUp/oV1vWc8/TkQSiAvTou\n" +
+                                    "sMzOM4asB2iltr2QKozni5aVFu818MpOLZIr8LMnTzWllJvvaA5RAAdpbECb+48FjbBe0hseUdN5\n" +
+                                    "HpwvnH/DW8ZccGvk53I6Orq7hLCv1ZHtuOCokghz/ATrhyPq+QktMfXnRS4HrKGJTzxaCcU7OQID\n" +
+                                    "AQABoxIwEDAOBgNVHQ8BAf8EBAMCBPAwDQYJKoZIhvcNAQEFBQADgYEAW5wPR7cr1LAdq+IrR44i\n" +
+                                    "QlRG5ITCZXY9hI0PygLP2rHANh+PYfTmxbuOnykNGyhM6FjFLbW2uZHQTY1jMrPprjOrmyK5sjJR\n" +
+                                    "O4d1DeGHT/YnIjs9JogRKv4XHECwLtIVdAbIdWHEtVZJyMSktcyysFcvuhPQK8Qc/E/Wq8uHSCo=\n" +
+                                    "-----END CERTIFICATE-----\n",
+                    IdpSsoBaseUrl = "https://idp.spid.gov.it:9443",
+                    IdpSsoTargetUrl = "/samlsso"
+                }
+                ) },
+            { "OidcDemo", (
+                SPIDProtocols.OIDC,
+                new OidcAccountSettings()
+                {
+                    OidcAuthority = "https://demo.identityserver.io"
                 }
                 ) },
             { "PosteID", (
@@ -36,9 +55,9 @@ namespace SpidNetSdk
             throw new NotImplementedException();
         }
 
-        public static SPIDOicd GetOicdProvider(string idp, AppSettings app)
+        public static SPIDOidc GetOidcProvider(string idp, AppSettings app)
         {
-            throw new NotImplementedException();
+            return new SPIDOidc((OidcAccountSettings)providerSpecs[idp].Item2, app);
         }
 
         public static SPIDSaml GetSamlProvider(string idp, AppSettings app)
@@ -54,7 +73,7 @@ namespace SpidNetSdk
                 switch (spec.Item1)
                 {
                     case SPIDProtocols.OIDC:
-                        return GetOicdProvider(idp, app);
+                        return GetOidcProvider(idp, app);
                     case SPIDProtocols.SAML2:
                         return GetSamlProvider(idp, app);
                     default:
