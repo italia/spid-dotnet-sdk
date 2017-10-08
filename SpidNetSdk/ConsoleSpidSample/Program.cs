@@ -16,7 +16,7 @@ namespace ConsoleSpidSample
                 Issuer = "spid-console"
             };
 
-            var p = SPIDProvidersFactory.GetProvider("MyIdP", app);
+            var p = SPIDProvidersFactory.GetProvider("DemoIdP", app);
 
             p.GetRedirect();
 

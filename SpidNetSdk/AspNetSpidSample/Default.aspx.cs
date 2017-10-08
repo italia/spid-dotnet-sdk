@@ -19,7 +19,7 @@ namespace AspNetSpidSample
         protected void LoginButton_Command(object sender, EventArgs e)
         {
             SPIDProvider provider = SPIDProvidersFactory.GetProvider(
-                "MyIdP",
+                "DemoIdP",
                 // "OidcDemo",
                 SsoSettings.WebFormsApp);
 

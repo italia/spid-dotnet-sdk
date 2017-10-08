@@ -14,7 +14,7 @@ namespace AspNetSpidSample
         protected void Page_Load(object sender, EventArgs e)
         {
             // replace with an instance of the users account.
-            SPIDProvider provider = SPIDProvidersFactory.GetProvider("MyIdP", null);
+            SPIDProvider provider = SPIDProvidersFactory.GetProvider("DemoIdP", null);
 
             string result = provider.Consume(Request.Form["SAMLResponse"]);
 

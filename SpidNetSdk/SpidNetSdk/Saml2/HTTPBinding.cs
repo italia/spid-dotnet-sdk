@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SpidNetSdk
+namespace SpidNetSdk.Saml2
 {
-    public enum SPIDProtocols
+    public enum HTTPBinding
     {
-        OpenIDConnect,
-        SAML2
+        Redirect,
+        POST
     }
 }

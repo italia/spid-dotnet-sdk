@@ -137,12 +137,15 @@
     <Compile Include="AccountSettings.cs" />
     <Compile Include="OidConnect\OidcAccountSettings.cs" />
     <Compile Include="OidConnect\Browsers\RedirectBrowser.cs" />
+    <Compile Include="Saml2\AuthRequest.cs" />
+    <Compile Include="Saml2\Certificate.cs" />
+    <Compile Include="Saml2\HTTPBinding.cs" />
+    <Compile Include="Saml2\Response.cs" />
     <Compile Include="SPIDProvider.cs" />
     <Compile Include="OidConnect\SPIDOidc.cs" />
     <Compile Include="SPIDProtocols.cs" />
     <Compile Include="Saml2\SamlAccountSettings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Saml2\Saml.cs" />
     <Compile Include="AppSettings.cs" />
     <Compile Include="Saml2\SPIDSaml.cs" />
     <Compile Include="SPIDProvidersFactory.cs" />

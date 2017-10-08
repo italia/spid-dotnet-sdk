@@ -21,7 +21,7 @@ namespace SpidNetSdk.OidConnect
         {
             this.accountSettings = account;
             base.appSettings = app;
-            Protocol = SPIDProtocols.OIDC;
+            Protocol = SPIDProtocols.OpenIDConnect;
             var options = new OidcClientOptions
             {
                 Authority = accountSettings.OidcAuthority, // "https://demo.identityserver.io",

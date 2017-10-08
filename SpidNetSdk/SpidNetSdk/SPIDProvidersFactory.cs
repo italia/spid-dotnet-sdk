@@ -12,7 +12,7 @@ namespace SpidNetSdk
     {
         private static Dictionary<string, (SPIDProtocols, AccountSettings)> providerSpecs = new Dictionary<string, (SPIDProtocols, AccountSettings)>()
         {
-            { "MyIdP", (
+            { "DemoIdP", (
                 SPIDProtocols.SAML2,
                 new SamlAccountSettings()
                 {
@@ -33,7 +33,7 @@ namespace SpidNetSdk
                 }
                 ) },
             { "OidcDemo", (
-                SPIDProtocols.OIDC,
+                SPIDProtocols.OpenIDConnect,
                 new OidcAccountSettings()
                 {
                     OidcAuthority = "https://demo.identityserver.io"
@@ -44,7 +44,7 @@ namespace SpidNetSdk
                 null
                 ) },
             { "RegisterIt", (
-                SPIDProtocols.OIDC,
+                SPIDProtocols.OpenIDConnect,
                 null
                 ) }
         };
@@ -72,7 +72,7 @@ namespace SpidNetSdk
                 var spec = providerSpecs[idp];
                 switch (spec.Item1)
                 {
-                    case SPIDProtocols.OIDC:
+                    case SPIDProtocols.OpenIDConnect:
                         return GetOidcProvider(idp, app);
                     case SPIDProtocols.SAML2:
                         return GetSamlProvider(idp, app);
