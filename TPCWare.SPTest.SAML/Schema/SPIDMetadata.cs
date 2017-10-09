@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TPCWare.SPTest.SAML
 {
-   public class UserDataSPID
+   public class SPIDMetadata
     { 
         public string spidCode { get; set; }
        

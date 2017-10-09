@@ -94,24 +94,6 @@ namespace TPCWare.SPTest.SAML
 
                 res = signedXml.CheckSignature();
 
-                //if (!res)
-                //{
-                //    X509Certificate2 certificate = null;
-
-                //    foreach (KeyInfoClause clause in signedXml.KeyInfo)
-                //    {
-                //        if (clause is KeyInfoX509Data)
-                //        {
-                //            if (((KeyInfoX509Data)clause).Certificates.Count > 0)
-                //            {
-                //                certificate = (X509Certificate2)((KeyInfoX509Data)clause).Certificates[0];
-                //                Log.Info("Signature non valida, Certificato: " + certificate.Issuer);
-                //            }
-                //        }
-                //    }
-                //}
-
-                //res = true;
             }
             catch (Exception ex)
             {
@@ -120,7 +102,7 @@ namespace TPCWare.SPTest.SAML
             return res;
         }
 
-        public static bool attributeSetting(out Dictionary<string, string> userInfo, out string codFiscaleIva, UserDataSPID model, ILog Log)
+        public static bool attributeSetting(out Dictionary<string, string> userInfo, out string codFiscaleIva, SPIDMetadata model, ILog Log)
         {
             bool res = false;
             userInfo = new Dictionary<string, string>();

@@ -142,7 +142,7 @@ namespace TTPCWare.SPTest.AspNetCore.WebApp.Controllers
             catch (Exception ex)
             {
                 Log.Error("Si è verificato un Errore durante il Processamento della risposta", ex);
-                ViewData["Message"] = "Ci dispiace ma si è verificato un Errore, si prega di riprovare";
+               
                 return View("Error");
             }
         }

@@ -11,7 +11,7 @@ using System.IO;
 
 namespace TPCWare.SPTest.SAML2
 {
-    public static class SamlHelper
+    public static class Saml2Helper
     {
         /// <summary>
         /// Creates a Version 1.1 Saml Assertion
@@ -134,7 +134,7 @@ namespace TPCWare.SPTest.SAML2
         /// <param name="attributes">A list of attributes to pass</param>
         /// <param name="signatureType">Whether to sign Response or Assertion</param>
         /// <returns>A base64Encoded string with a SAML response.</returns>
-        public static string GetPostSamlResponse(string recipient, string issuer, string domain, string subject,
+        public static string BuildPostSamlResponse(string recipient, string issuer, string domain, string subject,
             StoreLocation storeLocation, StoreName storeName, X509FindType findType, string certFile, string certPassword, object findValue,
             Dictionary<string, string> attributes, SigningHelper.SignatureType signatureType)
         {
@@ -181,7 +181,7 @@ namespace TPCWare.SPTest.SAML2
 
             string samlString = string.Empty;
 
-            AssertionType assertionType = SamlHelper.CreateSamlAssertion(
+            AssertionType assertionType = Saml2Helper.CreateSamlAssertion(
                 issuer.Trim(), recipient.Trim(), domain.Trim(), subject.Trim(), attributes);
 
             response.Items = new AssertionType[] { assertionType };
@@ -268,11 +268,11 @@ namespace TPCWare.SPTest.SAML2
         /// <param name="certPassword">Certificate Password (used instead of the above Certificate Parameters)</param>
         /// <param name="attributes">A list of attributes to pass</param>
         /// <returns>A base64Encoded string with a SAML response.</returns>
-        public static string GetPostSamlResponse(string recipient, string issuer, string domain, string subject,
+        public static string BuildPostSamlResponse(string recipient, string issuer, string domain, string subject,
             StoreLocation storeLocation, StoreName storeName, X509FindType findType, string certFile, string certPassword, object findValue,
             Dictionary<string, string> attributes)
         {
-            return GetPostSamlResponse(recipient, issuer, domain, subject, storeLocation, storeName, findType, certFile, certPassword, findValue, attributes,
+            return BuildPostSamlResponse(recipient, issuer, domain, subject, storeLocation, storeName, findType, certFile, certPassword, findValue, attributes,
                 SigningHelper.SignatureType.Response);
         }
 
@@ -289,12 +289,12 @@ namespace TPCWare.SPTest.SAML2
         /// <param name="findType"></param>
         /// <param name="findValue"></param>
         /// <returns></returns>
-        public static string GetPostSamlRequest(string UUID, string Destination, string ConsumerServiceURL, int SecurityLevel,
+        public static string BuildPostSamlRequest(string UUID, string Destination, string ConsumerServiceURL, int SecurityLevel,
                                                 string certFile, string certPassword,
                                                 StoreLocation storeLocation, StoreName storeName,
                                                 X509FindType findType, object findValue, string IdentityProvider, int Enviroment)
         {
-            return GetPostSamlRequest(UUID, Destination, ConsumerServiceURL, SecurityLevel, certFile, certPassword,
+            return BuildPostSamlRequest(UUID, Destination, ConsumerServiceURL, SecurityLevel, certFile, certPassword,
                                       storeLocation, storeName, findType, findValue, SigningHelper.SignatureType.Request, IdentityProvider, Enviroment);
         }
 
@@ -312,7 +312,7 @@ namespace TPCWare.SPTest.SAML2
         /// <param name="findValue"></param>
         /// <param name="signatureType"></param>
         /// <returns></returns>
-        public static string GetPostSamlRequest(string UUID, string Destination, string ConsumerServiceURL, int SecurityLevel,
+        public static string BuildPostSamlRequest(string UUID, string Destination, string ConsumerServiceURL, int SecurityLevel,
                                                 string certFile, string certPassword,
                                                 StoreLocation storeLocation, StoreName storeName,
                                                 X509FindType findType, object findValue, SigningHelper.SignatureType signatureType, string IdentityProvider, int Enviroment)

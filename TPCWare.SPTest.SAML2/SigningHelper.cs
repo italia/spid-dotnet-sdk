@@ -27,8 +27,7 @@ namespace TPCWare.SPTest.SAML2
             var key = new RSACryptoServiceProvider(new CspParameters(24));
             key.PersistKeyInCsp = false;
             key.FromXmlString(exportedKeyMaterial);
-           // key.FromXmlString("<RSAKeyValue><Modulus>ppsY0DC6twkYWsWrCfy+tfLnat7yCdUbYQyPZvMx1ywmtaVCkprBraUl+81E7EgXpV1SToEP5mOBkNAeQtAXF4ROqiBGIhrWXOYDEyZgNfQTSsZA5beErLxUnVrAI1mNeyBci4aOnzGEuSDmPOJGY3xT2Zn1ehP5FWRP0n4SW0dmLX/YNLhp7lMvwR0YvkAL8sdflBboF7abWmbVrydaJHzbtCctb2d934WaYuU8GtwjTbkidupdhqE1EdfuoMOU2Gfej6hEpVgXXqr7Jk4i5eUtWcr6q7DMKAqgg2NELROZnF4EbZj0TlajYDMpDVuMOu3Rsc5Z2ZPBkD9Hz4Xy/Q==</Modulus><Exponent>AQAB</Exponent><P>z9L6jLTrEhzVZilYkXVBcLHKPWReHr6vqiqX9DiJzhHdngL8TR40snhthhoVTZaiDjy5xLhaNCK5lrEBORsHI1q7nOZJW8LP+uCpiKosJZXnK2+kkI+mogeQwbzTlVYiDRkpBD/ewML3Sj6JTO319HxlOgTZ7Hr/U4yUdEL/ykc=</P><Q>zToULKyfvS46Px7kERcO8RGCDqLFYBSQCVyhoKYakT2F9q9rOpaS7B2BhEJNA61jk3M7S4uZXDhHPpGU6EMo0Ao2WxytyQwMOCnproO4WAQTzQm/RT2mJB+WqWpcAeCarbg3b9Vnriv1yQzTQgXepf96niAZZDAnI7XGUwhotps=</Q><DP>DqnEI8lgDJccN2kTZq/vPhRNQKekPGcX3dnDfue+UVvRVyS+yHIpJa55i8yrVB4csQR31vlq4+LPVWKHw4+0oTn1osxcwKyuH/VaANqA4uYAuX/XDJwWFbiS7hh0lUTOgj4UNsiK3u7io8plxZfEkst0GPPerGDBQxPYJZvUkGE=</DP><DQ>PidAxObi2eCOM1+foq1hERFEWjphnF+d37f2GzkzApmnYLZvuyavCGNHPk72FA8HATj81DxLDerdaM2eU1lDmv38yEs/Now3hyrqYrfxtHZHqOkyzD2He5k1f8l+Y/Mp5ULNR0lSRSV7IpCHyo8MhymAcTM3fWg38lCy56K8U9E=</DQ><InverseQ>fa1BjKpqXR5dEx0JAeRZCcDjsSQ8oW7Dyo0W3d0XImGOU8rw/Lx0mzUzTS7G78krzauyEW5XEUzVJrg847o1u4P/03T50Ug7UjrVawZzakuWMatWIasoAW10ZfsZWkRqZn8mdKq3Jl4ufbmI15HPfRcDxJyiHy43yWck0vHGXB8=</InverseQ><D>Zigp0dZfVsY76cTUuJ4CblyP66bisIa8cAickZrDT9XhsnWv2WcNJSVjof9eqKcX4KzVQA/BKRqQorQKKhugXSoidgyuFFFyaaob7o0UZ2DOx4XC21hpAOXF2GqB7+sEZqAUPvV11EUvxbhXlLOGR5A/dekCbSV8ENLeYwosxUyII91Y8lI/RKawbKftsXbsWorUFRRX0sQ6J/HSkUgO98W1FWxm+YT4DA5HJ8b0qmEDPzKvmhJdAcgnl1UYwB73221KvbAJ/qEfAzVDU7mrwl3MqGB2aerZB4hJ+sww3SetGrjZ3l5TK4r17uEbwlVNPEIcZ3MTMSWQbyySZPANPQ==</D></RSAKeyValue>");
-
+         
 
             SignedXml signedXml = new SignedXml(doc);
             signedXml.SigningKey = key;
@@ -94,24 +93,7 @@ namespace TPCWare.SPTest.SAML2
 
                 res = signedXml.CheckSignature();
 
-                //if (!res)
-                //{
-                //    X509Certificate2 certificate = null;
-
-                //    foreach (KeyInfoClause clause in signedXml.KeyInfo)
-                //    {
-                //        if (clause is KeyInfoX509Data)
-                //        {
-                //            if (((KeyInfoX509Data)clause).Certificates.Count > 0)
-                //            {
-                //                certificate = (X509Certificate2)((KeyInfoX509Data)clause).Certificates[0];
-                //                Log.Info("Signature non valida, Certificato: " + certificate.Issuer);
-                //            }
-                //        }
-                //    }
-                //}
-
-                //res = true;
+               
             }
             catch (Exception ex)
             {
@@ -120,7 +102,7 @@ namespace TPCWare.SPTest.SAML2
             return res;
         }
 
-        public static bool attributeSetting(out Dictionary<string, string> userInfo, out string codFiscaleIva, UserDataSPID model, ILog Log)
+        public static bool attributeSetting(out Dictionary<string, string> userInfo, out string codFiscaleIva, SPIDMetadata model, ILog Log)
         {
             bool res = false;
             userInfo = new Dictionary<string, string>();

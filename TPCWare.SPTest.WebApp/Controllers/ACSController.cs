@@ -25,27 +25,18 @@ namespace TPCWare.SPTest.WebApp.Controllers
 
         [HttpPost]
         public ActionResult Index(FormCollection collection)
-        {
-            Guid idRequest;
-            String codicefiscaleIva = "";
-
-            HttpContext CurrentContext = System.Web.HttpContext.Current;
-
-            string spidCookieName = ConfigurationManager.AppSettings["SPID_COOKIE"];
-
+        {  
             try
-            {
+            { 
+                string dataInBase64 = collection[0].ToString();
 
-
-                string dataBaseInBase64 = collection[0].ToString();
-
-                if (String.IsNullOrEmpty(dataBaseInBase64))
+                if (String.IsNullOrEmpty(dataInBase64))
                 {
                     Log.Error("Si è verificato un errore sulla decodificazione della risposta");
                     return View("Error");
                 }
 
-                byte[] data = System.Convert.FromBase64String(dataBaseInBase64);
+                byte[] data = System.Convert.FromBase64String(dataInBase64);
                 string base64DecodedASCII = System.Text.Encoding.UTF8.GetString(data);
                 Log.Debug(base64DecodedASCII);
 
@@ -60,24 +51,24 @@ namespace TPCWare.SPTest.WebApp.Controllers
                     string appQueryString = String.Empty;
                     string finalbackUrl = String.Empty;
 
-                    if (CurrentContext.Request.Cookies[spidCookieName] != null)
+                    if (System.Web.HttpContext.Current.Request.Cookies[ConfigurationManager.AppSettings["SPID_COOKIE"]] != null)
                     {
 
-                        idRequest = Guid.Parse(CurrentContext.Request.Cookies[spidCookieName].Value.ToString());
+                        Guid idRequestSPID  = Guid.Parse(System.Web.HttpContext.Current.Request.Cookies[ConfigurationManager.AppSettings["SPID_COOKIE"]].Value.ToString());
 
-                        Log.Info("Recupero Richiesta: " + idRequest);
+                        Log.Info("Cookie ID Richiesta: " + idRequestSPID);
 
                     }
                     else
                     {
-                        Log.Warn("Cookie non trovato, impossibile proseguire.");
+                        Log.Warn("Attenzione Cookie non trovato");
                     }
 
                     Saml2SecurityToken token = null;
 
-                    Dictionary<string, string> userInfo = new Dictionary<string, string>();
+                    Dictionary<string, string> spidUserInfo = new Dictionary<string, string>();
 
-                    AppUser user = new AppUser();
+                    AppUser appUser = new AppUser();
 
                     using (StringReader sr = new StringReader(base64DecodedASCII))
                     {
@@ -89,8 +80,10 @@ namespace TPCWare.SPTest.WebApp.Controllers
                             SecurityTokenHandlerCollection coll = SecurityTokenHandlerCollection.CreateDefaultSecurityTokenHandlerCollection();
 
                             var tempToken = reader.ReadSubtree();
+
                             token = (Saml2SecurityToken)coll.ReadToken(tempToken);
-                            userInfo.Add("Esito", "true");
+
+                            spidUserInfo.Add("Esito", "true");
 
                             foreach (var item in token.Assertion.Statements)
                             {
@@ -102,22 +95,22 @@ namespace TPCWare.SPTest.WebApp.Controllers
                                     {
                                         if (attr.Name.ToLower() == "fiscalnumber" && !String.IsNullOrEmpty(attr.Values.First()))
                                         {
-                                            codicefiscaleIva = attr.Values.First().Split('-')[1];
-                                            userInfo.Add(attr.Name, attr.Values.First().Split('-')[1]);
+
+                                            spidUserInfo.Add(attr.Name, attr.Values.First().Split('-')[1]);
                                         }
                                         if (attr.Name.ToLower() == "ivaCode" && !String.IsNullOrEmpty(attr.Values.First()))
                                         {
-                                            codicefiscaleIva = attr.Values.First().Split('-')[1];
-                                            userInfo.Add(attr.Name, attr.Values.First().Split('-')[1]);
+                                            spidUserInfo.Add(attr.Name, attr.Values.First().Split('-')[1]);
                                         }
+
                                         if (attr.Name.ToLower() != "fiscalnumber" && attr.Name.ToLower() != "ivaCode" && !String.IsNullOrEmpty(attr.Values.First()))
-                                            userInfo.Add(attr.Name, attr.Values.First());
+                                            spidUserInfo.Add(attr.Name, attr.Values.First());
 
                                         if (attr.Name.ToLower() == "name" && !String.IsNullOrEmpty(attr.Values.First()))
-                                            user.Name = attr.Values.First();
+                                            appUser.Name = attr.Values.First();
 
                                         if (attr.Name.ToLower() == "familyname" && !String.IsNullOrEmpty(attr.Values.First()))
-                                            user.Surname = attr.Values.First();
+                                            appUser.Surname = attr.Values.First();
                                     }
 
                                 }
@@ -127,13 +120,17 @@ namespace TPCWare.SPTest.WebApp.Controllers
                
                         }
 
-                        Session.Add("AppUser", user);
-                        ViewData["UserInfo"] = userInfo;
+                        Session.Add("AppUser", appUser);
+
+                        ViewData["UserInfo"] = spidUserInfo;
 
                         HttpCookie requestCookie = new HttpCookie("SPID_AUTHENTICATION");
+
                         requestCookie.Expires = DateTime.Now.AddMinutes(20);
+
                         requestCookie.Value = "true";
-                        CurrentContext.Response.Cookies.Add(requestCookie);
+
+                        System.Web.HttpContext.Current.Response.Cookies.Add(requestCookie);
 
                         return View("UserData");
                     }
@@ -142,16 +139,15 @@ namespace TPCWare.SPTest.WebApp.Controllers
                 }
                 else
                 {
-
-                    ViewData["Message"] = "Ci dispiace ma si è verificato un errore.";
+                     
                     return View("Error");
                 }
             }
 
             catch (Exception ex)
             {
-                Log.Error("Si è verificato un Errore durante il Processamento della risposta", ex);
-                ViewData["Message"] = "Ci dispiace ma si è verificato un Errore, si prega di riprovare";
+                Log.Error("Si è verificato un Errore durante l'elaborazione della risposta", ex);
+               
                 return View("Error");
             }
         }
@@ -169,11 +165,14 @@ namespace TPCWare.SPTest.WebApp.Controllers
             if (String.IsNullOrEmpty(dataBaseInBase64))
             {
                 Log.Error("Si è verificato un errore");
+
                 return View("Error");
             }
 
             byte[] data = System.Convert.FromBase64String(dataBaseInBase64);
+
             string base64DecodedASCII = System.Text.Encoding.UTF8.GetString(data);
+
             Log.Debug(base64DecodedASCII);
 
             XmlDocument xml = new XmlDocument();

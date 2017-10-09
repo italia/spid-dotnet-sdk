@@ -42,34 +42,31 @@ namespace TPCWare.SPTest.WebApp.Controllers
 
         public ActionResult SpidRequest(string idP)
         {
-             
-
-            HttpContext CurrentContext = System.Web.HttpContext.Current;
-
+              
             ThreadContext.Properties["Provider"] = idP;
 
             try
             {
-                string serviceUrl = "";
+                string spidServiceUrl;
 
                 switch (idP)
                 {
                     case "poste_id":
-                        serviceUrl = "https://spidposte.test.poste.it/jod-fs/ssoservicepost";
+                        spidServiceUrl = "https://spidposte.test.poste.it/jod-fs/ssoservicepost";
                         break;
                     case "tim_id":
-                        serviceUrl = "#";
+                        spidServiceUrl = "#";
                         ViewData["Message"] = "Ci dispiace ma il sistema di test non è supportato.";
                         return View("Error");
 
 
                     case "sielte_id":
-                        serviceUrl = "#";
+                        spidServiceUrl = "#";
                         ViewData["Message"] = "Ci dispiace ma il sistema di test non è supportato.";
                         return View("Error");
 
                     case "infocert_id":
-                        serviceUrl = "#";
+                        spidServiceUrl = "#";
                         ViewData["Message"] = "Ci dispiace ma il sistema di test non è supportato.";
                         return View("Error");
 
@@ -81,22 +78,35 @@ namespace TPCWare.SPTest.WebApp.Controllers
 
                 int securityLevelSPID = 1;
 
-                Guid IdRichiesta = Guid.NewGuid();
+                Guid spidIdRequest = Guid.NewGuid();
 
                 HttpCookie requestCookie = new HttpCookie(ConfigurationManager.AppSettings["SPID_COOKIE"].ToString());
-                requestCookie.Expires = DateTime.Now.AddMinutes(20);
-                requestCookie.Value = IdRichiesta.ToString();
-                CurrentContext.Response.Cookies.Add(requestCookie);
 
-                string cryptrequest = SamlHelper.GetPostSamlRequest("_" + IdRichiesta.ToString(), serviceUrl, ConfigurationManager.AppSettings["SPID_DOMAIN_VALUE"], securityLevelSPID,
-                       null, null, StoreLocation.LocalMachine, StoreName.My, X509FindType.FindBySubjectName,
-                       ConfigurationManager.AppSettings["SPID_CERTIFICATE_NAME"], idP, ConfigurationManager.AppSettings["ENVIROMENT"].ToString() == "dev" ? 1 : 0);
+                requestCookie.Expires = DateTime.Now.AddMinutes(30);
 
-                byte[] base64EncodedBytes = Encoding.UTF8.GetBytes(cryptrequest);
+                requestCookie.Value = spidIdRequest.ToString();
+
+                System.Web.HttpContext.Current.Response.Cookies.Add(requestCookie);
+
+                var spidCryptoRequest = Saml2Helper.BuildPostSamlRequest("_" + spidIdRequest.ToString(), 
+                       spidServiceUrl,
+                       ConfigurationManager.AppSettings["SPID_DOMAIN_VALUE"], securityLevelSPID,
+                       null,
+                       null, 
+                       StoreLocation.LocalMachine,
+                       StoreName.My,
+                       X509FindType.FindBySubjectName,
+                       ConfigurationManager.AppSettings["SPID_CERTIFICATE_NAME"], 
+                       idP,
+                       ConfigurationManager.AppSettings["ENVIROMENT"].ToString() == "dev" ? 1 : 0);
+
+                byte[] base64EncodedBytes = Encoding.UTF8.GetBytes(spidCryptoRequest);
+
                 string returnValue = System.Convert.ToBase64String(base64EncodedBytes);
 
                 ViewData["data"] = returnValue;
-                ViewData["action"] = serviceUrl;
+
+                ViewData["action"] = spidServiceUrl;
 
                 return View("PostData");
 
@@ -104,7 +114,7 @@ namespace TPCWare.SPTest.WebApp.Controllers
             catch (Exception ex)
             {
                 Log.Error("Si è verificato un Errore", ex);
-                ViewData["Message"] = "Ci dispiace ma si è verificato un Errore, si prega di riprovare";
+               
                 return View("Error");
             }
 
