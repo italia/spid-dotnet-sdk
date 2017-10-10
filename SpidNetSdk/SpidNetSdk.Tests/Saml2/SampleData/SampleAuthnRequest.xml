@@ -1,0 +1,24 @@
+﻿<samlp:AuthnRequest
+    ID="_779f9789-c4e6-4789-bdfe-970dcb681dec"
+    Version="2.0"
+    IssueInstant="2017-10-08T10:25:40Z"
+    ProtocolBinding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-REDIRECT"
+    AssertionConsumerServiceURL="http://localhost:60981/Consume.aspx"
+    Destination="https://idp.spid.gov.it:9443/samlsso"
+    AttributeConsumingServiceIndex="1"
+    xmlns:samlp="urn:oasis:names:tc:SAML:2.0:protocol"
+    >
+  <saml:Issuer
+      NameQualifier="http://localhost:60981"
+      Format="urn:oasis:names:tc:SAML:2.0:nameid-format:entity"
+      xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion">
+    http://localhost:60981
+  </saml:Issuer>
+  <samlp:NameIDPolicy Format="urn:oasis:names:tc:SAML:2.0:nameid-format:transient" />
+  <samlp:RequestedAuthnContext Comparison="exact">
+    <saml:AuthnContextClassRef
+        xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion">
+      https://www.spid.gov.it/SpidL2
+    </saml:AuthnContextClassRef>
+  </samlp:RequestedAuthnContext>
+</samlp:AuthnRequest>

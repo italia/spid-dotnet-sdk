@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleSpidSample", "Consol
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNetSpidSample", "AspNetSpidSample\AspNetSpidSample.csproj", "{DC9F4B43-5AFD-4BCA-902D-FE129F329697}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpidNetSdk.Tests", "SpidNetSdk.Tests\SpidNetSdk.Tests.csproj", "{3E4A9B46-3613-4265-867B-5EC2B64E27E5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{DC9F4B43-5AFD-4BCA-902D-FE129F329697}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DC9F4B43-5AFD-4BCA-902D-FE129F329697}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DC9F4B43-5AFD-4BCA-902D-FE129F329697}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3E4A9B46-3613-4265-867B-5EC2B64E27E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3E4A9B46-3613-4265-867B-5EC2B64E27E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3E4A9B46-3613-4265-867B-5EC2B64E27E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3E4A9B46-3613-4265-867B-5EC2B64E27E5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
