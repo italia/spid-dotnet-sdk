@@ -2,10 +2,18 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Company>Developers Italia</Company>
+    <Authors>Luca Congiu</Authors>
+    <Copyright>Developers Italia - Luca Congiu</Copyright>
+    <PackageLicenseUrl>https://github.com/congiuluc/spid-dotnet-sdk</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/congiuluc/spid-dotnet-sdk</PackageProjectUrl>
+    <Description>.NET SPID SDK</Description>
+    <PackageIconUrl>https://developers.italia.it/assets/icons/logo-it.png</PackageIconUrl>
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Schema\" />
+    <PackageReference Include="System.Security.Cryptography.Xml" Version="4.5.0-preview2-25707-02" />
   </ItemGroup>
 
 </Project>

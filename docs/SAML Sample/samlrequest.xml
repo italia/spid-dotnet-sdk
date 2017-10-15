@@ -1,0 +1,28 @@
+<saml2p:AuthnRequest ID="e4092902-95ac-4078-acfb-e3bebf642732" Version="2.0" IssueInstant="2017-10-15T01:31:14.3391142Z" Destination="https://spidposte.test.poste.it/jod-fs/ssoservicepost" ForceAuthn="false" AssertionConsumerServiceIndex="0" AttributeConsumingServiceIndex="2" xmlns:saml2p="urn:oasis:names:tc:SAML:2.0:protocol">
+  <Issuer NameQualifier="https://www.dotnetcode.it" Format="urn:oasis:names:tc:SAML:2.0:nameid-format:entity" xmlns="urn:oasis:names:tc:SAML:2.0:assertion">https://www.dotnetcode.it</Issuer>
+  <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+    <SignedInfo>
+      <CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" />
+      <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
+      <Reference URI="">
+        <Transforms>
+          <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
+          <Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" />
+        </Transforms>
+        <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256" />
+        <DigestValue>iZqcWP9ETcxruFGpR1oxoIDpFaZR7L+e7jLrwJnK6XY=</DigestValue>
+      </Reference>
+    </SignedInfo>
+    <SignatureValue>hQG3tMa+CPJo88SPiwyg/5orsJhtRXxvvEPzWYNCL23INlb1kRPXT+WNJy23gBMojfBfhS2whURAW4uwn9xPSYO5khUltIAI51L9neX6LpEE7iehM3+sa3vxTskgWqsnWTFtRqWJth/lI9nLwunDF4obinkxDf212NDiiBTyA95CPus97sfo8oTBNKTztbbL9KCifIBoJh9wHGic8pf/v+mbq5Nd9T0UFOOisi/3kPki8T2anaujh6BPbSGUdfMfh1SVTYhnOjG+xxUy8JLCC0dD0NoJAcbQrGTIOfR//Uf4ct5GN4IpcAWZrPDLFCbUm+wcPmiXFHdIiF0uI3BdbjY=</SignatureValue>
+    <KeyInfo>
+      <X509Data>
+        <X509Certificate>MIIDkDCCAncCCQDPxdnsDu/D3DANBgkqhkiG9w0BAQUFADCBiDELMAkGA1UEBhMCaXQxDTALBgNVBAgMBFJvbWExEzARBgNVBAoMCmRvdG5ldGNvZGUxFjAUBgNVBAMMDWRvdG5ldGNvZGUuaXQxDTALBgNVBAcMBFJvbWExCzAJBgNVBAsMAklUMSEwHwYJKoZIhvcNAQkBFhJpbmZvQGRvdG5ldGNvZGUuaXQwHhcNMTcxMDA4MDE0MjU0WhcNMTgxMDA4MDE0MjU0WjCBiDELMAkGA1UEBhMCaXQxDTALBgNVBAgMBFJvbWExEzARBgNVBAoMCmRvdG5ldGNvZGUxFjAUBgNVBAMMDWRvdG5ldGNvZGUuaXQxDTALBgNVBAcMBFJvbWExCzAJBgNVBAsMAklUMSEwHwYJKoZIhvcNAQkBFhJpbmZvQGRvdG5ldGNvZGUuaXQwggEjMA0GCSqGSIb3DQEBAQUAA4IBEAAwggELAoIBAgCsE/DE4HdAz5GHP7/OngJCP2LJKiGY2N8g5G6WupA8OEezie7Hk6hE80Hih4DhBaCJvC+HYC9vcLZ9RDPZWVBLj7cVcwoJkT0cQpNvScqyQto3GNAY228j8jNl021sTo4+B4yivs/Y1ffWX24d9jX0N0TlK4jXEuW/Mk9UDYzdk8EmDskxA/+nkmfVPbIUOQnXzrYTP4gTLAF46Tb2PjFCyL4aD+upvVLdlZBZk4LL2Wfv+qGkwiSWg2CQs/go+AQVmLjj4ODKVNbm1reOZ06Uomcc85/Sb8v6GZL0TmeR+YyyllskUs2UhQPKINqDnbv8+cGQ3wLvT9WZhMmhMxnz2wIDAQABMA0GCSqGSIb3DQEBBQUAA4IBAgBDtDl9nR48QdiNbZenqO4y+D56+xi73doZ7FlPvt0xmSfk9zU/LBoF4cF2ayEDtvUw6h2aWP2PiS0FMIm4ShuvSrfKmNUXLzn7dwSRcs082BnAwaYkQ2D0Cq22Gn/SuzCRAmFicL0X4qDwYswGOcLvYZ0BpAMhuHPLMSr5++IhhtOolNxdJRQdgajIe+XLDi8AO6TTNuzgQZs3kCm9t5i3q6Sq1CcihCymhaAnOPMM1JzNpcTY1gUwFAZbXa3PwZqV0xpHO1+QlUiWXIR3Zsoii4s4tMKYAz6rpd7I5dfNVcza6RAbIApZV/Y1R5IBMegupmx4UijUBxtADkfqIWF2RA==</X509Certificate>
+      </X509Data>
+    </KeyInfo>
+  </Signature>
+  <saml2p:NameIDPolicy Format="urn:oasis:names:tc:SAML:2.0:nameid-format:transient" />
+  <Conditions NotBefore="2017-10-15T01:29:14.3391142Z" NotOnOrAfter="2017-10-15T01:36:14.3391142Z" xmlns="urn:oasis:names:tc:SAML:2.0:assertion" />
+  <saml2p:RequestedAuthnContext Comparison="minimum">
+    <AuthnContextClassRef xmlns="urn:oasis:names:tc:SAML:2.0:assertion">https://www.spid.gov.it/SpidL1</AuthnContextClassRef>
+  </saml2p:RequestedAuthnContext>
+</saml2p:AuthnRequest>

@@ -1,0 +1,151 @@
+<?xml version="1.0"?> 
+<md:EntityDescriptor 
+    xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata"  
+    xmlns:ds="http://www.w3.org/2000/09/xmldsig#"  
+    entityID="https://www.dotnetcode.it"  
+    ID="_d054d0e-ba8c-46ef-a6af-b144423e1ac5"> 
+     
+    <md:SPSSODescriptor  
+        protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol"  
+        AuthnRequestsSigned="true"  
+        WantAssertionsSigned="true"> 
+        
+        <md:KeyDescriptor use="signing"> 
+            <ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#"> 
+                <ds:X509Data> 
+                    <ds:X509Certificate>MIIDkDCCAncCCQDPxdnsDu/D3DANBgkqhkiG9w0BAQUFADCBiDELMAkGA1UEBhMC
+aXQxDTALBgNVBAgMBFJvbWExEzARBgNVBAoMCmRvdG5ldGNvZGUxFjAUBgNVBAMM
+DWRvdG5ldGNvZGUuaXQxDTALBgNVBAcMBFJvbWExCzAJBgNVBAsMAklUMSEwHwYJ
+KoZIhvcNAQkBFhJpbmZvQGRvdG5ldGNvZGUuaXQwHhcNMTcxMDA4MDE0MjU0WhcN
+MTgxMDA4MDE0MjU0WjCBiDELMAkGA1UEBhMCaXQxDTALBgNVBAgMBFJvbWExEzAR
+BgNVBAoMCmRvdG5ldGNvZGUxFjAUBgNVBAMMDWRvdG5ldGNvZGUuaXQxDTALBgNV
+BAcMBFJvbWExCzAJBgNVBAsMAklUMSEwHwYJKoZIhvcNAQkBFhJpbmZvQGRvdG5l
+dGNvZGUuaXQwggEjMA0GCSqGSIb3DQEBAQUAA4IBEAAwggELAoIBAgCsE/DE4HdA
+z5GHP7/OngJCP2LJKiGY2N8g5G6WupA8OEezie7Hk6hE80Hih4DhBaCJvC+HYC9v
+cLZ9RDPZWVBLj7cVcwoJkT0cQpNvScqyQto3GNAY228j8jNl021sTo4+B4yivs/Y
+1ffWX24d9jX0N0TlK4jXEuW/Mk9UDYzdk8EmDskxA/+nkmfVPbIUOQnXzrYTP4gT
+LAF46Tb2PjFCyL4aD+upvVLdlZBZk4LL2Wfv+qGkwiSWg2CQs/go+AQVmLjj4ODK
+VNbm1reOZ06Uomcc85/Sb8v6GZL0TmeR+YyyllskUs2UhQPKINqDnbv8+cGQ3wLv
+T9WZhMmhMxnz2wIDAQABMA0GCSqGSIb3DQEBBQUAA4IBAgBDtDl9nR48QdiNbZen
+qO4y+D56+xi73doZ7FlPvt0xmSfk9zU/LBoF4cF2ayEDtvUw6h2aWP2PiS0FMIm4
+ShuvSrfKmNUXLzn7dwSRcs082BnAwaYkQ2D0Cq22Gn/SuzCRAmFicL0X4qDwYswG
+OcLvYZ0BpAMhuHPLMSr5++IhhtOolNxdJRQdgajIe+XLDi8AO6TTNuzgQZs3kCm9
+t5i3q6Sq1CcihCymhaAnOPMM1JzNpcTY1gUwFAZbXa3PwZqV0xpHO1+QlUiWXIR3
+Zsoii4s4tMKYAz6rpd7I5dfNVcza6RAbIApZV/Y1R5IBMegupmx4UijUBxtADkfq
+IWF2RA==</ds:X509Certificate> 
+                </ds:X509Data> 
+            </ds:KeyInfo> 
+        </md:KeyDescriptor> 
+        
+        <md:KeyDescriptor use="encryption"> 
+            <ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#"> 
+                <ds:X509Data> 
+                    <ds:X509Certificate>MIIDkDCCAncCCQDPxdnsDu/D3DANBgkqhkiG9w0BAQUFADCBiDELMAkGA1UEBhMC
+aXQxDTALBgNVBAgMBFJvbWExEzARBgNVBAoMCmRvdG5ldGNvZGUxFjAUBgNVBAMM
+DWRvdG5ldGNvZGUuaXQxDTALBgNVBAcMBFJvbWExCzAJBgNVBAsMAklUMSEwHwYJ
+KoZIhvcNAQkBFhJpbmZvQGRvdG5ldGNvZGUuaXQwHhcNMTcxMDA4MDE0MjU0WhcN
+MTgxMDA4MDE0MjU0WjCBiDELMAkGA1UEBhMCaXQxDTALBgNVBAgMBFJvbWExEzAR
+BgNVBAoMCmRvdG5ldGNvZGUxFjAUBgNVBAMMDWRvdG5ldGNvZGUuaXQxDTALBgNV
+BAcMBFJvbWExCzAJBgNVBAsMAklUMSEwHwYJKoZIhvcNAQkBFhJpbmZvQGRvdG5l
+dGNvZGUuaXQwggEjMA0GCSqGSIb3DQEBAQUAA4IBEAAwggELAoIBAgCsE/DE4HdA
+z5GHP7/OngJCP2LJKiGY2N8g5G6WupA8OEezie7Hk6hE80Hih4DhBaCJvC+HYC9v
+cLZ9RDPZWVBLj7cVcwoJkT0cQpNvScqyQto3GNAY228j8jNl021sTo4+B4yivs/Y
+1ffWX24d9jX0N0TlK4jXEuW/Mk9UDYzdk8EmDskxA/+nkmfVPbIUOQnXzrYTP4gT
+LAF46Tb2PjFCyL4aD+upvVLdlZBZk4LL2Wfv+qGkwiSWg2CQs/go+AQVmLjj4ODK
+VNbm1reOZ06Uomcc85/Sb8v6GZL0TmeR+YyyllskUs2UhQPKINqDnbv8+cGQ3wLv
+T9WZhMmhMxnz2wIDAQABMA0GCSqGSIb3DQEBBQUAA4IBAgBDtDl9nR48QdiNbZen
+qO4y+D56+xi73doZ7FlPvt0xmSfk9zU/LBoF4cF2ayEDtvUw6h2aWP2PiS0FMIm4
+ShuvSrfKmNUXLzn7dwSRcs082BnAwaYkQ2D0Cq22Gn/SuzCRAmFicL0X4qDwYswG
+OcLvYZ0BpAMhuHPLMSr5++IhhtOolNxdJRQdgajIe+XLDi8AO6TTNuzgQZs3kCm9
+t5i3q6Sq1CcihCymhaAnOPMM1JzNpcTY1gUwFAZbXa3PwZqV0xpHO1+QlUiWXIR3
+Zsoii4s4tMKYAz6rpd7I5dfNVcza6RAbIApZV/Y1R5IBMegupmx4UijUBxtADkfq
+IWF2RA==</ds:X509Certificate> 
+                </ds:X509Data> 
+            </ds:KeyInfo> 
+        </md:KeyDescriptor> 
+        
+        <md:SingleLogoutService 
+            Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST"
+            Location="https://localhost:44355/spidsaml/logout" /> 
+
+        <md:NameIDFormat>urn:oasis:names:tc:SAML:2.0:nameid-format:transient</md:NameIDFormat> 
+
+        <md:AssertionConsumerService  
+            Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST"  
+            Location="https://localhost:44355/spidsaml/acs"  
+            index="0"  
+            isDefault="true" /> 
+
+        <md:AssertionConsumerService  
+            Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST"  
+            Location="https://spidtest.azurewebsites.net/spidsaml/acs"  
+            index="1" /> 
+
+        <md:AssertionConsumerService  
+            Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-REDIRECT"  
+            Location="https://localhost:44355/spidsaml/acs"  
+            index="2" /> 
+
+        <md:AssertionConsumerService  
+            Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-REDIRECT"  
+            Location="https://spidtest.azurewebsites.net/spidsaml/acs"  
+            index="3" /> 
+
+       <md:AttributeConsumingService index="0"> 
+            <md:ServiceName xml:lang="it">DotNetCode SPID CODE TEST</md:ServiceName> 
+            <md:ServiceDescription xml:lang="it">DotNetCode SPID TEST Web App</md:ServiceDescription> 
+            <md:RequestedAttribute Name="spidCode" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:basic"/> 
+            <md:RequestedAttribute Name="name" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:basic"/>  
+            <md:RequestedAttribute Name="familyName" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:basic"/> 
+        </md:AttributeConsumingService> 
+
+        <md:AttributeConsumingService index="1"> 
+            <md:ServiceName xml:lang="it">DotNetCode SPID TEST</md:ServiceName> 
+            <md:ServiceDescription xml:lang="it">DotNetCode SPID TEST Web App</md:ServiceDescription> 
+            <md:RequestedAttribute Name="spidCode" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:basic"/> 
+            <md:RequestedAttribute Name="name" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:basic"/> 
+            <md:RequestedAttribute Name="gender" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:basic"/> 
+            <md:RequestedAttribute Name="placeOfBirth" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:basic"/> 
+            <md:RequestedAttribute Name="mobilePhone" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:basic"/> 
+            <md:RequestedAttribute Name="address" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:basic"/> 
+            <md:RequestedAttribute Name="expirationDate" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:basic"/> 
+            <md:RequestedAttribute Name="fiscalNumber" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:basic"/> 
+            <md:RequestedAttribute Name="familyName" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:basic"/> 
+            <md:RequestedAttribute Name="dateOfBirth" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:basic"/> 
+            <md:RequestedAttribute Name="countyOfBirth" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:basic"/> 
+            <md:RequestedAttribute Name="registeredOffice" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:basic"/> 
+            <md:RequestedAttribute Name="email" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:basic"/> 
+            <md:RequestedAttribute Name="digitalAddress" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:basic"/> 
+        </md:AttributeConsumingService> 
+		<md:AttributeConsumingService index="2"> 
+            <md:ServiceName xml:lang="it">DotNetCode SPID TEST</md:ServiceName> 
+            <md:ServiceDescription xml:lang="it">DotNetCode SPID TEST Web App</md:ServiceDescription> 
+            <md:RequestedAttribute Name="spidCode" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:basic"/> 
+            <md:RequestedAttribute Name="name" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:basic"/> 
+            <md:RequestedAttribute Name="gender" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:basic"/> 
+            <md:RequestedAttribute Name="placeOfBirth" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:basic"/> 
+            <md:RequestedAttribute Name="ivaCode" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:basic"/> 
+            <md:RequestedAttribute Name="companyName" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:basic"/> 
+            <md:RequestedAttribute Name="mobilePhone" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:basic"/> 
+            <md:RequestedAttribute Name="address" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:basic"/> 
+            <md:RequestedAttribute Name="expirationDate" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:basic"/> 
+            <md:RequestedAttribute Name="fiscalNumber" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:basic"/> 
+            <md:RequestedAttribute Name="familyName" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:basic"/> 
+            <md:RequestedAttribute Name="dateOfBirth" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:basic"/> 
+            <md:RequestedAttribute Name="countyOfBirth" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:basic"/> 
+            <md:RequestedAttribute Name="idCard" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:basic"/> 
+            <md:RequestedAttribute Name="registeredOffice" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:basic"/> 
+            <md:RequestedAttribute Name="email" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:basic"/> 
+            <md:RequestedAttribute Name="digitalAddress" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:basic"/> 
+        </md:AttributeConsumingService> 
+
+    </md:SPSSODescriptor> 
+
+    <md:Organization> 
+        <md:OrganizationName xml:lang="it">DotNetCode</md:OrganizationName> 
+        <md:OrganizationDisplayName xml:lang="it">DotNetCode.IT</md:OrganizationDisplayName> 
+        <md:OrganizationURL xml:lang="it">https://www.dotnetcode.it</md:OrganizationURL> 
+    </md:Organization> 
+
+</md:EntityDescriptor>
+ 

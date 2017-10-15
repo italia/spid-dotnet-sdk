@@ -1,0 +1,1 @@
+﻿xsd saml-schema-protocol-2.0.xsd /p saml-schema-assertion-2.0.xsd xmldsig-core-schema.xsd xenc-schema.xsd  /classes
