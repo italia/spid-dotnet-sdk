@@ -18,4 +18,13 @@
     <ProjectReference Include="..\..\src\Developers.Italia.SPID\Developers.Italia.SPID.SAML\Developers.Italia.SPID.SAML.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Cert\www_dotnetcode_it.pfx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="IdentityProvider_1.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

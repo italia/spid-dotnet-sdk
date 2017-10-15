@@ -5,41 +5,41 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Text;
+using Newtonsoft.Json;
 
 namespace Developers.Italia.SPID.Test.AspNetCore2.Controllers
 {
     public class SpidSamlController : Controller
     {
-        // GET: SpidSaml
+        // GET: SpidSaml/ACS
         public ActionResult ACS()
         {
             return View();
         }
 
 
-        // POST: SpidSaml/Create
+        // POST: SpidSaml/ACS
         [HttpPost]
 
         public ActionResult ACS(IFormCollection collection)
         {
-            string mydata = "";
+            string samlResponse = "";
             string redirect = "";
+            SAML.AuthResponse resp = new SAML.AuthResponse();
             try
             {
-                mydata = Encoding.UTF8.GetString(Convert.FromBase64String(collection["SAMLResponse"]));
+                samlResponse = Encoding.UTF8.GetString(Convert.FromBase64String(collection["SAMLResponse"]));
                 redirect = collection["RelayState"];
-
-                SAML.AuthResponse resp = new SAML.AuthResponse();
-                resp.Deserialize(mydata);
-
-
+                
+                resp.Deserialize(samlResponse);
+                
             }
-            catch
+            catch 
             {
 
             }
 
-            ViewData["SAMLResponse"] = mydata;
+            ViewData["SAMLResponse"] = samlResponse;
             ViewData["RelayState"] = redirect;
             return View();
         }
