@@ -90,6 +90,25 @@ IWF2RA==</ds:X509Certificate>
             Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-REDIRECT"  
             Location="https://spidtest.azurewebsites.net/spidsaml/acs"  
             index="3" /> 
+			
+		<md:AssertionConsumerService  
+            Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST"  
+            Location="https://localhost:44365/spidsaml/acs"  
+            index="4" /> 
+
+        <md:AssertionConsumerService  
+            Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST"  
+            Location="https://spidtestcore.azurewebsites.net/spidsaml/acs"  
+            index="5" /> 
+		<md:AssertionConsumerService  
+            Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST"  
+            Location="https://localhost:44375/spidsaml/acs"  
+            index="6" /> 
+
+        <md:AssertionConsumerService  
+            Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST"  
+            Location="https://spidtestmvc5.azurewebsites.net/spidsaml/acs"  
+            index="7" /> 
 
 			 <md:AttributeConsumingService index="0">
         <md:ServiceName xml:lang="it">Set Attributi 1 - ID Cittadini minimo</md:ServiceName>
