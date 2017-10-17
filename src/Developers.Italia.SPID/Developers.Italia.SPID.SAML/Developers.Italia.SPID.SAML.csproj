@@ -9,9 +9,13 @@
     <Copyright>Developers Italia - Luca Congiu</Copyright>
     <PackageLicenseUrl>https://github.com/congiuluc/spid-dotnet-sdk</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/congiuluc/spid-dotnet-sdk</PackageProjectUrl>
-    <Description>.NET SPID SDK</Description>
+    <Description>.NET SPID SDK Usefull library to connect to Italian Identity Provider using SPID</Description>
     <PackageIconUrl>https://developers.italia.it/assets/icons/logo-it.png</PackageIconUrl>
-    <Version>1.0.1.0</Version>
+    <Version>0.0.1.0</Version>
+    <RepositoryUrl>https://github.com/congiuluc/spid-dotnet-sdk</RepositoryUrl>
+    <PackageTags>.NET SPID SDK</PackageTags>
+    <RepositoryType>GitHub</RepositoryType>
+    <PackageReleaseNotes>First Release</PackageReleaseNotes>
   </PropertyGroup>
 
   <!-- Conditionally obtain references for the .NET Framework target -->
