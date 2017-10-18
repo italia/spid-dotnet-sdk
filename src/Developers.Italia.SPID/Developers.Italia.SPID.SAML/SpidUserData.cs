@@ -14,7 +14,7 @@ namespace Developers.Italia.SPID.SAML
 
         public string PlaceOfBirth { get; set; }
 
-        public string CountryOfBirth { get; set; }
+        public string CountyOfBirth { get; set; }
 
         public string DateOfBirth { get; set; }
 

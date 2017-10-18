@@ -29,17 +29,17 @@ namespace Developers.Italia.SPID.Test.AspNetCore2.Controllers
             try
             {
                 samlResponse = Encoding.UTF8.GetString(Convert.FromBase64String(collection["SAMLResponse"]));
-                redirect = collection["RelayState"];
+                redirect = Encoding.UTF8.GetString(Convert.FromBase64String(collection["RelayState"]));
                 
                 resp.Deserialize(samlResponse);
                 
             }
-            catch 
+            catch (Exception ex)
             {
-
+                //TODO LOG
             }
 
-            ViewData["SAMLResponse"] = samlResponse;
+            ViewData["SAMLResponse"] = JsonConvert.SerializeObject(resp);
             ViewData["RelayState"] = redirect;
             return View();
         }

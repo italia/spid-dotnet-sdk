@@ -146,7 +146,7 @@ namespace Developers.Italia.SPID.SAML
             request.Version = Options.Version;
 
             //Unique UUID
-            request.ID = this.Options.UUID;
+            request.ID = "_" +this.Options.UUID;
 
             //Request DateTime
             request.IssueInstant = requestDatTime;
@@ -252,11 +252,21 @@ namespace Developers.Italia.SPID.SAML
         /// <returns></returns>
         public string GetSignedAuthRequest(X509Certificate2 cert)
         {
+            var xmlPrivateKey = "";
+
             //Full Framework Only
             //var xmlPrivateKey = cert.PrivateKey.ToXmlString(true);
             //.Net Standard Extension
             //var xmlPrivateKey = RSAKeyExtensions.ToXmlString((RSA)cert.PrivateKey, true);
-            var xmlPrivateKey = "";
+
+#if NETFULL
+           xmlPrivateKey = cert.PrivateKey.ToXmlString(true);
+#endif
+
+#if NETSTANDARD1_0
+            xmlPrivateKey = RSAKeyExtensions.ToXmlString((RSA)cert.PrivateKey, true);
+#endif
+           
 
             return GetSignedAuthRequest(cert, xmlPrivateKey);
         }

@@ -1,29 +1,18 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
-<link href="~/css/spid-sp-access-button.min.css" rel="stylesheet" />
-<div class="row">
-    <div class="col-sm-6" style="  text-align: justify;">
-        <p>
-            SPID è il sistema di accesso che consente di utilizzare, con
+<link href="~/css/spid-sp-access-button.css" rel="stylesheet" />
+<div class="jumbotron">
+    <h1 class="display-3">Hello, SPID .NET SDK!</h1>
+    <p class="lead"> SPID è il sistema di accesso che consente di utilizzare, con
             un'identità digitale unica, i servizi online della Pubblica
             Amministrazione e dei privati accreditati. <br> Se sei già in
             possesso di un'identità digitale, accedi con le credenziali del
             tuo gestore. <br> Se non hai ancora un'identità digitale,
-            richiedila ad uno dei gestori.
-        </p>
-        <ul class="list-unstyled">
-            <li><a href="http://www.spid.gov.it/">Maggiori info</a></li>
-            <li>
-                <a href="http://www.spid.gov.it/#registrati">
-                    Non hai
-                    SPID?
-                </a>
-            </li>
-        </ul>
-    </div>
-
-    <div class="col-sm-6 text-center" style="margin-bottom: 10px;">
+            richiedila ad uno dei gestori.</p>
+    <hr class="my-4">
+    <p>Prova subito, clicca su Entra con SPID con POSTE ID.</p>
+    <p class="lead">
         <!-- AGID - SPID IDP BUTTON MEDIUM "ENTRA CON SPID" * begin * -->
         <a href="#" class="italia-it-button italia-it-button-size-m button-spid" spid-idp-button="#spid-idp-button-medium-get" aria-haspopup="true" aria-expanded="false">
             <span class="italia-it-button-icon"><img src="images/spid-ico-circle-bb.svg" onerror="this.src='img/spid-ico-circle-bb.png'; this.onerror=null;" alt="" /></span>
@@ -65,12 +54,8 @@
         </div>
         <!-- AGID - SPID IDP BUTTON MEDIUM "ENTRA CON SPID" * end * -->
 
-    </div>
+    </p>
 </div>
-<h1 style="font-family:'Titillium Web',HelveticaNeue,Helvetica Neue,Helvetica,Arial,Lucida Grande,sans-serif;font-weight:700">SPID SP ACCESS BUTTON</h1>
-
-<h3 style="font-family:'Titillium Web',HelveticaNeue,Helvetica Neue,Helvetica,Arial,Lucida Grande,sans-serif;font-weight:700">Versione GET</h3>
-
 
 @section Scripts{
     <script type="text/javascript" src="js/spid-sp-access-button.min.js"></script>

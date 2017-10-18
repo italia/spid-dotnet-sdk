@@ -9,17 +9,18 @@ using System.Security.Cryptography.X509Certificates;
 using Microsoft.AspNetCore.Hosting;
 using System.Xml.Serialization;
 using System.IO;
+using Microsoft.Extensions.Configuration;
 
 namespace Developers.Italia.SPID.Test.AspNetCore2.Controllers
 {
     public class HomeController : Controller
     {
         private readonly IHostingEnvironment _appEnvironment;
-
-        public HomeController(IHostingEnvironment appEnvironment)
+        private IConfiguration _configuration;
+        public HomeController(IHostingEnvironment appEnvironment, IConfiguration configuration)
         {
             _appEnvironment = appEnvironment;
-
+            _configuration = configuration;
         }
         public IActionResult Index()
         {
@@ -33,13 +34,7 @@ namespace Developers.Italia.SPID.Test.AspNetCore2.Controllers
             return View();
         }
 
-        public IActionResult Contact()
-        {
-            ViewData["Message"] = "Your contact page.";
-
-            return View();
-        }
-
+       
         // GET: Home/Spid/5
         public ActionResult Spid(int id)
         {
@@ -87,10 +82,11 @@ namespace Developers.Italia.SPID.Test.AspNetCore2.Controllers
 
                 SAML.AuthRequest request = new SAML.AuthRequest(requestOptions);
 
-                X509Certificate2 signinCert = new X509Certificate2(_appEnvironment.ContentRootPath + "\\Cert\\www_dotnetcode_it.pfx", "P@ssw0rd!", X509KeyStorageFlags.Exportable);
+                X509Certificate2 signinCert = new X509Certificate2(_appEnvironment.ContentRootPath + _configuration["SPIDCertPath"], _configuration["SPIDCertPassword"], X509KeyStorageFlags.Exportable);
 
 
                 string saml = request.GetSignedAuthRequest(signinCert, xmlPrivateKey);
+
 
 
                 ViewData["FormUrlAction"] = destinationUrl;
