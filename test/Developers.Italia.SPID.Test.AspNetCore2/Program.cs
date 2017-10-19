@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -7,6 +7,7 @@ using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using System.Net;
 
 namespace Developers.Italia.SPID.Test.AspNetCore2
 {
@@ -17,9 +18,24 @@ namespace Developers.Italia.SPID.Test.AspNetCore2
             BuildWebHost(args).Run();
         }
 
-        public static IWebHost BuildWebHost(string[] args) =>
-            WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>()
-                .Build();
+        public static IWebHost BuildWebHost(string[] args)
+        {
+
+         
+            return WebHost.CreateDefaultBuilder(args)
+             .UseStartup<Startup>()
+
+              .UseKestrel(options =>
+              {
+                  options.Listen(IPAddress.Loopback, 5000);
+                  options.Listen(IPAddress.Loopback, 44355, listenOptions =>
+                  {
+                      listenOptions.UseHttps("cert/localhost.pfx", "P@ssw0rd!");
+                      listenOptions.UseConnectionLogging();
+                  });
+              })
+             .Build();
+
+        }
     }
 }
