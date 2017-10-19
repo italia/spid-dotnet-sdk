@@ -213,8 +213,8 @@ public ActionResult ACS(IFormCollection collection)
 E' possibile utilizzare una demo funzionante, basta scaricare da GitHub la cartella Developers.Italia.SPID.Test.AspNetCore2 che si trova sotto la directory Test, aprire la finestra di comando ed eseguire i seguenti comandi:
 
 ```shell
-> dotnet build
-> dotnet run
+Developers.Italia.SPID.Test.AspNetCore2> dotnet build
+Developers.Italia.SPID.Test.AspNetCore2> dotnet run
 ```
 
 Una volta finito basterà andare all'indirizzo https://localhost:44355 sul browser e provare l'autenticazione tramite Poste.IT.
@@ -231,4 +231,4 @@ Di seguito sono presenti alcuni link tecnici Utili:
 http://spid-regole-tecniche.readthedocs.io/en/latest/index.html
 
 ## Raccolta Documenti:
-http://spid-regole-tecniche.readthedocs.io/en/latest/index.html
+https://github.com/congiuluc/spid-dotnet-sdk/tree/master/docs/AgID
