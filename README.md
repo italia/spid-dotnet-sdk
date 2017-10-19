@@ -1,7 +1,7 @@
 Developers.Italia.SPID.SAML
 =
 
-[![developers-italia-spid-saml MyGet Build Status](https://www.myget.org/BuildSource/Badge/developers-italia-spid-saml?identifier=b555063a-b4c6-40c8-b33c-b47c89ec5f80)](https://www.myget.org/)
+[![developers-italia-spid-saml MyGet Build Status](https://www.myget.org/BuildSource/Badge/developers-italia-spid-saml?identifier=b555063a-b4c6-40c8-b33c-b47c89ec5f80)](https://www.myget.org/) ![](https://img.shields.io/nuget/v/Developers.Italia.SPID.SAML.svg "nuget package") ![](https://img.shields.io/nuget/dt/Developers.Italia.SPID.SAML.svg "nuget downloads") ![](https://img.shields.io/github/issues/congiuluc/spid-dotnet-sdk.svg "open issue") 
 
 Questa libreria permette di interfacciare un'applicazione ASP.NET con un IdP (Identity Provider) abilitato a **SPID** ([Sistema Pubblico di Identità Digitale](https://www.spid.gov.it])).
 
