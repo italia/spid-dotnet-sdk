@@ -1,0 +1,117 @@
+<?xml version="1.0"?> 
+<md:EntityDescriptor 
+    xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata"  
+    xmlns:ds="http://www.w3.org/2000/09/xmldsig#"  
+    entityID="https://www.tpcware.com"  
+    ID="bff93e4d-d684-47d8-9bba-228e50bf4fa1"> 
+     
+    <md:SPSSODescriptor  
+        protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol"  
+        AuthnRequestsSigned="true"  
+        WantAssertionsSigned="true"> 
+        
+        <md:KeyDescriptor use="signing"> 
+            <ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#"> 
+                <ds:X509Data> 
+                    <ds:X509Certificate>MIID3zCCAsegAwIBAgIJAO5EFWmvSc2IMA0GCSqGSIb3DQEBCwUAMIGFMQswCQYD
+VQQGEwJJVDELMAkGA1UECAwCSVQxDTALBgNVBAcMBFJvbWUxFzAVBgNVBAoMDkhh
+Y2tkZXZlbG9wZXJzMQswCQYDVQQLDAJJVDEXMBUGA1UEAwwOSGFja0RldmVsb3Bl
+cnMxGzAZBgkqhkiG9w0BCQEWDGhhY2tAaGFjay5pdDAeFw0xNzEwMDcxNjI2MTNa
+Fw0xODEwMDcxNjI2MTNaMIGFMQswCQYDVQQGEwJJVDELMAkGA1UECAwCSVQxDTAL
+BgNVBAcMBFJvbWUxFzAVBgNVBAoMDkhhY2tkZXZlbG9wZXJzMQswCQYDVQQLDAJJ
+VDEXMBUGA1UEAwwOSGFja0RldmVsb3BlcnMxGzAZBgkqhkiG9w0BCQEWDGhhY2tA
+aGFjay5pdDCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAKdJaSpm9FDt
+zKAabouWFqkvEe5Jut5KGiZip6RsUUmFZ6jidQobNiDcnN4L8nFJQ1btMp5nuNun
+sKbxwJMFlEUbtRWhMviWNsNaoHZKrns7Qxc8zFoyfhzVZGmZOYTfveMSiwJHrDt5
+VOzhVFhNuIOJGurMIv1UFsLWVxK4hmhPYJHxAVJhM5xFnJaOAhHVYz+bkLmVsmgx
+I3Y4NdwDijmd1mp3bLnSQ2jKHcGD1J4tzUCAqiUXwEHiy0BpD2j023HQ5T9psdMs
+0yZpMjDuMd/6OQzEIijSJQzRh5UMQnMfuug+HZkIhFrlcJ+JtX15GrJi044PUhOB
+H9h/ZTiP1qkCAwEAAaNQME4wHQYDVR0OBBYEFGhaNKk0ASoJVrbLSoYFV/v6TgdI
+MB8GA1UdIwQYMBaAFGhaNKk0ASoJVrbLSoYFV/v6TgdIMAwGA1UdEwQFMAMBAf8w
+DQYJKoZIhvcNAQELBQADggEBAGJRB8tJGcQO8dNGvIomDgwvW6kZ3vKzfDg9CD2w
+uo9njnbQYB+4Ts3iENDFsLl1w6KfLiWMMXJK6Nk2aw2Ea/dELrl8Emg31h/Clrz0
+DKPsckDRDkOVa8ZaUv/yDni5QFyndDqjjS1lhH7JgAxGa1loEkXoNCgOZIGnWfjn
+jdk+NusOJcGEgLFFpsye8anJWbUqs8zm6FKZbZx+MB67kMCanfKpAab6pO9XRf6c
+2BXtk64+VJOy/YgoCc2xc05d1BIDtTzahWeP7G63+SdkoLiLs28zXvLNv5TqfIM9
+5LoDYhzqiYPe6RD2cX1Iehc+Lzz81I/XvqorQ33djSsIa44=</ds:X509Certificate> 
+                </ds:X509Data> 
+            </ds:KeyInfo> 
+        </md:KeyDescriptor> 
+        
+        <md:KeyDescriptor use="encryption"> 
+            <ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#"> 
+                <ds:X509Data> 
+                    <ds:X509Certificate>MIID3zCCAsegAwIBAgIJAO5EFWmvSc2IMA0GCSqGSIb3DQEBCwUAMIGFMQswCQYD
+VQQGEwJJVDELMAkGA1UECAwCSVQxDTALBgNVBAcMBFJvbWUxFzAVBgNVBAoMDkhh
+Y2tkZXZlbG9wZXJzMQswCQYDVQQLDAJJVDEXMBUGA1UEAwwOSGFja0RldmVsb3Bl
+cnMxGzAZBgkqhkiG9w0BCQEWDGhhY2tAaGFjay5pdDAeFw0xNzEwMDcxNjI2MTNa
+Fw0xODEwMDcxNjI2MTNaMIGFMQswCQYDVQQGEwJJVDELMAkGA1UECAwCSVQxDTAL
+BgNVBAcMBFJvbWUxFzAVBgNVBAoMDkhhY2tkZXZlbG9wZXJzMQswCQYDVQQLDAJJ
+VDEXMBUGA1UEAwwOSGFja0RldmVsb3BlcnMxGzAZBgkqhkiG9w0BCQEWDGhhY2tA
+aGFjay5pdDCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAKdJaSpm9FDt
+zKAabouWFqkvEe5Jut5KGiZip6RsUUmFZ6jidQobNiDcnN4L8nFJQ1btMp5nuNun
+sKbxwJMFlEUbtRWhMviWNsNaoHZKrns7Qxc8zFoyfhzVZGmZOYTfveMSiwJHrDt5
+VOzhVFhNuIOJGurMIv1UFsLWVxK4hmhPYJHxAVJhM5xFnJaOAhHVYz+bkLmVsmgx
+I3Y4NdwDijmd1mp3bLnSQ2jKHcGD1J4tzUCAqiUXwEHiy0BpD2j023HQ5T9psdMs
+0yZpMjDuMd/6OQzEIijSJQzRh5UMQnMfuug+HZkIhFrlcJ+JtX15GrJi044PUhOB
+H9h/ZTiP1qkCAwEAAaNQME4wHQYDVR0OBBYEFGhaNKk0ASoJVrbLSoYFV/v6TgdI
+MB8GA1UdIwQYMBaAFGhaNKk0ASoJVrbLSoYFV/v6TgdIMAwGA1UdEwQFMAMBAf8w
+DQYJKoZIhvcNAQELBQADggEBAGJRB8tJGcQO8dNGvIomDgwvW6kZ3vKzfDg9CD2w
+uo9njnbQYB+4Ts3iENDFsLl1w6KfLiWMMXJK6Nk2aw2Ea/dELrl8Emg31h/Clrz0
+DKPsckDRDkOVa8ZaUv/yDni5QFyndDqjjS1lhH7JgAxGa1loEkXoNCgOZIGnWfjn
+jdk+NusOJcGEgLFFpsye8anJWbUqs8zm6FKZbZx+MB67kMCanfKpAab6pO9XRf6c
+2BXtk64+VJOy/YgoCc2xc05d1BIDtTzahWeP7G63+SdkoLiLs28zXvLNv5TqfIM9
+5LoDYhzqiYPe6RD2cX1Iehc+Lzz81I/XvqorQ33djSsIa44=</ds:X509Certificate> 
+                </ds:X509Data> 
+            </ds:KeyInfo> 
+        </md:KeyDescriptor> 
+        
+        <md:SingleLogoutService 
+            Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST"
+            Location="http://localhost:62371/acs/logout" /> 
+
+        <md:NameIDFormat>urn:oasis:names:tc:SAML:2.0:nameid-format:transient</md:NameIDFormat> 
+
+        <md:AssertionConsumerService  
+            Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST"  
+            Location="http://[your web app internet url ]/acs"  
+            index="0"  
+            isDefault="true" /> 
+
+        <md:AssertionConsumerService  
+            Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST"  
+            Location="http://localhost:62371/acs"  
+            index="1" /> 
+
+        <md:AttributeConsumingService index="1"> 
+            <md:ServiceName xml:lang="it">TPCWare.SPID</md:ServiceName> 
+            <md:ServiceDescription xml:lang="it">Servizio SPID di TPCWare</md:ServiceDescription> 
+            <md:RequestedAttribute Name="spidCode" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:basic"/> 
+            <md:RequestedAttribute Name="gender" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:basic"/> 
+            <md:RequestedAttribute Name="placeOfBirth" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:basic"/> 
+            <md:RequestedAttribute Name="name" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:basic"/> 
+            <md:RequestedAttribute Name="ivaCode" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:basic"/> 
+            <md:RequestedAttribute Name="companyName" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:basic"/> 
+            <md:RequestedAttribute Name="mobilePhone" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:basic"/> 
+            <md:RequestedAttribute Name="address" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:basic"/> 
+            <md:RequestedAttribute Name="expirationDate" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:basic"/> 
+            <md:RequestedAttribute Name="fiscalNumber" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:basic"/> 
+            <md:RequestedAttribute Name="familyName" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:basic"/> 
+            <md:RequestedAttribute Name="dateOfBirth" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:basic"/> 
+            <md:RequestedAttribute Name="countyOfBirth" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:basic"/> 
+            <md:RequestedAttribute Name="idCard" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:basic"/> 
+            <md:RequestedAttribute Name="registeredOffice" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:basic"/> 
+            <md:RequestedAttribute Name="email" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:basic"/> 
+            <md:RequestedAttribute Name="digitalAddress" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:basic"/> 
+        </md:AttributeConsumingService> 
+
+    </md:SPSSODescriptor> 
+
+    <md:Organization> 
+        <md:OrganizationName xml:lang="it">TPCWare</md:OrganizationName> 
+        <md:OrganizationDisplayName xml:lang="it">TPCWare SPID</md:OrganizationDisplayName> 
+        <md:OrganizationURL xml:lang="it">https://www.tpcware.com</md:OrganizationURL> 
+    </md:Organization> 
+
+</md:EntityDescriptor>
+ 
