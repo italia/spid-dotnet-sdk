@@ -1,6 +1,8 @@
 Developers.Italia.SPID.SAML
 =
 
+[![developers-italia-spid-saml MyGet Build Status](https://www.myget.org/BuildSource/Badge/developers-italia-spid-saml?identifier=b555063a-b4c6-40c8-b33c-b47c89ec5f80)](https://www.myget.org/)
+
 Questa libreria permette di interfacciare un'applicazione ASP.NET con un IdP (Identity Provider) abilitato a **SPID** ([Sistema Pubblico di Identità Digitale](https://www.spid.gov.it])).
 
 Tramite questa libreria è possibile effettuare l'autenticazione di un Utente registrato presso un Identity Provider attivo e richiedere alcuni dati dell'Utente (Cittadino)
