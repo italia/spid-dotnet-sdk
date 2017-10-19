@@ -98,13 +98,133 @@ Per aggiungere il feed basta aprire il menù delle opzioni di Visual Studio (men
 
 **N.B.:** Non appena sarà rilasciata la versione 4.5.0 non sarà più necessario aggiungere il feed.
 
+<br/>
 
-### Esempio di Utilizzo con ASP.NET Core 2
-TODO
+### Esempi di Utilizzo
+
+#### Creazione Nuova Richiesta:
+
+```csharp
+ Developers.Italia.SPID.SAML.AuthRequestOptions options = new Developers.Italia.SPID.SAML.AuthRequestOptions()
+ {
+    //Request Unique Identifier
+    UUID = Guid.NewGuid().ToString(),
+    //Service Provider Unique Identifier (url like https://www.dotnetcode.it can be ok)
+    SPUID = "MyServiceProviderUniqueIdentifier",
+    //SPID Authentication Level (1/2/3)
+    SPIDLevel = Developers.Italia.SPID.SAML.SPIDLevel.SPIDL1,
+    //Identity Provider Url For SAML Request
+    Destination = "https://www.myserviceprovider.com/samlurl",
+    //Service Provider Consumer Service Index - Normally Callback URL (refer to Service Provider Metadata)
+    AssertionConsumerServiceIndex = 0,
+    //Service Provider Consuming Service Index - Normally Requested User Data(refer to Service Provider Metadata)
+    AttributeConsumingServiceIndex = 0
+ };
+
+ Developers.Italia.SPID.SAML.AuthRequest request = new Developers.Italia.SPID.SAML.AuthRequest(options);
+
+ string rsaXmlKey = "<![CDATA[<RSAKeyValue><Modulus>rBPwxOB3QM+Rhz+/...</RSAKeyValue>";
+ 
+ X509Certificate2 signinCert = new X509Certificate2("MyCertPath.pfx", "MyCertPassword", X509KeyStorageFlags.Exportable);
+
+ string samlRequest = request.GetSignedAuthRequest(signinCert, rsaXmlKey);
+```
+<br/>
+
+#### Esempio Controller Invio:
+
+```csharp
+public IActionResult SPID()
+{
+    Developers.Italia.SPID.SAML.AuthRequestOptions options = new Developers.Italia.SPID.SAML.AuthRequestOptions()
+    {
+        //Request Unique Identifier
+        UUID = Guid.NewGuid().ToString(),
+        //Service Provider Unique Identifier (url like https://www.dotnetcode.it can be ok)
+        SPUID = "https://www.dotnetcode.it",
+        //SPID Authentication Level (1/2/3)
+        SPIDLevel = Developers.Italia.SPID.SAML.SPIDLevel.SPIDL1,
+        //Identity Provider Url For SAML Request
+        Destination = "https://spidposte.test.poste.it/jod-fs/ssoservicepost",
+        //Service Provider Consumer Service Index - Normally Callback URL (refer to Service Provider Metadata)
+        AssertionConsumerServiceIndex = 0,
+        //Service Provider Consuming Service Index - Normally Requested User Data(refer to Service Provider Metadata)
+        AttributeConsumingServiceIndex = 0
+    };
+
+    Developers.Italia.SPID.SAML.AuthRequest request = new Developers.Italia.SPID.SAML.AuthRequest(options);
 
 
+    string rsaXmlKey = "<![CDATA[<RSAKeyValue><Modulus>rBPwxOB3QM+Rhz+/...</RSAKeyValue>";
+    X509Certificate2 signinCert = new X509Certificate2("MyCertPath.pfx", "MyCertPassword", X509KeyStorageFlags.Exportable);
 
-## Documentazione:
+    string samlRequest = request.GetSignedAuthRequest(signinCert, rsaXmlKey);
+
+
+            
+    string returnUrl = "/";
+
+    if (!string.IsNullOrEmpty(HttpContext.Request.Query["redirectUrl"]))
+    {
+        returnUrl = HttpContext.Request.Query["redirectUrl"];
+    }
+
+    ViewData["FormUrlAction"] = options.Destination;
+    ViewData["SAMLRequest"] = System.Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(samlRequest));
+    ViewData["RelayState"] = System.Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(returnUrl));
+
+    return View();
+}
+```
+<br/>
+
+#### Esempio Controller Ricezione:
+
+```csharp
+// POST: SpidSaml/ACS
+[HttpPost]
+public ActionResult ACS(IFormCollection collection)
+{
+    string samlResponse = "";
+    string redirect = "";
+    SAML.AuthResponse resp = new SAML.AuthResponse();
+    try
+    {
+        samlResponse = Encoding.UTF8.GetString(Convert.FromBase64String(collection["SAMLResponse"]));
+        redirect = Encoding.UTF8.GetString(Convert.FromBase64String(collection["RelayState"]));
+                
+        resp.Deserialize(samlResponse);
+                
+    }
+    catch (Exception ex)
+    {
+        //TODO LOG
+    }
+
+    ViewData["SAMLResponse"] = resp;
+    ViewData["RelayState"] = redirect;
+    return View();
+}
+}
+```
+
+<br/><br/>
+## Demo:
+E' possibile utilizzare una demo funzionante, basta scaricare da GitHub la cartella Developers.Italia.SPID.Test.AspNetCore2 che si trova sotto la directory Test, aprire la finestra di comando ed eseguire i seguenti comandi:
+
+```shell
+> dotnet build
+> dotnet run
+```
+
+Una volta finito basterà andare all'indirizzo https://localhost:44355 sul browser e provare l'autenticazione tramite Poste.IT.
+
+**N.B.**:Il certificato è self signed quindi bisogna bypassare i controlli del browser se presenti.
+
+<br/><br/><br/>
+
+
+## Documenti Utili:
 Di seguito sono presenti alcuni link tecnici Utili:
 
 ## Regole Tecniche:
