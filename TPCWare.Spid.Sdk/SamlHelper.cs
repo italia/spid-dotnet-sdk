@@ -9,115 +9,124 @@ using System.Security.Cryptography.Xml;
 using System.Xml.Serialization;
 using System.IO;
 using TPCWare.Spid.Sdk.Schema;
+using log4net;
 
 namespace TPCWare.Spid.Sdk
 {
     public static class Saml2Helper
     {
+        static ILog log = log4net.LogManager.GetLogger(typeof(Saml2Helper));
+
         /// <summary>
         /// Creates a Version 2.0 Saml Assertion
         /// </summary>
-        /// <param name="issuer">Issuer</param>
-        /// <param name="subject">Subject</param>
-        /// <param name="attributes">Attributes</param>
-        /// <returns>returns a Version 1.1 Saml Assertion</returns>
+        /// <param name="issuer"></param>
+        /// <param name="recipient"></param>
+        /// <param name="domain"></param>
+        /// <param name="subject"></param>
+        /// <param name="attributes"></param>
+        /// <returns>returns a Version 2.0 Saml Assertion</returns>
         private static AssertionType CreateSamlAssertion(string issuer, string recipient, string domain, string subject, Dictionary<string, string> attributes)
         {
-            // Here we create some SAML assertion with ID and Issuer name. 
-            AssertionType assertion = new AssertionType
+            // WARNING: the recipient is not used!
+            // TODO: Verify that the recipient can be ignored
+
+            if (string.IsNullOrWhiteSpace(issuer))
             {
-                ID = "_" + Guid.NewGuid().ToString()
-            };
-
-            NameIDType issuerForAssertion = new NameIDType
-            {
-                Value = issuer.Trim()
-            };
-
-            assertion.Issuer = issuerForAssertion;
-            assertion.Version = "2.0";
-
-            assertion.IssueInstant = DateTime.UtcNow;
-
-            //Not before, not after conditions 
-            ConditionsType conditions = new ConditionsType();
-            DateTime now = DateTime.UtcNow;
-            string nowString = now.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fff'Z'");
-            DateTime after = now.AddMinutes(10);
-            string afterString = after.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fff'Z'");
-            conditions.NotBefore = nowString;
-            conditions.NotBeforeSpecified = true;
-            conditions.NotOnOrAfter = afterString;
-            conditions.NotOnOrAfterSpecified = true;
-
-            AudienceRestrictionType audienceRestriction = new AudienceRestrictionType
-            {
-                Audience = new string[] { domain.Trim() }
-            };
-
-            conditions.Items = new ConditionAbstractType[] { audienceRestriction };
-
-            //Name Identifier to be used in Saml Subject
-            NameIDType nameIdentifier = new NameIDType
-            {
-                NameQualifier = domain.Trim(),
-                Value = subject.Trim()
-            };
-
-            SubjectConfirmationType subjectConfirmation = new SubjectConfirmationType();
-            SubjectConfirmationDataType subjectConfirmationData = new SubjectConfirmationDataType();
-
-            subjectConfirmation.Method = "urn:oasis:names:tc:SAML:2.0:cm:bearer";
-            subjectConfirmation.SubjectConfirmationData = subjectConfirmationData;
-            // 
-            // Create some SAML subject. 
-            SubjectType samlSubject = new SubjectType();
-
-            AttributeStatementType attrStatement = new AttributeStatementType();
-            AuthnStatementType authStatement = new AuthnStatementType
-            {
-                AuthnInstant = DateTime.UtcNow
-            };
-            AuthnContextType context = new AuthnContextType
-            {
-                ItemsElementName = new ItemsChoiceType5[] { ItemsChoiceType5.AuthnContextClassRef },
-                Items = new object[] { "AuthnContextClassRef" }
-            };
-            authStatement.AuthnContext = context;
-
-            samlSubject.Items = new object[] { nameIdentifier, subjectConfirmation };
-
-            assertion.Subject = samlSubject;
-
-            IPHostEntry ipEntry =
-                Dns.GetHostEntry(System.Environment.MachineName);
-
-            SubjectLocalityType subjectLocality = new SubjectLocalityType
-            {
-                Address = ipEntry.AddressList[0].ToString()
-            };
-
-            attrStatement.Items = new AttributeType[attributes.Count];
-            int i = 0;
-            // Create userName SAML attributes. 
-            foreach (KeyValuePair<string, string> attribute in attributes)
-            {
-                AttributeType attr = new AttributeType
-                {
-                    Name = attribute.Key,
-                    NameFormat = "urn:oasis:names:tc:SAML:2.0:attrname-format:basic",
-                    AttributeValue = new object[] { attribute.Value }
-                };
-                attrStatement.Items[i] = attr;
-                i++;
+                log.Error("Error on CreateSamlAssertion: The issuer parameter is null or empty.");
+                throw new ArgumentNullException("The issuer parameter can't be null or empty.");
             }
-            assertion.Conditions = conditions;
 
-            assertion.Items = new StatementAbstractType[] { authStatement, attrStatement };
+            if (string.IsNullOrWhiteSpace(recipient))
+            {
+                log.Error("Error on CreateSamlAssertion: The recipient parameter is null or empty.");
+                throw new ArgumentNullException("The recipient parameter can't be null or empty.");
+            }
 
-            return assertion;
+            if (string.IsNullOrWhiteSpace(domain))
+            {
+                log.Error("Error on CreateSamlAssertion: The domain parameter is null or empty.");
+                throw new ArgumentNullException("The domain parameter can't be null or empty.");
+            }
 
+            if (string.IsNullOrWhiteSpace(subject))
+            {
+                log.Error("Error on CreateSamlAssertion: The subject parameter is null or empty.");
+                throw new ArgumentNullException("The subject parameter can't be null or empty.");
+            }
+
+            if (attributes == null)
+            {
+                log.Error("Error on CreateSamlAssertion: The attributes parameter is null.");
+                throw new ArgumentNullException("The attributes parameter can't be null.");
+            }
+
+            DateTime now = DateTime.UtcNow;
+
+            return new AssertionType
+            {
+                Conditions = new ConditionsType
+                {
+                    Items = new ConditionAbstractType[]
+                    {
+                        new AudienceRestrictionType
+                        {
+                            Audience = new string[] { domain.Trim() }
+                        }
+                    },
+                    NotBefore = now.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fff'Z'"),
+                    NotBeforeSpecified = true,
+                    NotOnOrAfter = now.AddMinutes(10).ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fff'Z'"),
+                    NotOnOrAfterSpecified = true
+                },
+                ID = "_" + Guid.NewGuid().ToString(),
+                IssueInstant = now,
+                Issuer = new NameIDType
+                {
+                    Value = issuer.Trim()
+                },
+                Items = new StatementAbstractType[]
+                {
+                    new AuthnStatementType
+                    {
+                        AuthnInstant = now,
+                        AuthnContext = new AuthnContextType
+                        {
+                            ItemsElementName = new ItemsChoiceType5[] { ItemsChoiceType5.AuthnContextClassRef },
+                            Items = new object[] { "AuthnContextClassRef" }
+                        }
+                    },
+                    new AttributeStatementType()
+                    {
+                        Items = attributes.Select(a => new AttributeType
+                        {
+                            Name = a.Key,
+                            NameFormat = "urn:oasis:names:tc:SAML:2.0:attrname-format:basic",
+                            AttributeValue = new object[] { a.Value }
+                        }).ToArray()
+                    }
+                },
+                Subject = new SubjectType
+                {
+                    Items = new object[]
+                    {
+                        //Name Identifier to be used in Saml Subject
+                        new NameIDType
+                        {
+                            NameQualifier = domain.Trim(),
+                            Value = subject.Trim()
+                        },
+                        new SubjectConfirmationType
+                        {
+                            Method = "urn:oasis:names:tc:SAML:2.0:cm:bearer",
+                            SubjectConfirmationData = new SubjectConfirmationDataType()
+                        }
+                    }
+                },
+                Version = "2.0"
+            };
         }
+
         /// <summary>
         /// GetPostSamlResponse - Returns a Base64 Encoded String with the SamlResponse in it.
         /// </summary>
