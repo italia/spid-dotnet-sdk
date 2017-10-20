@@ -44,7 +44,7 @@ namespace TPCWare.Spid.WebApp.Controllers
                 xml.PreserveWhitespace = true;
                 xml.LoadXml(base64DecodedASCII);
 
-                if (SigningHelper.VerifySignature(xml, Log))
+                if (SigningHelper.VerifySignature(xml))
                 {
                     string backUrl = String.Empty;
                     string requestQueryString = String.Empty;
@@ -179,7 +179,7 @@ namespace TPCWare.Spid.WebApp.Controllers
             xml.PreserveWhitespace = true;
             xml.LoadXml(base64DecodedASCII);
 
-            if (SigningHelper.VerifySignature(xml, Log))
+            if (SigningHelper.VerifySignature(xml))
             {
                  
                 Dictionary<string, string> userInfo = new Dictionary<string, string>();

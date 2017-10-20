@@ -12,34 +12,73 @@ using TPCWare.Spid.Sdk.Schema;
 namespace TPCWare.Spid.Sdk
 {
     public static class SigningHelper {
+
         public enum SignatureType {
             Response,
             Assertion,
             Request
         };
+
+        static ILog log = log4net.LogManager.GetLogger(typeof(SigningHelper));
+
         /// <summary>
         /// Signs an XML Document for a Saml Response
         /// </summary>
         public static XmlElement SignDoc(XmlDocument doc, X509Certificate2 cert2, string referenceUri)
         {
-            
-          var exportedKeyMaterial = cert2.PrivateKey.ToXmlString(true);
+            if (doc == null)
+            {
+                log.Error("Error on SignDoc: The doc parameter is null");
+                throw new ArgumentNullException("The doc parameter can't be null");
+            }
 
-            var key = new RSACryptoServiceProvider(new CspParameters(24));
-            key.PersistKeyInCsp = false;
-            key.FromXmlString(exportedKeyMaterial);
-         
+            if (cert2 == null)
+            {
+                log.Error("Error on SignDoc: The cert2 parameter is null");
+                throw new ArgumentNullException("The cert2 parameter can't be null");
+            }
 
-            SignedXml signedXml = new SignedXml(doc);
-            signedXml.SigningKey = key;
+            if (string.IsNullOrWhiteSpace(referenceUri))
+            {
+                log.Error("Error on SignDoc: The referenceUri parameter is null or empty");
+                throw new ArgumentNullException("The referenceUri parameter can't be null or empty");
+            }
+
+            AsymmetricAlgorithm privateKey;
+
+            try
+            {
+                privateKey = cert2.PrivateKey;
+            }
+            catch (Exception ex)
+            {
+                log.Error("Error on SignDoc: Unable to find private key in the X509Certificate");
+                throw new FieldAccessException("Unable to find private key in the X509Certificate", ex);
+            }
+
+            var exportedKeyMaterial = cert2.PrivateKey.ToXmlString(true);
+
+            var key = new RSACryptoServiceProvider(new CspParameters(24))
+            {
+                PersistKeyInCsp = false
+            };
+
+            key.FromXmlString(privateKey.ToXmlString(true));
+
+
+            SignedXml signedXml = new SignedXml(doc)
+            {
+                SigningKey = key
+            };
             signedXml.SignedInfo.SignatureMethod = "http://www.w3.org/2001/04/xmldsig-more#rsa-sha256";
             signedXml.SignedInfo.CanonicalizationMethod = SignedXml.XmlDsigExcC14NTransformUrl;
 
-            Reference reference = new Reference();
-            reference.DigestMethod = "http://www.w3.org/2001/04/xmlenc#sha256";
+            Reference reference = new Reference
+            {
+                DigestMethod = "http://www.w3.org/2001/04/xmlenc#sha256"
+            };
             reference.AddTransform(new XmlDsigEnvelopedSignatureTransform());
             reference.AddTransform(new XmlDsigExcC14NTransform());
-            reference.Uri = String.Empty;
             reference.Uri = "#" + referenceUri;
             signedXml.AddReference(reference);
 
@@ -52,58 +91,57 @@ namespace TPCWare.Spid.Sdk
             return signature;
         }
 
-        public static bool VerifyStatus(XmlDocument ResponseDocument, ILog Log)
+        public static bool VerifyStatus(XmlDocument responseDocument)
         {
-            bool res = false;
+            if (responseDocument == null)
+            {
+                log.Error("Error on VerifySignature: the signedDocument parameter is null");
+                throw new ArgumentNullException("The signedDocument parameter can't be null");
+            }
+
             try
             {
-                XmlNamespaceManager nsmgr = new XmlNamespaceManager(ResponseDocument.NameTable);
+                XmlNamespaceManager nsmgr = new XmlNamespaceManager(responseDocument.NameTable);
                 nsmgr.AddNamespace("st", "urn:oasis:names:tc:SAML:2.0:protocol");
-                string strValue = ResponseDocument.SelectSingleNode("//st:StatusCode", nsmgr).Attributes["Value"].Value;
-                if (strValue.ToString().ToLower() == "urn:oasis:names:tc:saml:2.0:status:success")
-                {
-                    res = true;
-                }
+                string strValue = responseDocument.SelectSingleNode("//st:StatusCode", nsmgr).Attributes["Value"].Value.ToLower();
+                return (strValue == "urn:oasis:names:tc:saml:2.0:status:success");
             }
             catch (Exception ex)
             {
-                Log.Error("Si è verificato un Errore durante la verifica dello Stutus di risposta", ex);
+                log.Error("Error on VerifyStatus: Unable to verify SAML response status", ex);
+                throw new FieldAccessException("Unable to verify SAML response status", ex);
             }
-            return res;
         }
 
-        public static bool VerifySignature(XmlDocument signedDocument, ILog Log)
+        public static bool VerifySignature(XmlDocument signedDocument)
         {
-            bool res = false;
-            XmlNodeList nodeList = null;
-
-            try
             {
-                SignedXml signedXml = new SignedXml(signedDocument);
-
-                if ((signedDocument.GetElementsByTagName("ds:Signature") != null) && signedDocument.GetElementsByTagName("ds:Signature").Count > 0)
+                if (signedDocument == null)
                 {
-                    nodeList = signedDocument.GetElementsByTagName("ds:Signature");
-                }
-                else
-                {
-                    nodeList = signedDocument.GetElementsByTagName("Signature");
+                    log.Error("Error on VerifySignature: the signedDocument parameter is null");
+                    throw new ArgumentNullException("The signedDocument parameter can't be null");
                 }
 
-                signedXml.LoadXml((XmlElement)nodeList[0]);
+                try
+                {
+                    SignedXml signedXml = new SignedXml(signedDocument);
 
-                res = signedXml.CheckSignature();
+                    XmlNodeList nodeList = (signedDocument.GetElementsByTagName("ds:Signature")?.Count > 0) ?
+                                           signedDocument.GetElementsByTagName("ds:Signature") :
+                                           signedDocument.GetElementsByTagName("Signature");
 
-               
+                    signedXml.LoadXml((XmlElement)nodeList[0]);
+                    return signedXml.CheckSignature();
+                }
+                catch (Exception ex)
+                {
+                    log.Error("Si è verificato un Errore durante la verifica della Signature", ex);
+                    throw new Exception("Error on VerifySignature", ex);
+                }
             }
-            catch (Exception ex)
-            {
-                Log.Error("Si è verificato un Errore durante la verifica della Signature", ex);
-            }
-            return res;
         }
 
-        public static bool attributeSetting(out Dictionary<string, string> userInfo, out string codFiscaleIva, SPIDMetadata model, ILog Log)
+        public static bool AttributeSetting(out Dictionary<string, string> userInfo, out string codFiscaleIva, SPIDMetadata model)
         {
             bool res = false;
             userInfo = new Dictionary<string, string>();
@@ -164,7 +202,8 @@ namespace TPCWare.Spid.Sdk
             }
             catch (Exception ex)
             {
-                Log.Error("Si è verificato un Errore durante la verifica della Signature", ex);
+                log.Error("Error on AttributeSetting", ex);
+                throw new Exception("Error on AttributeSetting", ex);
             }
             return res;
 
@@ -220,6 +259,5 @@ namespace TPCWare.Spid.Sdk
             return sigProcessor;
         }
 
-     
     }
 }
