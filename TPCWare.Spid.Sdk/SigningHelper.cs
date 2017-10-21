@@ -135,7 +135,7 @@ namespace TPCWare.Spid.Sdk
                 }
                 catch (Exception ex)
                 {
-                    log.Error("Si è verificato un Errore durante la verifica della Signature", ex);
+                    log.Error("Error on VerifySignature", ex);
                     throw new Exception("Error on VerifySignature", ex);
                 }
             }
