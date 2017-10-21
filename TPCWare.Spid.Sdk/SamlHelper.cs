@@ -10,6 +10,7 @@ using System.Xml.Serialization;
 using System.IO;
 using TPCWare.Spid.Sdk.Schema;
 using log4net;
+using TPCWare.Spid.Sdk.IdP;
 
 namespace TPCWare.Spid.Sdk
 {
@@ -128,7 +129,7 @@ namespace TPCWare.Spid.Sdk
         }
 
         /// <summary>
-        /// GetPostSamlResponse - Returns a Base64 Encoded String with the SamlResponse in it.
+        /// GetPostSamlResponse - Returns a Base64 Encoded String with the SamlResponse in it with a Default Signature type.
         /// </summary>
         /// <param name="recipient">Recipient</param>
         /// <param name="issuer">Issuer</param>
@@ -142,11 +143,10 @@ namespace TPCWare.Spid.Sdk
         /// <param name="certFile">Certificate File (used instead of the above Certificate Parameters)</param>
         /// <param name="certPassword">Certificate Password (used instead of the above Certificate Parameters)</param>
         /// <param name="attributes">A list of attributes to pass</param>
-        /// <param name="signatureType">Whether to sign Response or Assertion</param>
         /// <returns>A base64Encoded string with a SAML response.</returns>
         public static string BuildPostSamlResponse(string recipient, string issuer, string domain, string subject,
             StoreLocation storeLocation, StoreName storeName, X509FindType findType, string certFile, string certPassword, object findValue,
-            Dictionary<string, string> attributes, SigningHelper.SignatureType signatureType)
+            Dictionary<string, string> attributes)
         {
             ResponseType response = new ResponseType
             {
@@ -191,7 +191,7 @@ namespace TPCWare.Spid.Sdk
 
             string samlString = string.Empty;
 
-            AssertionType assertionType = Saml2Helper.CreateSamlAssertion(
+            AssertionType assertionType = CreateSamlAssertion(
                 issuer.Trim(), recipient.Trim(), domain.Trim(), subject.Trim(), attributes);
 
             response.Items = new AssertionType[] { assertionType };
@@ -252,151 +252,107 @@ namespace TPCWare.Spid.Sdk
 
             return returnValue;
         }
-        /// <summary>
-        /// GetPostSamlResponse - Returns a Base64 Encoded String with the SamlResponse in it with a Default Signature type.
-        /// </summary>
-        /// <param name="recipient">Recipient</param>
-        /// <param name="issuer">Issuer</param>
-        /// <param name="domain">Domain</param>
-        /// <param name="subject">Subject</param>
-        /// <param name="storeLocation">Certificate Store Location</param>
-        /// <param name="storeName">Certificate Store Name</param>
-        /// <param name="findType">Certificate Find Type</param>
-        /// <param name="certLocation">Certificate Location</param>
-        /// <param name="findValue">Certificate Find Value</param>
-        /// <param name="certFile">Certificate File (used instead of the above Certificate Parameters)</param>
-        /// <param name="certPassword">Certificate Password (used instead of the above Certificate Parameters)</param>
-        /// <param name="attributes">A list of attributes to pass</param>
-        /// <returns>A base64Encoded string with a SAML response.</returns>
-        public static string BuildPostSamlResponse(string recipient, string issuer, string domain, string subject,
-            StoreLocation storeLocation, StoreName storeName, X509FindType findType, string certFile, string certPassword, object findValue,
-            Dictionary<string, string> attributes)
-        {
-            return BuildPostSamlResponse(recipient, issuer, domain, subject, storeLocation, storeName, findType, certFile, certPassword, findValue, attributes,
-                SigningHelper.SignatureType.Response);
-        }
 
         /// <summary>
-        /// 
+        /// Build a signed SAML request.
         /// </summary>
-        /// <param name="UUID"></param>
-        /// <param name="Destination"></param>
-        /// <param name="ConsumerServiceURL"></param>
+        /// <param name="uuid"></param>
+        /// <param name="destination"></param>
+        /// <param name="consumerServiceURL"></param>
+        /// <param name="securityLevel"></param>
         /// <param name="certFile"></param>
         /// <param name="certPassword"></param>
         /// <param name="storeLocation"></param>
         /// <param name="storeName"></param>
         /// <param name="findType"></param>
         /// <param name="findValue"></param>
-        /// <returns></returns>
-        public static string BuildPostSamlRequest(string UUID, string Destination, string ConsumerServiceURL, int SecurityLevel,
-                                                string certFile, string certPassword,
-                                                StoreLocation storeLocation, StoreName storeName,
-                                                X509FindType findType, object findValue, string IdentityProvider, int Enviroment)
+        /// <param name="identityProvider"></param>
+        /// <param name="enviroment"></param>
+        /// <returns>Returns a Base64 Encoded String of the SAML request</returns>
+        public static string BuildPostSamlRequest(string uuid, string destination, string consumerServiceURL, int securityLevel,
+                                                  X509Certificate2 certificate, IdentityProvider identityProvider, int enviroment)
         {
-            return BuildPostSamlRequest(UUID, Destination, ConsumerServiceURL, SecurityLevel, certFile, certPassword,
-                                      storeLocation, storeName, findType, findValue, SigningHelper.SignatureType.Request, IdentityProvider, Enviroment);
-        }
+            if (string.IsNullOrWhiteSpace(uuid))
+            {
+                log.Error("Error on BuildPostSamlRequest: The uuid parameter is null or empty.");
+                throw new ArgumentNullException("The uuid parameter can't be null or empty.");
+            }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="UUID"></param>
-        /// <param name="Destination"></param>
-        /// <param name="ConsumerServiceURL"></param>
-        /// <param name="certFile"></param>
-        /// <param name="certPassword"></param>
-        /// <param name="storeLocation"></param>
-        /// <param name="storeName"></param>
-        /// <param name="findType"></param>
-        /// <param name="findValue"></param>
-        /// <param name="signatureType"></param>
-        /// <returns></returns>
-        public static string BuildPostSamlRequest(string UUID, string Destination, string ConsumerServiceURL, int SecurityLevel,
-                                                string certFile, string certPassword,
-                                                StoreLocation storeLocation, StoreName storeName,
-                                                X509FindType findType, object findValue, SigningHelper.SignatureType signatureType, string IdentityProvider, int Enviroment)
-        {
+            if (string.IsNullOrWhiteSpace(destination))
+            {
+                log.Error("Error on BuildPostSamlRequest: The destination parameter is null or empty.");
+                throw new ArgumentNullException("The destination parameter can't be null or empty.");
+            }
+
+            if (string.IsNullOrWhiteSpace(consumerServiceURL))
+            {
+                log.Error("Error on BuildPostSamlRequest: The consumerServiceURL parameter is null or empty.");
+                throw new ArgumentNullException("The consumerServiceURL parameter can't be null or empty.");
+            }
+
+            if (certificate == null)
+            {
+                log.Error("Error on BuildPostSamlRequest: The certificate parameter is null.");
+                throw new ArgumentNullException("The certificate parameter can't be null.");
+            }
+
+            if (identityProvider == null)
+            {
+                log.Error("Error on BuildPostSamlRequest: The identityProvider parameter is null.");
+                throw new ArgumentNullException("The identityProvider parameter can't be null.");
+            }
+
+            if (enviroment < 0 )
+            {
+                log.Error("Error on BuildPostSamlRequest: The enviroment parameter is less than zero.");
+                throw new ArgumentNullException("The enviroment parameter can't be less than zero.");
+            }
+
+            DateTime now = DateTime.UtcNow;
+
             AuthnRequestType MyRequest = new AuthnRequestType
             {
-                ID = UUID,
-                Version = "2.0"
+                ID = "_" + uuid,
+                Version = "2.0",
+                IssueInstant = identityProvider.Now(now),
+                Destination = destination,
+                AssertionConsumerServiceIndex = (ushort)enviroment,
+                AssertionConsumerServiceIndexSpecified = true,
+                AttributeConsumingServiceIndex = 1,
+                AttributeConsumingServiceIndexSpecified = true,
+                ForceAuthn = (securityLevel > 1),
+                ForceAuthnSpecified = (securityLevel > 1),
+                Issuer = new NameIDType
+                {
+                    Value = consumerServiceURL.Trim(),
+                    Format = "urn:oasis:names:tc:SAML:2.0:nameid-format:entity",
+                    NameQualifier = consumerServiceURL
+                },
+                NameIDPolicy = new NameIDPolicyType
+                {
+                    Format = "urn:oasis:names:tc:SAML:2.0:nameid-format:transient",
+                    AllowCreate = true,
+                    AllowCreateSpecified = true
+                },
+                Conditions = new ConditionsType
+                {
+                    NotBefore = identityProvider.NotBefore(now),
+                    NotBeforeSpecified = true,
+                    NotOnOrAfter = identityProvider.After(now.AddMinutes(10)),
+                    NotOnOrAfterSpecified = true
+                },
+                RequestedAuthnContext = new RequestedAuthnContextType
+                {
+                    Comparison = AuthnContextComparisonType.minimum,
+                    ComparisonSpecified = true,
+                    ItemsElementName = new ItemsChoiceType7[] { ItemsChoiceType7.AuthnContextClassRef },
+                    Items = new string[] { "https://www.spid.gov.it/SpidL" + securityLevel.ToString() }
+                }
             };
-            DateTime now = DateTime.UtcNow;
-            DateTime after = now.AddMinutes(10);
-            string nowString = String.Empty;
-            string afterString = String.Empty;
-            if (IdentityProvider.Contains("sielte"))
-            {
-                // SIELTE
-                nowString = now.AddMinutes(-2).ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss'Z'");
-                afterString = after.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss'Z'");
-            }
-            else
-            {
-                // POSTE - TIM - INFOCERT
-                nowString = now.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fff'Z'");
-                afterString = after.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fff'Z'");
-            }
-            MyRequest.IssueInstant = nowString;
-            if (SecurityLevel > 1)
-            {
-                MyRequest.ForceAuthn = true;
-                MyRequest.ForceAuthnSpecified = true;
-            }
-            MyRequest.Destination = Destination;
-            MyRequest.AssertionConsumerServiceIndex = (ushort)Enviroment ;
-            MyRequest.AssertionConsumerServiceIndexSpecified = true;
-            MyRequest.AttributeConsumingServiceIndex = 1;
-            MyRequest.AttributeConsumingServiceIndexSpecified = true;
-
-            NameIDType IssuerForRequest = new NameIDType
-            {
-                Value = ConsumerServiceURL.Trim(),
-                Format = "urn:oasis:names:tc:SAML:2.0:nameid-format:entity",
-                NameQualifier = ConsumerServiceURL
-            };
-            MyRequest.Issuer = IssuerForRequest;
-
-            NameIDPolicyType NameIdPolicyForRequest = new NameIDPolicyType
-            {
-                Format = "urn:oasis:names:tc:SAML:2.0:nameid-format:transient",
-                AllowCreate = true,
-                AllowCreateSpecified = true
-            };
-            MyRequest.NameIDPolicy = NameIdPolicyForRequest;
-
-            ConditionsType Conditional = new ConditionsType();
-            if (IdentityProvider.Contains("sielte"))
-            {
-                // SIELTE
-                Conditional.NotBefore = nowString;
-            }
-            else
-            {
-                // POSTE - TIM - INFOCERT
-                Conditional.NotBefore = now.AddMinutes(-2).ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fff'Z'");
-            }
-            
-            Conditional.NotBeforeSpecified = true;
-            Conditional.NotOnOrAfter = afterString;
-            Conditional.NotOnOrAfterSpecified = true;
-            MyRequest.Conditions = Conditional;
-
-            RequestedAuthnContextType RequestedAuthn = new RequestedAuthnContextType
-            {
-                Comparison = AuthnContextComparisonType.minimum,
-                ComparisonSpecified = true,
-                ItemsElementName = new ItemsChoiceType7[] { ItemsChoiceType7.AuthnContextClassRef },
-                Items = new string[] { "https://www.spid.gov.it/SpidL" + SecurityLevel.ToString() }
-            };
-            MyRequest.RequestedAuthnContext = RequestedAuthn;
 
             XmlSerializerNamespaces ns = new XmlSerializerNamespaces();
             ns.Add("saml2p", "urn:oasis:names:tc:SAML:2.0:protocol");
-            //ns.Add("saml2", "urn:oasis:names:tc:SAML:2.0:assertion");
 
-            XmlSerializer responseSerializer = new XmlSerializer(MyRequest.GetType());
 
             StringWriter stringWriter = new StringWriter();
             XmlWriterSettings settings = new XmlWriterSettings
@@ -407,50 +363,21 @@ namespace TPCWare.Spid.Sdk
             };
 
             XmlWriter responseWriter = XmlTextWriter.Create(stringWriter, settings);
+            XmlSerializer responseSerializer = new XmlSerializer(MyRequest.GetType());
             responseSerializer.Serialize(responseWriter, MyRequest, ns);
             responseWriter.Close();
 
-            string samlString = string.Empty;
-            samlString = stringWriter.ToString();
-
+            string samlString = stringWriter.ToString();
             stringWriter.Close();
 
             XmlDocument doc = new XmlDocument();
             doc.LoadXml(samlString);
-            X509Certificate2 cert = null;
-            if (System.IO.File.Exists(certFile))
-            {
-                cert = new X509Certificate2(certFile, certPassword);
-            }
-            else
-            {
-                X509Store store = new X509Store(storeName, storeLocation);
-                store.Open(OpenFlags.ReadOnly | OpenFlags.OpenExistingOnly);
-                X509Certificate2Collection CertCol = store.Certificates;
 
-                X509Certificate2Collection coll = store.Certificates.Find(findType, findValue.ToString(), false);
-
-                if (coll.Count < 1)
-                {
-                    throw new ArgumentException("Unable to locate certificate");
-                }
-                cert = coll[0];
-                store.Close();
-            }
-
-            XmlElement signature = SigningHelper.SignDoc(doc, cert, UUID);
+            XmlElement signature = SigningHelper.SignDoc(doc, certificate, "_" + uuid);
 
             doc.DocumentElement.InsertBefore(signature, doc.DocumentElement.ChildNodes[1]);
 
-            string responseStr = doc.OuterXml;
-
-            //byte[] base64EncodedBytes =
-            //    Encoding.UTF8.GetBytes(responseStr);
-
-            //string returnValue = System.Convert.ToBase64String(
-            //    base64EncodedBytes);
-
-            return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + responseStr;
+            return Convert.ToBase64String(Encoding.UTF8.GetBytes("<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + doc.OuterXml));
         }
     }
 }

@@ -12,6 +12,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Xml;
 using TPCWare.Spid.Sdk;
+using TPCWare.Spid.Sdk.IdP;
 using TPCWare.Spid.WebApp.Models;
 
 namespace TPCWare.Spid.WebApp.Controllers
@@ -40,96 +41,59 @@ namespace TPCWare.Spid.WebApp.Controllers
             return View();
         }
 
-        public ActionResult SpidRequest(string idP)
+        public ActionResult SpidRequest(string idpLabel)
         {
-              
-            ThreadContext.Properties["Provider"] = idP;
+            ThreadContext.Properties["Provider"] = idpLabel;
 
             try
             {
-                string spidServiceUrl;
+                // Select the Identity Provider
+                IdentityProvider idp = IdentityProviderSelector.GetIdpFromUserChoice(idpLabel, forTesting: true);
 
-                switch (idP)
+                // Create the SPID request id and save it as a cookie
+                string spidIdRequest = Guid.NewGuid().ToString();
+                System.Web.HttpContext.Current.Response.Cookies.Add(new HttpCookie(ConfigurationManager.AppSettings["SPID_COOKIE"])
                 {
-                    case "poste_id":
-                        spidServiceUrl = "https://spidposte.test.poste.it/jod-fs/ssoservicepost";
-                        break;
-                    case "tim_id":
-                        spidServiceUrl = "#";
-                        ViewData["Message"] = "Ci dispiace ma il sistema di test non è supportato.";
-                        return View("Error");
+                    Expires = DateTime.Now.AddMinutes(30),
+                    Value = spidIdRequest
+                });
 
+                // Retrieve the signing certificate
+                var certificate = X509Helper.GetCertificateFromStore(
+                    StoreLocation.LocalMachine, StoreName.My,
+                    X509FindType.FindBySubjectName,
+                    ConfigurationManager.AppSettings["SPID_CERTIFICATE_NAME"],
+                    validOnly: false);
 
-                    case "sielte_id":
-                        spidServiceUrl = "#";
-                        ViewData["Message"] = "Ci dispiace ma il sistema di test non è supportato.";
-                        return View("Error");
+                // Create the signed SAML request
+                var spidCryptoRequest = Saml2Helper.BuildPostSamlRequest(
+                    uuid: spidIdRequest,
+                    destination: idp.SpidServiceUrl,
+                    consumerServiceURL: ConfigurationManager.AppSettings["SPID_DOMAIN_VALUE"],
+                    securityLevel: 1,
+                    certificate: certificate,
+                    identityProvider: idp,
+                    enviroment: ConfigurationManager.AppSettings["ENVIROMENT"] == "dev" ? 1 : 0);
 
-                    case "infocert_id":
-                        spidServiceUrl = "#";
-                        ViewData["Message"] = "Ci dispiace ma il sistema di test non è supportato.";
-                        return View("Error");
-
-                    default:
-                        ViewData["Message"] = "Ci dispiace ma il sistema di test non è supportato.";
-                        return View("Error");
-
-                }
-
-                int securityLevelSPID = 1;
-
-                Guid spidIdRequest = Guid.NewGuid();
-
-                HttpCookie requestCookie = new HttpCookie(ConfigurationManager.AppSettings["SPID_COOKIE"].ToString());
-
-                requestCookie.Expires = DateTime.Now.AddMinutes(30);
-
-                requestCookie.Value = spidIdRequest.ToString();
-
-                System.Web.HttpContext.Current.Response.Cookies.Add(requestCookie);
-
-                var spidCryptoRequest = Saml2Helper.BuildPostSamlRequest("_" + spidIdRequest.ToString(), 
-                       spidServiceUrl,
-                       ConfigurationManager.AppSettings["SPID_DOMAIN_VALUE"], securityLevelSPID,
-                       null,
-                       null, 
-                       StoreLocation.LocalMachine,
-                       StoreName.My,
-                       X509FindType.FindBySubjectName,
-                       ConfigurationManager.AppSettings["SPID_CERTIFICATE_NAME"], 
-                       idP,
-                       ConfigurationManager.AppSettings["ENVIROMENT"].ToString() == "dev" ? 1 : 0);
-
-                byte[] base64EncodedBytes = Encoding.UTF8.GetBytes(spidCryptoRequest);
-
-                string returnValue = System.Convert.ToBase64String(base64EncodedBytes);
-
-                ViewData["data"] = returnValue;
-
-                ViewData["action"] = spidServiceUrl;
+                ViewData["data"] = spidCryptoRequest;
+                ViewData["action"] = idp.SpidServiceUrl;
 
                 return View("PostData");
-
             }
             catch (Exception ex)
             {
-                Log.Error("Si è verificato un Errore", ex);
-               
+                Log.Error("Error on SpidRequest", ex);
+                ViewData["Message"] = $"Errore nella preparazione della richiesta SPID da inviare al provider.";
+                ViewData["ErrorMessage"] = ex.Message;
                 return View("Error");
             }
-
-
         }
-
 
         public ActionResult Contact()
         {
             ViewBag.Message = "Nicolò Carandini n.carandini@outlook.com , Antimo Musone antimo.musone@hotmail.com ";
-
             return View();
         }
-
-         
 
     }
 }
