@@ -8,17 +8,51 @@ namespace TPCWare.Spid.Sdk
     {
         public static string FullName(Dictionary<string, string> spidUserInfo)
         {
-            return $"{Name(spidUserInfo)} {FamilyName(spidUserInfo)}";
+            string fullname = string.Empty;
+
+            string name = Name(spidUserInfo);
+            if (name != "N/A")
+            {
+                fullname = name;
+            }
+
+            string familyName = FamilyName(spidUserInfo);
+            if (familyName != "N/A")
+            {
+                fullname += " " + familyName;
+            }
+
+            if (string.IsNullOrWhiteSpace(fullname))
+            {
+                fullname = "N/A";
+            }
+
+            return fullname.Trim();
         }
 
         public static string Name(Dictionary<string, string> spidUserInfo)
         {
-            return spidUserInfo["name"];
+            try
+            {
+                return spidUserInfo["name"];
+            }
+            catch
+            {
+                return "N/A";
+            }
         }
 
         public static string FamilyName(Dictionary<string, string> spidUserInfo)
         {
-            return spidUserInfo["familyName"];
+            try
+            {
+                return spidUserInfo["familyName"];
+            }
+            catch
+            {
+                return "N/A";
+            }
         }
+
     }
 }
