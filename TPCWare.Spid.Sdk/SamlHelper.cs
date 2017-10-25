@@ -148,6 +148,7 @@ namespace TPCWare.Spid.Sdk
 
         public static IdpSaml2Response GetIdpSaml2Response(string base64Response)
         {
+            const string VALUE_NOT_AVAILABLE = "N/A";
             string idpAsciiResponse;
 
             if (String.IsNullOrEmpty(base64Response))
@@ -181,60 +182,91 @@ namespace TPCWare.Spid.Sdk
                 XDocument xdoc = new XDocument();
                 xdoc = XDocument.Parse(idpAsciiResponse);
 
+                string destination = VALUE_NOT_AVAILABLE;
+                string id = VALUE_NOT_AVAILABLE;
+                string inResponseTo = VALUE_NOT_AVAILABLE;
+                DateTimeOffset issueInstant = DateTimeOffset.MinValue;
+                string version = VALUE_NOT_AVAILABLE;
+                string statusCodeValue = VALUE_NOT_AVAILABLE;
+                string statusCodeInnerValue = VALUE_NOT_AVAILABLE;
+                string statusMessage = VALUE_NOT_AVAILABLE;
+                string statusDetail = VALUE_NOT_AVAILABLE;
+                string assertionId = VALUE_NOT_AVAILABLE;
+                DateTimeOffset assertionIssueInstant = DateTimeOffset.MinValue;
+                string assertionVersion = VALUE_NOT_AVAILABLE;
+                string assertionIssuer = VALUE_NOT_AVAILABLE;
+                string subjectNameId = VALUE_NOT_AVAILABLE;
+                string subjectConfirmationMethod = VALUE_NOT_AVAILABLE;
+                string subjectConfirmationDataInResponseTo = VALUE_NOT_AVAILABLE;
+                DateTimeOffset subjectConfirmationDataNotOnOrAfter = DateTimeOffset.MinValue;
+                string subjectConfirmationDataRecipient = VALUE_NOT_AVAILABLE;
+                DateTimeOffset conditionsNotBefore = DateTimeOffset.MinValue;
+                DateTimeOffset conditionsNotOnOrAfter = DateTimeOffset.MinValue;
+                string audience = VALUE_NOT_AVAILABLE;
+                DateTimeOffset authnStatementAuthnInstant = DateTimeOffset.MinValue;
+                string authnStatementSessionIndex = VALUE_NOT_AVAILABLE;
+                Dictionary<string, string> spidUserInfo = new Dictionary<string, string>();
+
                 // Extract response metadata
                 XElement responseElement = xdoc.Elements("{urn:oasis:names:tc:SAML:2.0:protocol}Response").Single();
-                string destination = responseElement.Attribute("Destination").Value;
-                string id = responseElement.Attribute("ID").Value;
-                string inResponseTo = responseElement.Attribute("InResponseTo").Value;
-                DateTimeOffset issueInstant = DateTimeOffset.Parse(responseElement.Attribute("IssueInstant").Value);
-                string version = responseElement.Attribute("Version").Value;
+                destination = responseElement.Attribute("Destination").Value;
+                id = responseElement.Attribute("ID").Value;
+                inResponseTo = responseElement.Attribute("InResponseTo").Value;
+                issueInstant = DateTimeOffset.Parse(responseElement.Attribute("IssueInstant").Value);
+                version = responseElement.Attribute("Version").Value;
 
                 // Extract Issuer metadata
                 string issuer = responseElement.Elements("{urn:oasis:names:tc:SAML:2.0:assertion}Issuer").Single().Value.Trim();
 
                 // Extract Status metadata
-                string statusCodeValue = responseElement.Descendants("{urn:oasis:names:tc:SAML:2.0:protocol}StatusCode")
-                                                        .Single().Attribute("Value").Value
-                                                        .Replace("urn:oasis:names:tc:SAML:2.0:status:", "");
+                XElement StatusElement = responseElement.Descendants("{urn:oasis:names:tc:SAML:2.0:protocol}Status").Single();
+                IEnumerable<XElement> statusCodeElements = StatusElement.Descendants("{urn:oasis:names:tc:SAML:2.0:protocol}StatusCode");
+                statusCodeValue = statusCodeElements.First().Attribute("Value").Value.Replace("urn:oasis:names:tc:SAML:2.0:status:", "");
+                statusCodeInnerValue = statusCodeElements.Count() > 1 ? statusCodeElements.Last().Attribute("Value").Value.Replace("urn:oasis:names:tc:SAML:2.0:status:", "") : String.Empty;
+                statusMessage = StatusElement.Elements("{urn:oasis:names:tc:SAML:2.0:protocol}StatusMessage").SingleOrDefault()?.Value ?? String.Empty;
+                statusDetail = StatusElement.Elements("{urn:oasis:names:tc:SAML:2.0:protocol}StatusDetail").SingleOrDefault()?.Value ?? String.Empty;
 
-                // Extract Assertion
-                XElement assertionElement = responseElement.Elements("{urn:oasis:names:tc:SAML:2.0:assertion}Assertion").Single();
-                string assertionId = assertionElement.Attribute("ID").Value;
-                DateTimeOffset assertionIssueInstant = DateTimeOffset.Parse(assertionElement.Attribute("IssueInstant").Value);
-                string assertionVersion = assertionElement.Attribute("Version").Value;
-                string assertionIssuer = assertionElement.Elements("{urn:oasis:names:tc:SAML:2.0:assertion}Issuer").Single().Value.Trim();
-
-                // Extract Subject metadata
-                XElement subjectElement = assertionElement.Elements("{urn:oasis:names:tc:SAML:2.0:assertion}Subject").Single();
-                string subjectNameId = subjectElement.Elements("{urn:oasis:names:tc:SAML:2.0:assertion}NameID").Single().Value.Trim();
-                string subjectConfirmationMethod = subjectElement.Elements("{urn:oasis:names:tc:SAML:2.0:assertion}SubjectConfirmation").Single().Attribute("Method").Value;
-                XElement confirmationDataElement = subjectElement.Descendants("{urn:oasis:names:tc:SAML:2.0:assertion}SubjectConfirmationData").Single();
-                string subjectConfirmationDataInResponseTo = confirmationDataElement.Attribute("InResponseTo").Value;
-                DateTimeOffset subjectConfirmationDataNotOnOrAfter = DateTimeOffset.Parse(confirmationDataElement.Attribute("NotOnOrAfter").Value);
-                string subjectConfirmationDataRecipient = confirmationDataElement.Attribute("Recipient").Value;
-
-                // Extract Conditions metadata
-                XElement conditionsElement = assertionElement.Elements("{urn:oasis:names:tc:SAML:2.0:assertion}Conditions").Single();
-                DateTimeOffset conditionsNotBefore = DateTimeOffset.Parse(conditionsElement.Attribute("NotBefore").Value);
-                DateTimeOffset conditionsNotOnOrAfter = DateTimeOffset.Parse(conditionsElement.Attribute("NotOnOrAfter").Value);
-                string audience = conditionsElement.Descendants("{urn:oasis:names:tc:SAML:2.0:assertion}Audience").Single().Value.Trim();
-
-                // Extract AuthnStatement metadata
-                XElement authnStatementElement = assertionElement.Elements("{urn:oasis:names:tc:SAML:2.0:assertion}AuthnStatement").Single();
-                DateTimeOffset authnStatementAuthnInstant = DateTimeOffset.Parse(authnStatementElement.Attribute("AuthnInstant").Value);
-                string authnStatementSessionIndex = authnStatementElement.Attribute("SessionIndex").Value;
-
-                // Extract SPID user info
-                Dictionary<string, string> spidUserInfo = new Dictionary<string, string>();
-                foreach (XElement attribute in xdoc.Descendants("{urn:oasis:names:tc:SAML:2.0:assertion}AttributeStatement").Elements())
+                if (statusCodeValue == "Success")
                 {
-                    spidUserInfo.Add(
-                        attribute.Attribute("Name").Value,
-                        attribute.Elements().Single(a => a.Name == "{urn:oasis:names:tc:SAML:2.0:assertion}AttributeValue").Value.Trim()
-                    );
+                    // Extract Assertion
+                    XElement assertionElement = responseElement.Elements("{urn:oasis:names:tc:SAML:2.0:assertion}Assertion").Single();
+                    assertionId = assertionElement.Attribute("ID").Value;
+                    assertionIssueInstant = DateTimeOffset.Parse(assertionElement.Attribute("IssueInstant").Value);
+                    assertionVersion = assertionElement.Attribute("Version").Value;
+                    assertionIssuer = assertionElement.Elements("{urn:oasis:names:tc:SAML:2.0:assertion}Issuer").Single().Value.Trim();
+
+                    // Extract Subject metadata
+                    XElement subjectElement = assertionElement.Elements("{urn:oasis:names:tc:SAML:2.0:assertion}Subject").Single();
+                    subjectNameId = subjectElement.Elements("{urn:oasis:names:tc:SAML:2.0:assertion}NameID").Single().Value.Trim();
+                    subjectConfirmationMethod = subjectElement.Elements("{urn:oasis:names:tc:SAML:2.0:assertion}SubjectConfirmation").Single().Attribute("Method").Value;
+                    XElement confirmationDataElement = subjectElement.Descendants("{urn:oasis:names:tc:SAML:2.0:assertion}SubjectConfirmationData").Single();
+                    subjectConfirmationDataInResponseTo = confirmationDataElement.Attribute("InResponseTo").Value;
+                    subjectConfirmationDataNotOnOrAfter = DateTimeOffset.Parse(confirmationDataElement.Attribute("NotOnOrAfter").Value);
+                    subjectConfirmationDataRecipient = confirmationDataElement.Attribute("Recipient").Value;
+
+                    // Extract Conditions metadata
+                    XElement conditionsElement = assertionElement.Elements("{urn:oasis:names:tc:SAML:2.0:assertion}Conditions").Single();
+                    conditionsNotBefore = DateTimeOffset.Parse(conditionsElement.Attribute("NotBefore").Value);
+                    conditionsNotOnOrAfter = DateTimeOffset.Parse(conditionsElement.Attribute("NotOnOrAfter").Value);
+                    audience = conditionsElement.Descendants("{urn:oasis:names:tc:SAML:2.0:assertion}Audience").Single().Value.Trim();
+
+                    // Extract AuthnStatement metadata
+                    XElement authnStatementElement = assertionElement.Elements("{urn:oasis:names:tc:SAML:2.0:assertion}AuthnStatement").Single();
+                    authnStatementAuthnInstant = DateTimeOffset.Parse(authnStatementElement.Attribute("AuthnInstant").Value);
+                    authnStatementSessionIndex = authnStatementElement.Attribute("SessionIndex").Value;
+
+                    // Extract SPID user info
+                    foreach (XElement attribute in xdoc.Descendants("{urn:oasis:names:tc:SAML:2.0:assertion}AttributeStatement").Elements())
+                    {
+                        spidUserInfo.Add(
+                            attribute.Attribute("Name").Value,
+                            attribute.Elements().Single(a => a.Name == "{urn:oasis:names:tc:SAML:2.0:assertion}AttributeValue").Value.Trim()
+                        );
+                    }
                 }
 
-                return new IdpSaml2Response(destination, id, inResponseTo, issueInstant, version, issuer, statusCodeValue,
+                return new IdpSaml2Response(destination, id, inResponseTo, issueInstant, version, issuer,
+                                            statusCodeValue, statusCodeInnerValue, statusMessage, statusDetail,
                                             assertionId, assertionIssueInstant, assertionVersion, assertionIssuer,
                                             subjectNameId, subjectConfirmationMethod, subjectConfirmationDataInResponseTo,
                                             subjectConfirmationDataNotOnOrAfter, subjectConfirmationDataRecipient,

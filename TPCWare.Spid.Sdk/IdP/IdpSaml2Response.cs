@@ -14,45 +14,51 @@ namespace TPCWare.Spid.Sdk.IdP
 
         public DateTimeOffset IssueInstant { get; private set; }
 
-        public string Version { get; set; }
+        public string Version { get; private set; }
 
-        public string Issuer { get; set; }
+        public string Issuer { get; private set; }
 
-        public string StatusCodeValue { get; set; }
+        public string StatusCodeValue { get; private set; }
 
-        public string AssertionId { get; set; }
+        public string StatusCodeInnerValue { get; private set; }
+
+        public string StatusMessage { get; private set; }
+
+        public string StatusDetail { get; private set; }
+
+        public string AssertionId { get; private set; }
 
         public DateTimeOffset AssertionIssueInstant { get; private set; }
 
-        public string AssertionVersion { get; set; }
+        public string AssertionVersion { get; private set; }
 
-        public string AssertionIssuer { get; set; }
+        public string AssertionIssuer { get; private set; }
 
-        public string SubjectNameId { get; set; }
+        public string SubjectNameId { get; private set; }
 
-        public string SubjectConfirmationMethod { get; set; }
+        public string SubjectConfirmationMethod { get; private set; }
 
-        public string SubjectConfirmationDataInResponseTo { get; set; }
+        public string SubjectConfirmationDataInResponseTo { get; private set; }
 
-        public DateTimeOffset SubjectConfirmationDataNotOnOrAfter { get; set; }
+        public DateTimeOffset SubjectConfirmationDataNotOnOrAfter { get; private set; }
 
-        public string SubjectConfirmationDataRecipient { get; set; }
+        public string SubjectConfirmationDataRecipient { get; private set; }
 
-        public DateTimeOffset ConditionsNotBefore { get; set; }
+        public DateTimeOffset ConditionsNotBefore { get; private set; }
 
-        public DateTimeOffset ConditionsNotOnOrAfter { get; set; }
+        public DateTimeOffset ConditionsNotOnOrAfter { get; private set; }
 
-        public string Audience { get; set; }
+        public string Audience { get; private set; }
 
-        public DateTimeOffset AuthnStatementAuthnInstant { get; set; }
+        public DateTimeOffset AuthnStatementAuthnInstant { get; private set; }
 
-        public string AuthnStatementSessionIndex { get; set; }
+        public string AuthnStatementSessionIndex { get; private set; }
 
         public Dictionary<string, string> SpidUserInfo { get; private set; }
 
         public IdpSaml2Response(
             string destination, string id, string inResponseTo, DateTimeOffset issueInstant, string version, string issuer,
-            string statusCodeValue,
+            string statusCodeValue, string statusCodeInnerValue, string statusMessage, string statusDetail,
             string assertionId, DateTimeOffset assertionIssueInstant, string assertionVersion, string assertionIssuer,
             string subjectNameId, string subjectConfirmationMethod, string subjectConfirmationDataInResponseTo,
             DateTimeOffset subjectConfirmationDataNotOnOrAfter, string subjectConfirmationDataRecipient,
@@ -67,6 +73,9 @@ namespace TPCWare.Spid.Sdk.IdP
             Version = version;
             Issuer =issuer ;
             StatusCodeValue = statusCodeValue;
+            StatusCodeInnerValue = statusCodeInnerValue;
+            StatusMessage = statusMessage;
+            StatusDetail = statusDetail;
             AssertionId = assertionId;
             AssertionIssueInstant = AssertionIssueInstant;
             AssertionVersion = assertionVersion;
