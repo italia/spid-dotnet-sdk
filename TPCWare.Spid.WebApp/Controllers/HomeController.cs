@@ -82,8 +82,8 @@ namespace TPCWare.Spid.WebApp.Controllers
             }
             catch (Exception ex)
             {
-                Log.Error("Error on SpidRequest", ex);
-                ViewData["Message"] = $"Errore nella preparazione della richiesta SPID da inviare al provider.";
+                Log.Error("Error on HomeController SpidRequest", ex);
+                ViewData["Message"] = "Errore nella preparazione della richiesta SPID da inviare al provider.";
                 ViewData["ErrorMessage"] = ex.Message;
                 return View("Error");
             }
