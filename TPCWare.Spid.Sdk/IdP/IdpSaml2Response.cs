@@ -56,6 +56,11 @@ namespace TPCWare.Spid.Sdk.IdP
 
         public Dictionary<string, string> SpidUserInfo { get; private set; }
 
+        public bool IsSuccessful
+        {
+            get { return StatusCodeValue == "Success"; }
+        }
+
         public IdpSaml2Response(
             string destination, string id, string inResponseTo, DateTimeOffset issueInstant, string version, string issuer,
             string statusCodeValue, string statusCodeInnerValue, string statusMessage, string statusDetail,
