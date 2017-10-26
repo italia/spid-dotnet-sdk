@@ -25,6 +25,7 @@ namespace TPCWare.Spid.Sdk.IdP
                     idp = new IdentityProvider(
                         providerName: "Poste Italiane",
                         spidServiceUrl: forTesting ? "https://spidposte.test.poste.it/jod-fs/ssoservicepost" : "",
+                        singleLogoutServiceUrl: forTesting ? "https://spidposte.test.poste.it/jod-fs/sloserviceresponsepost" : "",
                         now: (now) => { return now.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fff'Z'"); },
                         after: (after) => { return after.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fff'Z'"); },
                         notBefore: (now) => { return now.AddMinutes(-2).ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fff'Z'"); }
@@ -35,6 +36,7 @@ namespace TPCWare.Spid.Sdk.IdP
                     idp = new IdentityProvider(
                         providerName: "Sielte",
                         spidServiceUrl: forTesting ? "" : "",
+                        singleLogoutServiceUrl: forTesting ? "" : "",
                         now: (now) => { return now.AddMinutes(-2).ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss'Z'"); },
                         after: (after) => { return after.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss'Z'"); },
                         notBefore: (now) => { return now.AddMinutes(-2).ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss'Z'"); }
@@ -45,6 +47,7 @@ namespace TPCWare.Spid.Sdk.IdP
                     idp = new IdentityProvider(
                         providerName: "TIM",
                         spidServiceUrl: forTesting ? "" : "",
+                        singleLogoutServiceUrl: forTesting ? "" : "",
                         now: (now) => { return now.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fff'Z'"); },
                         after: (after) => { return after.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fff'Z'"); },
                         notBefore: (now) => { return now.AddMinutes(-2).ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fff'Z'"); }
@@ -55,6 +58,7 @@ namespace TPCWare.Spid.Sdk.IdP
                     idp = new IdentityProvider(
                         providerName: "Infocert",
                         spidServiceUrl: forTesting ? "" : "",
+                        singleLogoutServiceUrl: forTesting ? "" : "",
                         now: (now) => { return now.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fff'Z'"); },
                         after: (after) => { return after.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fff'Z'"); },
                         notBefore: (now) => { return now.AddMinutes(-2).ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fff'Z'"); }
