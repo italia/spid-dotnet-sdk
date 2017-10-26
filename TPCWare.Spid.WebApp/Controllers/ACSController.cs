@@ -25,7 +25,7 @@ namespace TPCWare.Spid.WebApp.Controllers
         }
 
         [HttpPost]
-        public ActionResult Index(FormCollection collection)
+        public ActionResult Index(FormCollection formCollection)
         {
             if (System.Web.HttpContext.Current.Request.Cookies[ConfigurationManager.AppSettings["SPID_COOKIE"]] != null)
             {
@@ -41,7 +41,7 @@ namespace TPCWare.Spid.WebApp.Controllers
 
             try
             {
-                IdpSaml2Response idpSaml2Response = Saml2Helper.GetIdpSaml2Response(collection[0].ToString());
+                IdpSaml2Response idpSaml2Response = Saml2Helper.GetIdpSaml2Response(formCollection["SAMLResponse"].ToString());
 
                 if (!idpSaml2Response.IsSuccessful)
                 {
