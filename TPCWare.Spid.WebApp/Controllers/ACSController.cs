@@ -45,6 +45,8 @@ namespace TPCWare.Spid.WebApp.Controllers
 
                 if (!idpSaml2Response.IsSuccessful)
                 {
+                    Session["AppUser"] = null;
+
                     log.Error($"Error on ACSController [HttpPost]Index method: La risposta dell'IdP riporta il seguente StatusCode: {idpSaml2Response.StatusCodeInnerValue} con StatusMessage: {idpSaml2Response.StatusMessage} e StatusDetail: {idpSaml2Response.StatusDetail}.");
                     ViewData["Message"] = "La richiesta di identificazione è stata rifiutata.";
                     ViewData["ErrorMessage"] = $"StatusCode: {idpSaml2Response.StatusCodeInnerValue} con StatusMessage: {idpSaml2Response.StatusMessage} e StatusDetail: {idpSaml2Response.StatusDetail}.";
