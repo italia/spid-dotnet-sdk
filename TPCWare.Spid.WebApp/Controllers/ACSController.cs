@@ -34,14 +34,22 @@ namespace TPCWare.Spid.WebApp.Controllers
             }
             else
             {
-                log.Error("Error on ACSController [HttpPost]Index method: Impossibile recuperare l'Id della sessione");
-                ViewData["Message"] = "Errore nella lettura della risposta ricevuta dal provider.";
+                log.Error("Error on ACSController [HttpPost]Index method: Impossibile recuperare l'Id della sessione.");
+                ViewData["Message"] = "Impossibile recuperare l'Id della sessione.";
                 return View("Error");
             }
 
             try
             {
                 IdpSaml2Response idpSaml2Response = Saml2Helper.GetIdpSaml2Response(collection[0].ToString());
+
+                if (!idpSaml2Response.IsSuccessful)
+                {
+                    log.Error($"Error on ACSController [HttpPost]Index method: La risposta dell'IdP riporta il seguente StatusCode: {idpSaml2Response.StatusCodeInnerValue} con StatusMessage: {idpSaml2Response.StatusMessage} e StatusDetail: {idpSaml2Response.StatusDetail}.");
+                    ViewData["Message"] = "La richiesta di identificazione è stata rifiutata.";
+                    ViewData["ErrorMessage"] = $"StatusCode: {idpSaml2Response.StatusCodeInnerValue} con StatusMessage: {idpSaml2Response.StatusMessage} e StatusDetail: {idpSaml2Response.StatusDetail}.";
+                    return View("Error");
+                }
 
                 AppUser appUser = new AppUser
                 {
