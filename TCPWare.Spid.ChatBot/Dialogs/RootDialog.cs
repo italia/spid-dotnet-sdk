@@ -18,19 +18,20 @@ namespace TCPWare.Spid.ChatBot.Dialogs
         public const string OptionLogin = "SPID Login";
         public const string CheckSpid = "Verifica Login SPID";
         public const string RetryOptionLogin = "Riprova Login";
-        public const string OptionSupporto = "Supporto";
+        public const string OptionSupporto = "Info e Supporto";
         public const string LastVisitKey = "LastVisit";
         private const string retry = "Non è una valida opzione";
         private int attempts = 3;
         bool isRequestOK = false;
-        public Task StartAsync(IDialogContext context)
+        public async Task StartAsync(IDialogContext context)
         {
             context.Wait(MessageReceivedAsync);
 
-            return Task.CompletedTask;
+           // return Task.CompletedTask;
         }
 
-        private async Task MessageReceivedAsync(IDialogContext context, IAwaitable<object> result)
+
+        public virtual async Task  MessageReceivedAsync(IDialogContext context, IAwaitable<object> result)
         {
 
             //first time
@@ -41,7 +42,7 @@ namespace TCPWare.Spid.ChatBot.Dialogs
                 ThumbnailCard card = new ThumbnailCard()
                 {
                     Title = "",
-                    Text = "SPID è un servizio  che ti permette di accedere con il tuo profilo ovunque!",
+                    Text = "SPID è un servizio  che ti permette di accedere con il tuo profilo ovunque! Digita qualcosa per iniziare!",
                     Images = (IList<CardImage>)new List<CardImage>()
                   {
                        new CardImage("https://login.regione.umbria.it/wayf/images/spid-agid-logo-lb.png", (string) null, (CardAction) null)
@@ -61,6 +62,8 @@ namespace TCPWare.Spid.ChatBot.Dialogs
 
 
             context.Wait(ManageMenuAsync);
+
+
         }
 
         public virtual async Task ManageMenuAsync(IDialogContext context, IAwaitable<IMessageActivity> result)
@@ -101,6 +104,21 @@ namespace TCPWare.Spid.ChatBot.Dialogs
             var spid = context.UserData.GetValueOrDefault<string>("SPID");
 
             string prompt = string.Format("In cosa posso esserti utile ?", context.Activity.From.Name != null ? context.Activity.From.Name != null ? context.Activity.From.Name.ToString() : "" : "");
+
+            PromptDialog.Choice(context, this.OnOptionSelected, (IEnumerable<string>)optionList, prompt, retry, attempts);
+        }
+
+        private void SupportMenuOptions(IDialogContext context)
+        {
+            List<string> optionList = new List<string>();
+
+            optionList.Add(OptionSupporto);
+            optionList.Add(RetryOptionLogin);
+
+
+            var spid = context.UserData.GetValueOrDefault<string>("SPID");
+
+            string prompt = string.Format("In cosa altro posso esserti utile ?", context.Activity.From.Name != null ? context.Activity.From.Name != null ? context.Activity.From.Name.ToString() : "" : "");
 
             PromptDialog.Choice(context, this.OnOptionSelected, (IEnumerable<string>)optionList, prompt, retry, attempts);
         }
@@ -162,10 +180,18 @@ namespace TCPWare.Spid.ChatBot.Dialogs
                             ResponseSPID myData = JsonConvert.DeserializeObject<ResponseSPID>(responseString);
 
                             if (myData.result != "false")
-                                await context.PostAsync("Ecco i tuoi dati, Nome: " + myData.data.Name + ", Cognome: " + myData.data.FamilyName + ", Email: " + myData.data.Email);
+                            {
+                                await context.PostAsync("Ecco i tuoi dati");
+                                await context.PostAsync(" Nome: " + myData.data.Name);
+                                await context.PostAsync("Cognome: " + myData.data.FamilyName);
+                                await context.PostAsync("Email: " + myData.data.Email);
+                                SupportMenuOptions(context);
+                            }
                             else
-
+                            {
                                 await context.PostAsync("Riconoscimento fallito");
+                                SupportMenuOptions(context);
+                            }
 
                         }
 
