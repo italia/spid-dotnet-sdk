@@ -58,13 +58,13 @@ L'SDK è stato scritto in modo da essere totalmente compatibile con .NET Standar
 Per quanto riguarda la Web app abbiamo scritto un codice il più pulito e commentato possibile (ma si puo sempre migliorare...) in modo da farla diventare una reference app che documenti in modo pratico l'uso dell'SDK.
 Inoltre è stata aggiunta la possibilità di richiedere il logout, una volta che si è stati autenticati.
 
-Per un tour visivo del funzionamento dell'app si rimanda alla documentazione:
+Per un tour visivo del funzionamento dell'app si rimanda alla [documentazione](https://github.com/mrcarbook/spid-dotnet-sdk/blob/sdk-core/Docs/Web%20App%20(Classic)/Documentazione%20Wep%20App.pdf)
 
 ### ChatBot
 
 Il  progetto di Chatbot della soluzione SPID SDK è stato sviluppato utilizzando il tool open source di Microsoft, Bot Framework ( https://dev.botframework.com/ ). Attraverso il ChatBot è possibile effettuare il login SPID usando l'ambiente e l'account di test messo a disposizione da Poste italiane, sfruttando un meccanismo custom di web login basato sul progetto Web App.
 
-Maggiori informazioni nella documentazione: 
+Maggiori informazioni nella [documentazione](https://github.com/mrcarbook/spid-dotnet-sdk/blob/sdk-core/Docs/ChatBot/ChatBot.pdf)
 
 # Prossimi passi
 
