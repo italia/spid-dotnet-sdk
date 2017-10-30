@@ -32,8 +32,11 @@ namespace TCPWare.Spid.ChatBot
         {
             if (message.Type == ActivityTypes.DeleteUserData)
             {
-                // Implement user deletion here
-                // If we handle user deletion, return a real message
+
+                message.GetStateClient().BotState.DeleteStateForUser(message.ChannelId, message.From.Id);
+            
+
+
             }
             else if (message.Type == ActivityTypes.ConversationUpdate)
             {
