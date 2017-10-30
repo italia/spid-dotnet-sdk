@@ -61,15 +61,14 @@ namespace TPCWare.Spid.Sdk.IdP
             get { return StatusCodeValue == "Success"; }
         }
 
-        public IdpSaml2Response(
-            string destination, string id, string inResponseTo, DateTimeOffset issueInstant, string version, string issuer,
-            string statusCodeValue, string statusCodeInnerValue, string statusMessage, string statusDetail,
-            string assertionId, DateTimeOffset assertionIssueInstant, string assertionVersion, string assertionIssuer,
-            string subjectNameId, string subjectConfirmationMethod, string subjectConfirmationDataInResponseTo,
-            DateTimeOffset subjectConfirmationDataNotOnOrAfter, string subjectConfirmationDataRecipient,
-            DateTimeOffset conditionsNotBefore, DateTimeOffset conditionsNotOnOrAfter, string audience,
-            DateTimeOffset authnStatementAuthnInstant, string authnStatementSessionIndex,
-            Dictionary<string, string> spidUserInfo)
+        public IdpSaml2Response(string destination, string id, string inResponseTo, DateTimeOffset issueInstant, string version, string issuer,
+                                string statusCodeValue, string statusCodeInnerValue, string statusMessage, string statusDetail,
+                                string assertionId, DateTimeOffset assertionIssueInstant, string assertionVersion, string assertionIssuer,
+                                string subjectNameId, string subjectConfirmationMethod, string subjectConfirmationDataInResponseTo,
+                                DateTimeOffset subjectConfirmationDataNotOnOrAfter, string subjectConfirmationDataRecipient,
+                                DateTimeOffset conditionsNotBefore, DateTimeOffset conditionsNotOnOrAfter, string audience,
+                                DateTimeOffset authnStatementAuthnInstant, string authnStatementSessionIndex,
+                                Dictionary<string, string> spidUserInfo)
         {
             Destination = destination;
             Id = id;

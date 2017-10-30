@@ -7,14 +7,14 @@
     <p class="lead">Benvenuto nel progetto SPID per .Net!</p>
     @ViewBag.Message
 
-        @if (ViewBag.Name != null && ViewBag.Surname != null)
-        {
-          <h3><b> Utente:  </b> <b>@ViewBag.Name</b> <b>@ViewBag.Surname</b></h3> 
+    @if (ViewBag.Name != null && ViewBag.Surname != null)
+    {
+        <h3><b>Utente autenticato: @ViewBag.Name @ViewBag.Surname</b></h3> 
     }
 </div>
 
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-3">
         <div class="LoginBoxSPID">
             <a class="italia-it-button italia-it-button-size-m button-spid" aria-expanded="false" id="ddlSPID"
                aria-haspopup="true" style="font-size: 15px;" href="#"
@@ -64,6 +64,22 @@
             </div>
         </div>
     </div>
+
+    @if (ViewBag.Logged ?? false)
+    {
+        <div class="col-md-3">
+            <div class="LogoutBoxSPID">
+                <a class="italia-it-button italia-it-button-size-m button-spid" aria-expanded="false" id="ddlSPID"
+               aria-haspopup="true" style="font-size: 15px;" href='@Url.Action("LogoutRequest", "Home")' 
+               spid-idp-button="#spid-idp-button-medium-post">
+                    <span class="italia-it-button-icon">
+                        <img title="" alt="" src="~/Content/images/logout-circle.png">
+                    </span>
+                    <span class="italia-it-button-text">Logout</span>
+                </a>
+            </div>
+        </div>
+    }
 </div>
 
 @section Scripts{

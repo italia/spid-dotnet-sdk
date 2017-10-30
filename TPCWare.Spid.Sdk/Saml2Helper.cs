@@ -35,48 +35,48 @@ namespace TPCWare.Spid.Sdk
         /// <param name="identityProvider"></param>
         /// <param name="enviroment"></param>
         /// <returns>Returns a Base64 Encoded String of the SAML request</returns>
-        public static string BuildPostSamlRequest(string uuid, string destination, string consumerServiceURL, int securityLevel,
-                                                  X509Certificate2 certificate, IdentityProvider identityProvider, int enviroment)
+        public static string BuildSpidAuthnPostRequest(string uuid, string destination, string consumerServiceURL, int securityLevel,
+                                                       X509Certificate2 certificate, IdentityProvider identityProvider, int enviroment)
         {
             if (string.IsNullOrWhiteSpace(uuid))
             {
-                log.Error("Error on BuildPostSamlRequest: The uuid parameter is null or empty.");
+                log.Error("Error on BuildSpidAuthnPostRequest: The uuid parameter is null or empty.");
                 throw new ArgumentNullException("The uuid parameter can't be null or empty.");
             }
 
             if (string.IsNullOrWhiteSpace(destination))
             {
-                log.Error("Error on BuildPostSamlRequest: The destination parameter is null or empty.");
+                log.Error("Error on BuildSpidAuthnPostRequest: The destination parameter is null or empty.");
                 throw new ArgumentNullException("The destination parameter can't be null or empty.");
             }
 
             if (string.IsNullOrWhiteSpace(consumerServiceURL))
             {
-                log.Error("Error on BuildPostSamlRequest: The consumerServiceURL parameter is null or empty.");
+                log.Error("Error on BuildSpidAuthnPostRequest: The consumerServiceURL parameter is null or empty.");
                 throw new ArgumentNullException("The consumerServiceURL parameter can't be null or empty.");
             }
 
             if (certificate == null)
             {
-                log.Error("Error on BuildPostSamlRequest: The certificate parameter is null.");
+                log.Error("Error on BuildSpidAuthnPostRequest: The certificate parameter is null.");
                 throw new ArgumentNullException("The certificate parameter can't be null.");
             }
 
             if (identityProvider == null)
             {
-                log.Error("Error on BuildPostSamlRequest: The identityProvider parameter is null.");
+                log.Error("Error on BuildSpidAuthnPostRequest: The identityProvider parameter is null.");
                 throw new ArgumentNullException("The identityProvider parameter can't be null.");
             }
 
             if (enviroment < 0 )
             {
-                log.Error("Error on BuildPostSamlRequest: The enviroment parameter is less than zero.");
+                log.Error("Error on BuildSpidAuthnPostRequest: The enviroment parameter is less than zero.");
                 throw new ArgumentNullException("The enviroment parameter can't be less than zero.");
             }
 
             DateTime now = DateTime.UtcNow;
 
-            AuthnRequestType MyRequest = new AuthnRequestType
+            AuthnRequestType authnRequest = new AuthnRequestType
             {
                 ID = "_" + uuid,
                 Version = "2.0",
@@ -118,7 +118,7 @@ namespace TPCWare.Spid.Sdk
 
             XmlSerializerNamespaces ns = new XmlSerializerNamespaces();
             ns.Add("saml2p", "urn:oasis:names:tc:SAML:2.0:protocol");
-
+            ns.Add("saml2", "urn:oasis:names:tc:SAML:2.0:assertion");
 
             StringWriter stringWriter = new StringWriter();
             XmlWriterSettings settings = new XmlWriterSettings
@@ -129,8 +129,8 @@ namespace TPCWare.Spid.Sdk
             };
 
             XmlWriter responseWriter = XmlTextWriter.Create(stringWriter, settings);
-            XmlSerializer responseSerializer = new XmlSerializer(MyRequest.GetType());
-            responseSerializer.Serialize(responseWriter, MyRequest, ns);
+            XmlSerializer responseSerializer = new XmlSerializer(authnRequest.GetType());
+            responseSerializer.Serialize(responseWriter, authnRequest, ns);
             responseWriter.Close();
 
             string samlString = stringWriter.ToString();
@@ -140,7 +140,6 @@ namespace TPCWare.Spid.Sdk
             doc.LoadXml(samlString);
 
             XmlElement signature = SigningHelper.SignDoc(doc, certificate, "_" + uuid);
-
             doc.DocumentElement.InsertBefore(signature, doc.DocumentElement.ChildNodes[1]);
 
             return Convert.ToBase64String(Encoding.UTF8.GetBytes("<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + doc.OuterXml));
@@ -151,14 +150,14 @@ namespace TPCWare.Spid.Sdk
         /// </summary>
         /// <param name="base64Response"></param>
         /// <returns>IdpSaml2Response</returns>
-        public static IdpSaml2Response GetIdpSaml2Response(string base64Response)
+        public static IdpSaml2Response GetSpidAuthnResponse(string base64Response)
         {
             const string VALUE_NOT_AVAILABLE = "N/A";
             string idpAsciiResponse;
 
             if (String.IsNullOrEmpty(base64Response))
             {
-                log.Error("Error on GetSpidUserInfo: The base64Response parameter is null or empty.");
+                log.Error("Error on GetSpidAuthnResponse: The base64Response parameter is null or empty.");
                 throw new ArgumentNullException("The base64Response parameter can't be null or empty.");
             }
 
@@ -168,7 +167,7 @@ namespace TPCWare.Spid.Sdk
             }
             catch (Exception ex)
             {
-                log.Error("Error on GetSpidUserInfo: Unable to convert base64 response to ascii string.");
+                log.Error("Error on GetSpidAuthnResponse: Unable to convert base64 response to ascii string.");
                 throw new ArgumentException("Unable to converto base64 response to ascii string.", ex);
             }
 
@@ -179,7 +178,7 @@ namespace TPCWare.Spid.Sdk
                 xml.LoadXml(idpAsciiResponse);
                 if (!SigningHelper.VerifySignature(xml))
                 {
-                    log.Error("Error on GetSpidUserInfo: Unable to verify the signature of the IdP response.");
+                    log.Error("Error on GetSpidAuthnResponse: Unable to verify the signature of the IdP response.");
                     throw new Exception("Unable to verify the signature of the IdP response.");
                 }
 
@@ -233,7 +232,7 @@ namespace TPCWare.Spid.Sdk
 
                 if (statusCodeValue == "Success")
                 {
-                    // Extract Assertion
+                    // Extract Assertion metadata
                     XElement assertionElement = responseElement.Elements("{urn:oasis:names:tc:SAML:2.0:assertion}Assertion").Single();
                     assertionId = assertionElement.Attribute("ID").Value;
                     assertionIssueInstant = DateTimeOffset.Parse(assertionElement.Attribute("IssueInstant").Value);
@@ -281,9 +280,115 @@ namespace TPCWare.Spid.Sdk
             }
             catch (Exception ex)
             {
-                log.Error("Error on GetSpidUserInfo: Unable to read metadata from SAML2 document (see raw response).");
-                log.Error("RAW RESPONSE: " + idpAsciiResponse);
+                log.Error("Error on GetSpidAuthnResponse: Unable to read metadata from IdP response (see decripted SAML2 response).");
+                log.Error("Decrypted SAML2 response: " + idpAsciiResponse);
                 throw new ArgumentException("Unable to read AttributeStatement attributes from SAML2 document.", ex);
+            }
+        }
+
+        public static bool ValidResponse(IdpSaml2Response idpSaml2Response, string spidRequestId, string route)
+        {
+            return (idpSaml2Response.InResponseTo == "_" + spidRequestId) && (idpSaml2Response.SubjectConfirmationDataRecipient == route);
+        }
+
+        public static string BuildSpidLogoutPostRequest(string uuid, string destination, string consumerServiceURL, X509Certificate2 certificate,
+                                                        IdentityProvider identityProvider, string subjectNameId, string authnStatementSessionIndex)
+        {
+            if (string.IsNullOrWhiteSpace(uuid))
+            {
+                log.Error("Error on BuildSpidLogoutPostRequest: The uuid parameter is null or empty.");
+                throw new ArgumentNullException("The uuid parameter can't be null or empty.");
+            }
+
+            if (string.IsNullOrWhiteSpace(destination))
+            {
+                log.Error("Error on BuildSpidLogoutPostRequest: The destination parameter is null or empty.");
+                throw new ArgumentNullException("The destination parameter can't be null or empty.");
+            }
+
+            if (string.IsNullOrWhiteSpace(consumerServiceURL))
+            {
+                log.Error("Error on BuildSpidLogoutPostRequest: The consumerServiceURL parameter is null or empty.");
+                throw new ArgumentNullException("The consumerServiceURL parameter can't be null or empty.");
+            }
+
+            if (certificate == null)
+            {
+                log.Error("Error on BuildSpidLogoutPostRequest: The certificate parameter is null.");
+                throw new ArgumentNullException("The certificate parameter can't be null.");
+            }
+
+            if (identityProvider == null)
+            {
+                log.Error("Error on BuildSpidLogoutPostRequest: The identityProvider parameter is null.");
+                throw new ArgumentNullException("The identityProvider parameter can't be null.");
+            }
+
+            if (string.IsNullOrWhiteSpace(subjectNameId))
+            {
+                log.Error("Error on BuildSpidLogoutPostRequest: The subjectNameId parameter is null or empty.");
+                throw new ArgumentNullException("The subjectNameId parameter can't be null or empty.");
+            }
+
+            DateTime now = DateTime.UtcNow;
+
+            LogoutRequestType logoutRequest = new LogoutRequestType
+            {
+                ID = "_" + uuid,
+                Version = "2.0",
+                IssueInstant = identityProvider.Now(now),
+                Destination = destination,
+                Issuer = new NameIDType
+                {
+                    Value = consumerServiceURL.Trim(),
+                    Format = "urn:oasis:names:tc:SAML:2.0:nameid-format:entity",
+                    NameQualifier = consumerServiceURL
+                },
+                Item = new NameIDType
+                {
+                    SPNameQualifier = consumerServiceURL,
+                    Format = "urn:oasis:names:tc:SAML:2.0:nameid-format:transient",
+                    Value = subjectNameId
+                },
+                NotOnOrAfterSpecified = true,
+                NotOnOrAfter = now.AddMinutes(10),
+                Reason = "urn:oasis:names:tc:SAML:2.0:logout:user",
+                SessionIndex = new string[] { authnStatementSessionIndex }
+            };
+
+            try
+            {
+                XmlSerializerNamespaces ns = new XmlSerializerNamespaces();
+                ns.Add("saml2p", "urn:oasis:names:tc:SAML:2.0:protocol");
+                ns.Add("saml2", "urn:oasis:names:tc:SAML:2.0:assertion");
+
+                StringWriter stringWriter = new StringWriter();
+                XmlWriterSettings settings = new XmlWriterSettings
+                {
+                    OmitXmlDeclaration = true,
+                    Indent = true,
+                    Encoding = Encoding.UTF8
+                };
+
+                XmlWriter responseWriter = XmlTextWriter.Create(stringWriter, settings);
+                XmlSerializer responseSerializer = new XmlSerializer(logoutRequest.GetType());
+                responseSerializer.Serialize(responseWriter, logoutRequest, ns);
+                responseWriter.Close();
+
+                string samlString = stringWriter.ToString();
+                stringWriter.Close();
+
+                XmlDocument doc = new XmlDocument();
+                doc.LoadXml(samlString);
+
+                XmlElement signature = SigningHelper.SignDoc(doc, certificate, "_" + uuid);
+                doc.DocumentElement.InsertBefore(signature, doc.DocumentElement.ChildNodes[1]);
+
+                return Convert.ToBase64String(Encoding.UTF8.GetBytes("<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + doc.OuterXml));
+            }
+            catch (Exception ex)
+            {
+                throw ex;
             }
         }
 

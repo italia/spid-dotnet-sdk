@@ -20,43 +20,40 @@ namespace TPCWare.Spid.WebApp.Controllers
    
     public class HomeController : Controller
     {
-
-        ILog Log = log4net.LogManager.GetLogger(typeof(HomeController));
+        private ILog log = LogManager.GetLogger(typeof(HomeController));
+        private readonly string SPID_COOKIE = ConfigurationManager.AppSettings["SPID_COOKIE"];
 
         public ActionResult Index()
         {
             if (Session["AppUser"] != null)
             {
                 ViewBag.Name = ((AppUser)Session["AppUser"]).Name;
-
                 ViewBag.Surname = ((AppUser)Session["AppUser"]).Surname;
+                ViewBag.Logged = true;
             }
             return View();
         }
 
         public ActionResult About()
         {
-            ViewBag.Message = "Il progetto è stato realizzato da Nicolò Carandini e Antimo Musone per l'evento Hack Developers del 07-10-2017.";
+            return View();
+        }
 
+        public ActionResult Contact()
+        {
+            ViewBag.Message = "Nicolò Carandini n.carandini@outlook.com , Antimo Musone antimo.musone@hotmail.com ";
             return View();
         }
 
         public ActionResult SpidRequest(string idpLabel)
         {
-            ThreadContext.Properties["Provider"] = idpLabel;
-
             try
             {
+                // Create the SPID request id
+                string spidRequestId = Guid.NewGuid().ToString();
+
                 // Select the Identity Provider
                 IdentityProvider idp = IdentityProviderSelector.GetIdpFromUserChoice(idpLabel, forTesting: true);
-
-                // Create the SPID request id and save it as a cookie
-                string spidIdRequest = Guid.NewGuid().ToString();
-                System.Web.HttpContext.Current.Response.Cookies.Add(new HttpCookie(ConfigurationManager.AppSettings["SPID_COOKIE"])
-                {
-                    Expires = DateTime.Now.AddMinutes(30),
-                    Value = spidIdRequest
-                });
 
                 // Retrieve the signing certificate
                 var certificate = X509Helper.GetCertificateFromStore(
@@ -66,8 +63,8 @@ namespace TPCWare.Spid.WebApp.Controllers
                     validOnly: false);
 
                 // Create the signed SAML request
-                var spidCryptoRequest = Saml2Helper.BuildPostSamlRequest(
-                    uuid: spidIdRequest,
+                var spidAuthnRequest = Saml2Helper.BuildSpidAuthnPostRequest(
+                    uuid: spidRequestId,
                     destination: idp.SpidServiceUrl,
                     consumerServiceURL: ConfigurationManager.AppSettings["SPID_DOMAIN_VALUE"],
                     securityLevel: 1,
@@ -75,24 +72,105 @@ namespace TPCWare.Spid.WebApp.Controllers
                     identityProvider: idp,
                     enviroment: ConfigurationManager.AppSettings["ENVIROMENT"] == "dev" ? 1 : 0);
 
-                ViewData["data"] = spidCryptoRequest;
+                ViewData["data"] = spidAuthnRequest;
                 ViewData["action"] = idp.SpidServiceUrl;
 
+                // Save the IdP label and SPID request id as a cookie
+                HttpCookie cookie = Request.Cookies.Get(SPID_COOKIE) ?? new HttpCookie(SPID_COOKIE);
+                cookie.Values["IdPLabel"] = idpLabel;
+                cookie.Values["SpidRequestId"] = spidRequestId;
+                cookie.Expires = DateTime.Now.AddMinutes(20);
+                Response.Cookies.Add(cookie);
+
+                // Send the request to the Identity Provider
                 return View("PostData");
             }
             catch (Exception ex)
             {
-                Log.Error("Error on HomeController SpidRequest", ex);
-                ViewData["Message"] = "Errore nella preparazione della richiesta SPID da inviare al provider.";
+                log.Error("Error on HomeController SpidRequest", ex);
+                ViewData["Message"] = "Errore nella preparazione della richiesta di autenticazione da inviare al provider.";
                 ViewData["ErrorMessage"] = ex.Message;
                 return View("Error");
             }
         }
 
-        public ActionResult Contact()
+        public ActionResult LogoutRequest()
         {
-            ViewBag.Message = "Nicolò Carandini n.carandini@outlook.com , Antimo Musone antimo.musone@hotmail.com ";
-            return View();
+            string idpLabel;
+            string spidRequestId;
+            string subjectNameId;
+            string authnStatementSessionIndex;
+
+            // Try to get Authentication data from cookie
+            HttpCookie cookie = Request.Cookies[SPID_COOKIE];
+
+            if (cookie == null)
+            {
+                log.Error("Error on HomeController LogoutRequest method: Impossibile recuperare i dati della sessione (cookie scaduto)");
+                ViewData["Message"] = "Impossibile recuperare i dati della sessione (cookie scaduto).";
+                return View("Error");
+            }
+
+            idpLabel = cookie["IdPLabel"];
+            spidRequestId = cookie["SpidRequestId"];
+            subjectNameId = cookie["SubjectNameId"];
+            authnStatementSessionIndex = cookie["AuthnStatementSessionIndex"];
+
+            if (string.IsNullOrWhiteSpace(idpLabel) ||
+                string.IsNullOrWhiteSpace(spidRequestId) ||
+                string.IsNullOrWhiteSpace(subjectNameId) ||
+                string.IsNullOrWhiteSpace(authnStatementSessionIndex))
+            {
+                log.Error("Error on HomeController LogoutRequest method: Impossibile recuperare i dati della sessione (il cookie non contiene tutti i dati necessari)");
+                ViewData["Message"] = "Impossibile recuperare i dati della sessione (il cookie non contiene tutti i dati necessari).";
+                return View("Error");
+            }
+
+            try
+            {
+                // Create the SPID request id and save it as a cookie
+                string logoutRequestId = Guid.NewGuid().ToString();
+
+                // Select the Identity Provider
+                IdentityProvider idp = IdentityProviderSelector.GetIdpFromUserChoice(idpLabel, forTesting: true);
+
+                // Retrieve the signing certificate
+                var certificate = X509Helper.GetCertificateFromStore(
+                    StoreLocation.LocalMachine, StoreName.My,
+                    X509FindType.FindBySubjectName,
+                    ConfigurationManager.AppSettings["SPID_CERTIFICATE_NAME"],
+                    validOnly: false);
+
+                // Create the signed SAML logout request
+                var spidLogoutRequest = Saml2Helper.BuildSpidLogoutPostRequest(
+                    uuid: logoutRequestId,
+                    destination: idp.LogoutServiceUrl,
+                    consumerServiceURL: ConfigurationManager.AppSettings["SPID_DOMAIN_VALUE"],
+                    certificate: certificate,
+                    identityProvider: idp,
+                    subjectNameId: subjectNameId,
+                    authnStatementSessionIndex: authnStatementSessionIndex);
+
+                ViewData["data"] = spidLogoutRequest;
+                ViewData["action"] = idp.LogoutServiceUrl;
+
+                // Add the NameID and save the authorization data as a cookie
+                cookie = new HttpCookie("userInfo");
+                cookie.Values["IdPLabel"] = idpLabel;
+                cookie.Values["SpidRequestId"] = spidRequestId;
+                cookie.Expires = DateTime.Now.AddMinutes(20);
+                Response.Cookies.Add(cookie);
+
+                // Send the request to the Identity Provider
+                return View("PostData");
+            }
+            catch (Exception ex)
+            {
+                log.Error("Error on HomeController SpidRequest", ex);
+                ViewData["Message"] = "Errore nella preparazione della richiesta di logout da inviare al provider.";
+                ViewData["ErrorMessage"] = ex.Message;
+                return View("Error");
+            }
         }
 
     }

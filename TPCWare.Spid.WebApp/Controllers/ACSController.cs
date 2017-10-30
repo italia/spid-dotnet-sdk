@@ -18,6 +18,7 @@ namespace TPCWare.Spid.WebApp.Controllers
     public class ACSController : Controller
     {
         ILog log = LogManager.GetLogger(typeof(ACSController));
+        private readonly string SPID_COOKIE = ConfigurationManager.AppSettings["SPID_COOKIE"];
 
         public ActionResult Index()
         {
@@ -27,21 +28,27 @@ namespace TPCWare.Spid.WebApp.Controllers
         [HttpPost]
         public ActionResult Index(FormCollection formCollection)
         {
-            if (System.Web.HttpContext.Current.Request.Cookies[ConfigurationManager.AppSettings["SPID_COOKIE"]] != null)
+            string idpLabel;
+            string spidRequestId;
+
+            // Try to get auth requesta data from cookie
+            HttpCookie cookie = Request.Cookies[SPID_COOKIE];
+            if (cookie != null)
             {
-                Guid idRequestSPID = Guid.Parse(System.Web.HttpContext.Current.Request.Cookies[ConfigurationManager.AppSettings["SPID_COOKIE"]].Value.ToString());
-                log.Info("Cookie ID Richiesta: " + idRequestSPID);
+                idpLabel = cookie["IdPLabel"];
+                spidRequestId = cookie["SpidRequestId"];
+                log.Info($"Cookie {SPID_COOKIE} IdPLabel: {idpLabel}, SpidRequestId: {spidRequestId}");
             }
             else
             {
                 log.Error("Error on ACSController [HttpPost]Index method: Impossibile recuperare l'Id della sessione.");
-                ViewData["Message"] = "Impossibile recuperare l'Id della sessione.";
+                ViewData["Message"] = "Impossibile recuperare i dati della sessione (cookie scaduto).";
                 return View("Error");
             }
 
             try
             {
-                IdpSaml2Response idpSaml2Response = Saml2Helper.GetIdpSaml2Response(formCollection["SAMLResponse"].ToString());
+                IdpSaml2Response idpSaml2Response = Saml2Helper.GetSpidAuthnResponse(formCollection["SAMLResponse"].ToString());
 
                 if (!idpSaml2Response.IsSuccessful)
                 {
@@ -53,24 +60,41 @@ namespace TPCWare.Spid.WebApp.Controllers
                     return View("Error");
                 }
 
+                // Verifica la corrispondenza del valore di spidRequestId ricavato da cookie con quello restituito dalla risposta
+                if (!Saml2Helper.ValidResponse(idpSaml2Response, spidRequestId, Request.Url.ToString()))
+                {
+                    Session["AppUser"] = null;
+
+                    log.Error($"Error on ACSController [HttpPost]Index method: La risposta dell'IdP non è valida (InResponseTo != spidRequestId oppure SubjectConfirmationDataRecipient != requestPath).");
+                    ViewData["Message"] = "La risposta dell'IdP non è valida perché non corrisponde alla richiesta.";
+                    ViewData["ErrorMessage"] = $"RequestId: _{spidRequestId}, RequestPath: {Request.Url.ToString()}, InResponseTo: {idpSaml2Response.InResponseTo}, Recipient: {idpSaml2Response.SubjectConfirmationDataRecipient}.";
+                    return View("Error");
+                }
+
+                // Save request and response data needed to eventually logout as a cookie
+                cookie.Values["IdPLabel"] = idpLabel;
+                cookie.Values["SpidRequestId"] = spidRequestId;
+                cookie.Values["SubjectNameId"] = idpSaml2Response.SubjectNameId;
+                cookie.Values["AuthnStatementSessionIndex"] = idpSaml2Response.AuthnStatementSessionIndex;
+                cookie.Expires = DateTime.Now.AddMinutes(20);
+                Response.Cookies.Add(cookie);
+
                 AppUser appUser = new AppUser
                 {
                     Name = SpidUserInfoHelper.Name(idpSaml2Response.SpidUserInfo),
                     Surname = SpidUserInfoHelper.FamilyName(idpSaml2Response.SpidUserInfo)
                 };
-
                 Session.Add("AppUser", appUser);
+
                 ViewData["UserInfo"] = idpSaml2Response.SpidUserInfo;
 
-                // TODO: verificare la corrispondenza del valore del sessionId ricavato da cookie
-                //       con quello contenuto nella proprietà idpSaml2Response.InResponseTo
-
-                HttpCookie requestCookie = new HttpCookie("SPID_AUTHENTICATION")
-                {
-                    Expires = DateTime.Now.AddMinutes(20),
-                    Value = "true"
-                };
-                System.Web.HttpContext.Current.Response.Cookies.Add(requestCookie);
+                // Save authentication data in the cookie
+                //HttpCookie requestCookie = new HttpCookie("SPID_AUTHENTICATION")
+                //{
+                //    Expires = DateTime.Now.AddMinutes(20),
+                //    Value = "true"
+                //};
+                //System.Web.HttpContext.Current.Response.Cookies.Add(requestCookie);
 
                 return View("UserData");
             }
@@ -136,6 +160,7 @@ namespace TPCWare.Spid.WebApp.Controllers
                     };
                     CurrentContext.Response.Cookies.Add(requestCookie);
 
+                    Session["SpidNameId"] = null;
                     Session["AppUser"] = null;
 
                     return View();
