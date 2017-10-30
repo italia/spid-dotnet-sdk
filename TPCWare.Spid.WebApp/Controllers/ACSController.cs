@@ -82,8 +82,26 @@ namespace TPCWare.Spid.WebApp.Controllers
                 AppUser appUser = new AppUser
                 {
                     Name = SpidUserInfoHelper.Name(idpSaml2Response.SpidUserInfo),
-                    Surname = SpidUserInfoHelper.FamilyName(idpSaml2Response.SpidUserInfo)
+                    Surname = SpidUserInfoHelper.FamilyName(idpSaml2Response.SpidUserInfo),
+                     FiscalNumber = SpidUserInfoHelper.FiscalNumber(idpSaml2Response.SpidUserInfo),
+                     Email =  SpidUserInfoHelper.Email(idpSaml2Response.SpidUserInfo)
                 };
+
+                // necessario per il checkSPID
+                System.Web.HttpContext.Current.Application.Lock();
+
+                List<AppUser> allAuthenticatedUsers = (List<AppUser>)System.Web.HttpContext.Current.Application["Users"];
+
+                if (allAuthenticatedUsers == null)
+
+                    allAuthenticatedUsers =  new List<AppUser>();
+
+                allAuthenticatedUsers.Add(appUser);
+
+                System.Web.HttpContext.Current.Application["Users"] = allAuthenticatedUsers;
+
+                System.Web.HttpContext.Current.Application.UnLock();
+
                 Session.Add("AppUser", appUser);
 
                 ViewData["UserInfo"] = idpSaml2Response.SpidUserInfo;

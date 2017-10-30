@@ -16,6 +16,8 @@ namespace TCPWare.Spid.ChatBot.Dialogs
 
         public const string AccountStateKey = "AccountState";
         public const string OptionLogin = "SPID Login";
+        public const string CheckSpid = "Verifica Login SPID";
+        public const string RetryOptionLogin = "Riprova Login";
         public const string OptionSupporto = "Supporto";
         public const string LastVisitKey = "LastVisit";
         private const string retry = "Non è una valida opzione";
@@ -106,7 +108,8 @@ namespace TCPWare.Spid.ChatBot.Dialogs
         public virtual async Task VerificaSPIDMenuAsync(IDialogContext context, IAwaitable<IMessageActivity> result)
         {
             List<string> optionList = new List<string>();
-            optionList.Add("Verifica Login SPID");
+            optionList.Add(CheckSpid);
+            optionList.Add(RetryOptionLogin);
             optionList.Add(OptionSupporto);
 
             var spid = context.UserData.GetValueOrDefault<string>("SPID");
@@ -134,7 +137,13 @@ namespace TCPWare.Spid.ChatBot.Dialogs
                         context.Call(spidFormDialog, this.ResumeAfterSPIDFormDialog);
 
                         break;
-                    case "Verifica Login SPID":
+                    case RetryOptionLogin:
+                        var newSpidFormDialog = FormDialog.FromForm(this.BuilSpidForm, FormOptions.PromptInStart);
+
+                        context.Call(newSpidFormDialog, this.ResumeAfterSPIDFormDialog);
+
+                        break;
+                    case CheckSpid:
 
                         var cf = context.UserData.GetValueOrDefault<string>("CF");
 

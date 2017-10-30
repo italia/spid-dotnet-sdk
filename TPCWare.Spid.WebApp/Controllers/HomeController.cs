@@ -13,11 +13,12 @@ using System.Web.Mvc;
 using System.Xml;
 using TPCWare.Spid.Sdk;
 using TPCWare.Spid.Sdk.IdP;
+using TPCWare.Spid.Sdk.Schema;
 using TPCWare.Spid.WebApp.Models;
 
 namespace TPCWare.Spid.WebApp.Controllers
 {
-   
+
     public class HomeController : Controller
     {
         private ILog log = LogManager.GetLogger(typeof(HomeController));
@@ -170,6 +171,31 @@ namespace TPCWare.Spid.WebApp.Controllers
                 ViewData["Message"] = "Errore nella preparazione della richiesta di logout da inviare al provider.";
                 ViewData["ErrorMessage"] = ex.Message;
                 return View("Error");
+            }
+        }
+
+        public JsonResult CheckSpidLogin(string cf)
+        {
+
+
+            try
+            {
+
+                List<AppUser> logged = (List<AppUser>)System.Web.HttpContext.Current.Application["Users"];
+
+                var item = logged.Where(x => x.FiscalNumber.ToUpper() == cf.ToUpper()).FirstOrDefault();
+
+                if (item != null)
+                    return Json(new { result = "true", data = item }, JsonRequestBehavior.AllowGet);
+                else
+                    return Json(new { result = "false" }, JsonRequestBehavior.AllowGet);
+
+
+            }
+            catch (Exception ex)
+            {
+
+                return null;
             }
         }
 

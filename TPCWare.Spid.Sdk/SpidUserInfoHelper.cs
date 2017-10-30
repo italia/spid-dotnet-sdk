@@ -54,5 +54,29 @@ namespace TPCWare.Spid.Sdk
             }
         }
 
+        public static string FiscalNumber(Dictionary<string, string> spidUserInfo)
+        {
+            try
+            {
+                return spidUserInfo["fiscalNumber"];
+            }
+            catch
+            {
+                return "N/A";
+            }
+        }
+
+        public static string Email(Dictionary<string, string> spidUserInfo)
+        {
+            try
+            {
+                return spidUserInfo["email"];
+            }
+            catch
+            {
+                return "N/A";
+            }
+        }
+
     }
 }
