@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27009.1
+VisualStudioVersion = 15.0.27004.2005
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TPCWare.Spid.Sdk", "TPCWare.Spid.Sdk\TPCWare.Spid.Sdk.csproj", "{4FEEDC57-9C41-41BD-AC30-588C99B7F241}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TPCWare.Spid.WebApp", "TPCWare.Spid.WebApp\TPCWare.Spid.WebApp.csproj", "{10CA747F-89CA-432C-8E80-C2D9695A840F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TCPWare.Spid.ChatBot", "TCPWare.Spid.ChatBot\TCPWare.Spid.ChatBot.csproj", "{F43D1FCD-6AF9-4572-B257-734E4B9FC8B6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{10CA747F-89CA-432C-8E80-C2D9695A840F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{10CA747F-89CA-432C-8E80-C2D9695A840F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{10CA747F-89CA-432C-8E80-C2D9695A840F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F43D1FCD-6AF9-4572-B257-734E4B9FC8B6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F43D1FCD-6AF9-4572-B257-734E4B9FC8B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F43D1FCD-6AF9-4572-B257-734E4B9FC8B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F43D1FCD-6AF9-4572-B257-734E4B9FC8B6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
