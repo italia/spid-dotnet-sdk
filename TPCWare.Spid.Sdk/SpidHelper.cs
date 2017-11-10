@@ -15,12 +15,12 @@ using System.Xml.Linq;
 
 namespace TPCWare.Spid.Sdk
 {
-    public static class Saml2Helper
+    public static class SpidHelper
     {
-        static ILog log = log4net.LogManager.GetLogger(typeof(Saml2Helper));
+        static ILog log = log4net.LogManager.GetLogger(typeof(SpidHelper));
 
         /// <summary>
-        /// Build a signed SAML request.
+        /// Build a signed SAML authentication request.
         /// </summary>
         /// <param name="uuid"></param>
         /// <param name="destination"></param>
@@ -146,14 +146,14 @@ namespace TPCWare.Spid.Sdk
         }
 
         /// <summary>
-        /// Get the IdP Response and extract metadata to the returned DTO class
+        /// Get the IdP Authn Response and extract metadata to the returned DTO class
         /// </summary>
         /// <param name="base64Response"></param>
         /// <returns>IdpSaml2Response</returns>
         public static IdpAuthnResponse GetSpidAuthnResponse(string base64Response)
         {
             const string VALUE_NOT_AVAILABLE = "N/A";
-            string idpAsciiResponse;
+            string idpResponse;
 
             if (String.IsNullOrEmpty(base64Response))
             {
@@ -163,7 +163,7 @@ namespace TPCWare.Spid.Sdk
 
             try
             {
-                idpAsciiResponse = Encoding.UTF8.GetString(Convert.FromBase64String(base64Response));
+                idpResponse = Encoding.UTF8.GetString(Convert.FromBase64String(base64Response));
             }
             catch (Exception ex)
             {
@@ -175,7 +175,7 @@ namespace TPCWare.Spid.Sdk
             {
                 // Verify signature
                 XmlDocument xml = new XmlDocument { PreserveWhitespace = true };
-                xml.LoadXml(idpAsciiResponse);
+                xml.LoadXml(idpResponse);
                 if (!SigningHelper.VerifySignature(xml))
                 {
                     log.Error("Error on GetSpidAuthnResponse: Unable to verify the signature of the IdP response.");
@@ -184,7 +184,7 @@ namespace TPCWare.Spid.Sdk
 
                 // Parse XML document
                 XDocument xdoc = new XDocument();
-                xdoc = XDocument.Parse(idpAsciiResponse);
+                xdoc = XDocument.Parse(idpResponse);
 
                 string destination = VALUE_NOT_AVAILABLE;
                 string id = VALUE_NOT_AVAILABLE;
@@ -281,29 +281,41 @@ namespace TPCWare.Spid.Sdk
             catch (Exception ex)
             {
                 log.Error("Error on GetSpidAuthnResponse: Unable to read metadata from IdP response (see decripted SAML2 response).");
-                log.Error("Decrypted SAML2 response: " + idpAsciiResponse);
+                log.Error("Decrypted SAML2 response: " + idpResponse);
                 throw new ArgumentException("Unable to read AttributeStatement attributes from SAML2 document.", ex);
             }
         }
 
-        public static bool ValidResponse(IdpAuthnResponse idpSaml2Response, string spidRequestId, string route)
+        /// <summary>
+        /// Check the validity of IdP authentication response
+        /// </summary>
+        /// <param name="idpAuthnResponse"></param>
+        /// <param name="spidRequestId"></param>
+        /// <param name="route"></param>
+        /// <returns>True if valid, false otherwise</returns>
+        public static bool ValidAuthnResponse(IdpAuthnResponse idpAuthnResponse, string spidRequestId, string route)
         {
-            return (idpSaml2Response.InResponseTo == "_" + spidRequestId) && (idpSaml2Response.SubjectConfirmationDataRecipient == route);
+            return (idpAuthnResponse.InResponseTo == "_" + spidRequestId) && (idpAuthnResponse.SubjectConfirmationDataRecipient == route);
         }
 
-        public static string BuildSpidLogoutPostRequest(string uuid, string destination, string consumerServiceURL, X509Certificate2 certificate,
+        /// <summary>
+        /// Build a signed SAML logout request.
+        /// </summary>
+        /// <param name="uuid"></param>
+        /// <param name="destination"></param>
+        /// <param name="consumerServiceURL"></param>
+        /// <param name="certificate"></param>
+        /// <param name="identityProvider"></param>
+        /// <param name="subjectNameId"></param>
+        /// <param name="authnStatementSessionIndex"></param>
+        /// <returns></returns>
+        public static string BuildSpidLogoutPostRequest(string uuid, string consumerServiceURL, X509Certificate2 certificate,
                                                         IdentityProvider identityProvider, string subjectNameId, string authnStatementSessionIndex)
         {
             if (string.IsNullOrWhiteSpace(uuid))
             {
                 log.Error("Error on BuildSpidLogoutPostRequest: The uuid parameter is null or empty.");
                 throw new ArgumentNullException("The uuid parameter can't be null or empty.");
-            }
-
-            if (string.IsNullOrWhiteSpace(destination))
-            {
-                log.Error("Error on BuildSpidLogoutPostRequest: The destination parameter is null or empty.");
-                throw new ArgumentNullException("The destination parameter can't be null or empty.");
             }
 
             if (string.IsNullOrWhiteSpace(consumerServiceURL))
@@ -330,6 +342,12 @@ namespace TPCWare.Spid.Sdk
                 throw new ArgumentNullException("The subjectNameId parameter can't be null or empty.");
             }
 
+            if (string.IsNullOrWhiteSpace(identityProvider.LogoutServiceUrl))
+            {
+                log.Error("Error on BuildSpidLogoutPostRequest: The LogoutServiceUrl of the identity provider is null or empty.");
+                throw new ArgumentNullException("The LogoutServiceUrl of the identity provider is null or empty.");
+            }
+            
             DateTime now = DateTime.UtcNow;
 
             LogoutRequestType logoutRequest = new LogoutRequestType
@@ -337,7 +355,7 @@ namespace TPCWare.Spid.Sdk
                 ID = "_" + uuid,
                 Version = "2.0",
                 IssueInstant = identityProvider.Now(now),
-                Destination = destination,
+                Destination = identityProvider.LogoutServiceUrl,
                 Issuer = new NameIDType
                 {
                     Value = consumerServiceURL.Trim(),
@@ -348,7 +366,7 @@ namespace TPCWare.Spid.Sdk
                 {
                     SPNameQualifier = consumerServiceURL,
                     Format = "urn:oasis:names:tc:SAML:2.0:nameid-format:transient",
-                    Value = subjectNameId
+                    Value = identityProvider.SubjectNameIdFormatter(subjectNameId)
                 },
                 NotOnOrAfterSpecified = true,
                 NotOnOrAfter = now.AddMinutes(10),
@@ -390,6 +408,98 @@ namespace TPCWare.Spid.Sdk
             {
                 throw ex;
             }
+        }
+
+        /// <summary>
+        /// Get the IdP Logout Response and extract metadata to the returned DTO class
+        /// </summary>
+        /// <param name="base64Response"></param>
+        /// <returns></returns>
+        public static IdpLogoutResponse GetSpidLogoutResponse(string base64Response)
+        {
+            const string VALUE_NOT_AVAILABLE = "N/A";
+            string idpResponse;
+
+            if (String.IsNullOrEmpty(base64Response))
+            {
+                log.Error("Error on GetSpidLogoutResponse: The base64Response parameter is null or empty.");
+                throw new ArgumentNullException("The base64Response parameter can't be null or empty.");
+            }
+
+            try
+            {
+                idpResponse = Encoding.UTF8.GetString(Convert.FromBase64String(base64Response));
+            }
+            catch (Exception ex)
+            {
+                log.Error("Error on GetSpidLogoutResponse: Unable to convert base64 response to ascii string.");
+                throw new ArgumentException("Unable to converto base64 response to ascii string.", ex);
+            }
+
+            try
+            {
+                // Verify signature
+                XmlDocument xml = new XmlDocument { PreserveWhitespace = true };
+                xml.LoadXml(idpResponse);
+                if (!SigningHelper.VerifySignature(xml))
+                {
+                    log.Error("Error on GetSpidLogoutResponse: Unable to verify the signature of the IdP response.");
+                    throw new Exception("Unable to verify the signature of the IdP response.");
+                }
+
+                // Parse XML document
+                XDocument xdoc = new XDocument();
+                xdoc = XDocument.Parse(idpResponse);
+
+                string destination = VALUE_NOT_AVAILABLE;
+                string id = VALUE_NOT_AVAILABLE;
+                string inResponseTo = VALUE_NOT_AVAILABLE;
+                DateTimeOffset issueInstant = DateTimeOffset.MinValue;
+                string version = VALUE_NOT_AVAILABLE;
+                string statusCodeValue = VALUE_NOT_AVAILABLE;
+                string statusCodeInnerValue = VALUE_NOT_AVAILABLE;
+                string statusMessage = VALUE_NOT_AVAILABLE;
+                string statusDetail = VALUE_NOT_AVAILABLE;
+
+                // Extract response metadata
+                XElement responseElement = xdoc.Elements("{urn:oasis:names:tc:SAML:2.0:protocol}LogoutResponse").Single();
+                destination = responseElement.Attribute("Destination").Value;
+                id = responseElement.Attribute("ID").Value;
+                inResponseTo = responseElement.Attribute("InResponseTo").Value;
+                issueInstant = DateTimeOffset.Parse(responseElement.Attribute("IssueInstant").Value);
+                version = responseElement.Attribute("Version").Value;
+
+                // Extract Issuer metadata
+                string issuer = responseElement.Elements("{urn:oasis:names:tc:SAML:2.0:assertion}Issuer").Single().Value.Trim();
+
+                // Extract Status metadata
+                XElement StatusElement = responseElement.Descendants("{urn:oasis:names:tc:SAML:2.0:protocol}Status").Single();
+                IEnumerable<XElement> statusCodeElements = StatusElement.Descendants("{urn:oasis:names:tc:SAML:2.0:protocol}StatusCode");
+                statusCodeValue = statusCodeElements.First().Attribute("Value").Value.Replace("urn:oasis:names:tc:SAML:2.0:status:", "");
+                statusCodeInnerValue = statusCodeElements.Count() > 1 ? statusCodeElements.Last().Attribute("Value").Value.Replace("urn:oasis:names:tc:SAML:2.0:status:", "") : VALUE_NOT_AVAILABLE;
+                statusMessage = StatusElement.Elements("{urn:oasis:names:tc:SAML:2.0:protocol}StatusMessage").SingleOrDefault()?.Value ?? VALUE_NOT_AVAILABLE;
+                statusDetail = StatusElement.Elements("{urn:oasis:names:tc:SAML:2.0:protocol}StatusDetail").SingleOrDefault()?.Value ?? VALUE_NOT_AVAILABLE;
+
+                return new IdpLogoutResponse(destination, id, inResponseTo, issueInstant, version, issuer,
+                                             statusCodeValue, statusCodeInnerValue, statusMessage, statusDetail);
+            }
+            catch (Exception ex)
+            {
+                log.Error("Error on GetSpidLogoutResponse: Unable to read metadata from IdP response (see decripted SAML2 response).");
+                log.Error("Decrypted SAML2 logout response: " + idpResponse);
+                throw new ArgumentException("Unable to read AttributeStatement attributes from SAML2 document.", ex);
+            }
+        }
+
+        /// <summary>
+        /// Check the validity of IdP logout response
+        /// </summary>
+        /// <param name="idpLogoutResponse"></param>
+        /// <param name="spidRequestId"></param>
+        /// <returns>True if valid, false otherwise</returns>
+        public static bool ValidLogoutResponse(IdpLogoutResponse idpLogoutResponse, string spidRequestId)
+        {
+            return (idpLogoutResponse.InResponseTo == "_" + spidRequestId);
         }
 
     }

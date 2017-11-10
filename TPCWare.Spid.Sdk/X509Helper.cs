@@ -7,7 +7,7 @@ namespace TPCWare.Spid.Sdk
 {
     public static class X509Helper
     {
-        static ILog log = log4net.LogManager.GetLogger(typeof(Saml2Helper));
+        static ILog log = log4net.LogManager.GetLogger(typeof(SpidHelper));
 
         /// <summary>
         /// Get certificate from file path and password

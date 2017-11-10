@@ -26,6 +26,7 @@ namespace TPCWare.Spid.Sdk.IdP
                         providerName: "Poste Italiane",
                         spidServiceUrl: forTesting ? "https://spidposte.test.poste.it/jod-fs/ssoservicepost" : "",
                         logoutServiceUrl: forTesting ? "https://spidposte.test.poste.it/jod-fs/sloservicepost" : "",
+                        subjectNameIdFormatter: (s) => { return s.Replace("SPID-", ""); },
                         now: (now) => { return now.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fff'Z'"); },
                         after: (after) => { return after.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fff'Z'"); },
                         notBefore: (now) => { return now.AddMinutes(-2).ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fff'Z'"); }
@@ -37,6 +38,7 @@ namespace TPCWare.Spid.Sdk.IdP
                         providerName: "Sielte",
                         spidServiceUrl: forTesting ? "" : "",
                         logoutServiceUrl: forTesting ? "" : "",
+                        subjectNameIdFormatter: (s) => { return s; },
                         now: (now) => { return now.AddMinutes(-2).ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss'Z'"); },
                         after: (after) => { return after.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss'Z'"); },
                         notBefore: (now) => { return now.AddMinutes(-2).ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss'Z'"); }
@@ -48,6 +50,7 @@ namespace TPCWare.Spid.Sdk.IdP
                         providerName: "TIM",
                         spidServiceUrl: forTesting ? "" : "",
                         logoutServiceUrl: forTesting ? "" : "",
+                        subjectNameIdFormatter: (s) => { return s; },
                         now: (now) => { return now.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fff'Z'"); },
                         after: (after) => { return after.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fff'Z'"); },
                         notBefore: (now) => { return now.AddMinutes(-2).ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fff'Z'"); }
@@ -59,6 +62,7 @@ namespace TPCWare.Spid.Sdk.IdP
                         providerName: "Infocert",
                         spidServiceUrl: forTesting ? "" : "",
                         logoutServiceUrl: forTesting ? "" : "",
+                        subjectNameIdFormatter: (s) => { return s; },
                         now: (now) => { return now.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fff'Z'"); },
                         after: (after) => { return after.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fff'Z'"); },
                         notBefore: (now) => { return now.AddMinutes(-2).ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fff'Z'"); }

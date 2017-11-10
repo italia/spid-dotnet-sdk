@@ -2,18 +2,12 @@
 using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.IdentityModel.Tokens;
-using System.IO;
 using System.Linq;
-using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
-using System.Text;
 using System.Web;
 using System.Web.Mvc;
-using System.Xml;
 using TPCWare.Spid.Sdk;
 using TPCWare.Spid.Sdk.IdP;
-using TPCWare.Spid.Sdk.Schema;
 using TPCWare.Spid.WebApp.Models;
 
 namespace TPCWare.Spid.WebApp.Controllers
@@ -51,7 +45,7 @@ namespace TPCWare.Spid.WebApp.Controllers
             try
             {
                 // Create the SPID request id
-                string spidRequestId = Guid.NewGuid().ToString();
+                string spidAuthnRequestId = Guid.NewGuid().ToString();
 
                 // Select the Identity Provider
                 IdentityProvider idp = IdentityProviderSelector.GetIdpFromIdPLabel(idpLabel, forTesting: true);
@@ -64,8 +58,8 @@ namespace TPCWare.Spid.WebApp.Controllers
                     validOnly: false);
 
                 // Create the signed SAML request
-                var spidAuthnRequest = Saml2Helper.BuildSpidAuthnPostRequest(
-                    uuid: spidRequestId,
+                var spidAuthnRequest = SpidHelper.BuildSpidAuthnPostRequest(
+                    uuid: spidAuthnRequestId,
                     destination: idp.SpidServiceUrl,
                     consumerServiceURL: ConfigurationManager.AppSettings["SPID_DOMAIN_VALUE"],
                     securityLevel: 1,
@@ -79,7 +73,7 @@ namespace TPCWare.Spid.WebApp.Controllers
                 // Save the IdP label and SPID request id as a cookie
                 HttpCookie cookie = Request.Cookies.Get(SPID_COOKIE) ?? new HttpCookie(SPID_COOKIE);
                 cookie.Values["IdPLabel"] = idpLabel;
-                cookie.Values["SpidRequestId"] = spidRequestId;
+                cookie.Values["SpidAuthnRequestId"] = spidAuthnRequestId;
                 cookie.Expires = DateTime.Now.AddMinutes(20);
                 Response.Cookies.Add(cookie);
 
@@ -98,7 +92,6 @@ namespace TPCWare.Spid.WebApp.Controllers
         public ActionResult LogoutRequest()
         {
             string idpLabel;
-            string spidRequestId;
             string subjectNameId;
             string authnStatementSessionIndex;
 
@@ -107,18 +100,31 @@ namespace TPCWare.Spid.WebApp.Controllers
 
             if (cookie == null)
             {
+                // End the session
+                Session["AppUser"] = null;
+
                 log.Error("Error on HomeController LogoutRequest method: Impossibile recuperare i dati della sessione (cookie scaduto)");
                 ViewData["Message"] = "Impossibile recuperare i dati della sessione (cookie scaduto).";
                 return View("Error");
             }
 
             idpLabel = cookie["IdPLabel"];
-            spidRequestId = cookie["SpidRequestId"];
             subjectNameId = cookie["SubjectNameId"];
             authnStatementSessionIndex = cookie["AuthnStatementSessionIndex"];
 
+            // Remove the cookie
+            cookie.Values["IdPLabel"] = string.Empty;
+            cookie.Values["SpidAuthnRequestId"] = string.Empty;
+            cookie.Values["SpidLogoutRequestId"] = string.Empty;
+            cookie.Values["SubjectNameId"] = string.Empty;
+            cookie.Values["AuthnStatementSessionIndex"] = string.Empty;
+            cookie.Expires = DateTime.Now.AddDays(-1);
+            Response.Cookies.Add(cookie);
+
+            // End the session
+            Session["AppUser"] = null;
+
             if (string.IsNullOrWhiteSpace(idpLabel) ||
-                string.IsNullOrWhiteSpace(spidRequestId) ||
                 string.IsNullOrWhiteSpace(subjectNameId) ||
                 string.IsNullOrWhiteSpace(authnStatementSessionIndex))
             {
@@ -143,22 +149,21 @@ namespace TPCWare.Spid.WebApp.Controllers
                     validOnly: false);
 
                 // Create the signed SAML logout request
-                var spidLogoutRequest = Saml2Helper.BuildSpidLogoutPostRequest(
+                var spidLogoutRequest = SpidHelper.BuildSpidLogoutPostRequest(
                     uuid: logoutRequestId,
-                    destination: idp.LogoutServiceUrl,
                     consumerServiceURL: ConfigurationManager.AppSettings["SPID_DOMAIN_VALUE"],
                     certificate: certificate,
                     identityProvider: idp,
-                    subjectNameId: subjectNameId.Replace("SPID-",""),
+                    subjectNameId: subjectNameId,
                     authnStatementSessionIndex: authnStatementSessionIndex);
 
                 ViewData["data"] = spidLogoutRequest;
                 ViewData["action"] = idp.LogoutServiceUrl;
 
-                // Add the NameID and save the authorization data as a cookie
-                cookie = new HttpCookie("userInfo");
+                // Save the IdP label and SPID request id as a cookie
+                cookie = new HttpCookie(SPID_COOKIE);
                 cookie.Values["IdPLabel"] = idpLabel;
-                cookie.Values["SpidRequestId"] = spidRequestId;
+                cookie.Values["SpidLogoutRequestId"] = logoutRequestId;
                 cookie.Expires = DateTime.Now.AddMinutes(20);
                 Response.Cookies.Add(cookie);
 
@@ -176,11 +181,8 @@ namespace TPCWare.Spid.WebApp.Controllers
 
         public JsonResult CheckSpidLogin(string cf)
         {
-
-
             try
             {
-
                 List<AppUser> logged = (List<AppUser>)System.Web.HttpContext.Current.Application["Users"];
 
                 var item = logged.Where(x => x.FiscalNumber.ToUpper() == cf.ToUpper()).FirstOrDefault();
@@ -189,12 +191,9 @@ namespace TPCWare.Spid.WebApp.Controllers
                     return Json(new { result = "true", data = item }, JsonRequestBehavior.AllowGet);
                 else
                     return Json(new { result = "false" }, JsonRequestBehavior.AllowGet);
-
-
             }
             catch (Exception ex)
             {
-
                 return null;
             }
         }

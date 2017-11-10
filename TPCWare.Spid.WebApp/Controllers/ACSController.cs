@@ -29,15 +29,15 @@ namespace TPCWare.Spid.WebApp.Controllers
         public ActionResult Index(FormCollection formCollection)
         {
             string idpLabel;
-            string spidRequestId;
+            string spidAuthnRequestId;
 
             // Try to get auth requesta data from cookie
             HttpCookie cookie = Request.Cookies[SPID_COOKIE];
             if (cookie != null)
             {
                 idpLabel = cookie["IdPLabel"];
-                spidRequestId = cookie["SpidRequestId"];
-                log.Info($"Cookie {SPID_COOKIE} IdPLabel: {idpLabel}, SpidRequestId: {spidRequestId}");
+                spidAuthnRequestId = cookie["SpidAuthnRequestId"];
+                log.Info($"Cookie {SPID_COOKIE} IdPLabel: {idpLabel}, SpidAuthnRequestId: {spidAuthnRequestId}");
             }
             else
             {
@@ -48,43 +48,43 @@ namespace TPCWare.Spid.WebApp.Controllers
 
             try
             {
-                IdpAuthnResponse idpSaml2Response = Saml2Helper.GetSpidAuthnResponse(formCollection["SAMLResponse"].ToString());
+                IdpAuthnResponse idpAuthnResponse = SpidHelper.GetSpidAuthnResponse(formCollection["SAMLResponse"].ToString());
 
-                if (!idpSaml2Response.IsSuccessful)
+                if (!idpAuthnResponse.IsSuccessful)
                 {
                     Session["AppUser"] = null;
 
-                    log.Error($"Error on ACSController [HttpPost]Index method: La risposta dell'IdP riporta il seguente StatusCode: {idpSaml2Response.StatusCodeInnerValue} con StatusMessage: {idpSaml2Response.StatusMessage} e StatusDetail: {idpSaml2Response.StatusDetail}.");
+                    log.Error($"Error on ACSController [HttpPost]Index method: La risposta dell'IdP riporta il seguente StatusCode: {idpAuthnResponse.StatusCodeInnerValue} con StatusMessage: {idpAuthnResponse.StatusMessage} e StatusDetail: {idpAuthnResponse.StatusDetail}.");
                     ViewData["Message"] = "La richiesta di identificazione è stata rifiutata.";
-                    ViewData["ErrorMessage"] = $"StatusCode: {idpSaml2Response.StatusCodeInnerValue} con StatusMessage: {idpSaml2Response.StatusMessage} e StatusDetail: {idpSaml2Response.StatusDetail}.";
+                    ViewData["ErrorMessage"] = $"StatusCode: {idpAuthnResponse.StatusCodeInnerValue} con StatusMessage: {idpAuthnResponse.StatusMessage} e StatusDetail: {idpAuthnResponse.StatusDetail}.";
                     return View("Error");
                 }
 
-                // Verifica la corrispondenza del valore di spidRequestId ricavato da cookie con quello restituito dalla risposta
-                if (!Saml2Helper.ValidResponse(idpSaml2Response, spidRequestId, Request.Url.ToString()))
+                // Verifica la corrispondenza del valore di spidAuthnRequestId ricavato da cookie con quello restituito dalla risposta
+                if (!SpidHelper.ValidAuthnResponse(idpAuthnResponse, spidAuthnRequestId, Request.Url.ToString()))
                 {
                     Session["AppUser"] = null;
 
-                    log.Error($"Error on ACSController [HttpPost]Index method: La risposta dell'IdP non è valida (InResponseTo != spidRequestId oppure SubjectConfirmationDataRecipient != requestPath).");
+                    log.Error($"Error on ACSController [HttpPost]Index method: La risposta dell'IdP non è valida (InResponseTo != spidAuthnRequestId oppure SubjectConfirmationDataRecipient != requestPath).");
                     ViewData["Message"] = "La risposta dell'IdP non è valida perché non corrisponde alla richiesta.";
-                    ViewData["ErrorMessage"] = $"RequestId: _{spidRequestId}, RequestPath: {Request.Url.ToString()}, InResponseTo: {idpSaml2Response.InResponseTo}, Recipient: {idpSaml2Response.SubjectConfirmationDataRecipient}.";
+                    ViewData["ErrorMessage"] = $"RequestId: _{spidAuthnRequestId}, RequestPath: {Request.Url.ToString()}, InResponseTo: {idpAuthnResponse.InResponseTo}, Recipient: {idpAuthnResponse.SubjectConfirmationDataRecipient}.";
                     return View("Error");
                 }
 
                 // Save request and response data needed to eventually logout as a cookie
                 cookie.Values["IdPLabel"] = idpLabel;
-                cookie.Values["SpidRequestId"] = spidRequestId;
-                cookie.Values["SubjectNameId"] = idpSaml2Response.SubjectNameId;
-                cookie.Values["AuthnStatementSessionIndex"] = idpSaml2Response.AuthnStatementSessionIndex;
+                cookie.Values["SpidAuthnRequestId"] = spidAuthnRequestId;
+                cookie.Values["SubjectNameId"] = idpAuthnResponse.SubjectNameId;
+                cookie.Values["AuthnStatementSessionIndex"] = idpAuthnResponse.AuthnStatementSessionIndex;
                 cookie.Expires = DateTime.Now.AddMinutes(20);
                 Response.Cookies.Add(cookie);
 
                 AppUser appUser = new AppUser
                 {
-                    Name = SpidUserInfoHelper.Name(idpSaml2Response.SpidUserInfo),
-                    Surname = SpidUserInfoHelper.FamilyName(idpSaml2Response.SpidUserInfo),
-                     FiscalNumber = SpidUserInfoHelper.FiscalNumber(idpSaml2Response.SpidUserInfo),
-                     Email =  SpidUserInfoHelper.Email(idpSaml2Response.SpidUserInfo)
+                    Name = SpidUserInfoHelper.Name(idpAuthnResponse.SpidUserInfo),
+                    Surname = SpidUserInfoHelper.FamilyName(idpAuthnResponse.SpidUserInfo),
+                     FiscalNumber = SpidUserInfoHelper.FiscalNumber(idpAuthnResponse.SpidUserInfo),
+                     Email =  SpidUserInfoHelper.Email(idpAuthnResponse.SpidUserInfo)
                 };
 
                 // necessario per il checkSPID
@@ -104,15 +104,7 @@ namespace TPCWare.Spid.WebApp.Controllers
 
                 Session.Add("AppUser", appUser);
 
-                ViewData["UserInfo"] = idpSaml2Response.SpidUserInfo;
-
-                // Save authentication data in the cookie
-                //HttpCookie requestCookie = new HttpCookie("SPID_AUTHENTICATION")
-                //{
-                //    Expires = DateTime.Now.AddMinutes(20),
-                //    Value = "true"
-                //};
-                //System.Web.HttpContext.Current.Response.Cookies.Add(requestCookie);
+                ViewData["UserInfo"] = idpAuthnResponse.SpidUserInfo;
 
                 return View("UserData");
             }
@@ -127,67 +119,70 @@ namespace TPCWare.Spid.WebApp.Controllers
         }
 
         [HttpPost]
-        public ActionResult Logout(FormCollection collection)
+        public ActionResult Logout(FormCollection formCollection)
         {
-            ViewBag.Message = "Logout effettuato";
- 
-            string dataBaseInBase64 = collection[0].ToString();
+            string idpLabel;
+            string spidLogoutRequestId;
 
-            if (String.IsNullOrEmpty(dataBaseInBase64))
+            // Try to get auth requesta data from cookie
+            HttpCookie cookie = Request.Cookies[SPID_COOKIE];
+            if (cookie != null)
             {
-                log.Error("Si è verificato un errore");
-
-                return View("Error");
-            }
-
-            byte[] data = System.Convert.FromBase64String(dataBaseInBase64);
-
-            string base64DecodedASCII = System.Text.Encoding.UTF8.GetString(data);
-
-            log.Debug(base64DecodedASCII);
-
-            XmlDocument xml = new XmlDocument
-            {
-                PreserveWhitespace = true
-            };
-            xml.LoadXml(base64DecodedASCII);
-
-            if (SigningHelper.VerifySignature(xml))
-            {
-
-                Dictionary<string, string> userInfo = new Dictionary<string, string>();
-
-                using (StringReader sr = new StringReader(base64DecodedASCII))
-                {
-
-                    string result = sr.ReadToEnd();
-
-                    int start = result.LastIndexOf("<saml2p:SessionIndex>");
-
-                    int end = result.LastIndexOf("</saml2p:SessionIndex>");
-
-                    string sessionId = result.Substring(start + 22, end - start - 22);
-
-                    //usare Id di sessione per invalidare la sessione
-
-                    HttpContext CurrentContext = System.Web.HttpContext.Current;
-                    HttpCookie requestCookie = new HttpCookie("SPID_AUTHENTICATION")
-                    {
-                        Expires = DateTime.Now.AddMinutes(20),
-                        Value = "false"
-                    };
-                    CurrentContext.Response.Cookies.Add(requestCookie);
-
-                    Session["SpidNameId"] = null;
-                    Session["AppUser"] = null;
-
-                    return View();
-                }
+                idpLabel = cookie["IdPLabel"];
+                spidLogoutRequestId = cookie["SpidLogoutRequestId"];
+                log.Info($"Cookie {SPID_COOKIE} IdPLabel: {idpLabel}, SpidLogoutRequestId: {spidLogoutRequestId}");
             }
             else
             {
+                log.Error("Error on ACSController [HttpPost]Index method: Impossibile recuperare l'Id della sessione.");
+                ViewData["Message"] = "Impossibile recuperare i dati della sessione (cookie scaduto).";
+                return View("Error");
+            }
+
+            // Remove the cookie
+            cookie.Values["IdPLabel"] = string.Empty;
+            cookie.Values["SpidAuthnRequestId"] = string.Empty;
+            cookie.Values["SpidLogoutRequestId"] = string.Empty;
+            cookie.Values["SubjectNameId"] = string.Empty;
+            cookie.Values["AuthnStatementSessionIndex"] = string.Empty;
+            cookie.Expires = DateTime.Now.AddDays(-1);
+            Response.Cookies.Add(cookie);
+
+            // End the session
+            Session["AppUser"] = null;
+
+            try
+            {
+                IdpLogoutResponse idpLogoutResponse = SpidHelper.GetSpidLogoutResponse(formCollection["SAMLResponse"].ToString());
+
+                if (!idpLogoutResponse.IsSuccessful)
+                {
+                    log.Error($"Error on ACSController [HttpPost]Index method: La risposta dell'IdP riporta il seguente StatusCode: {idpLogoutResponse.StatusCodeInnerValue} con StatusMessage: {idpLogoutResponse.StatusMessage} e StatusDetail: {idpLogoutResponse.StatusDetail}.");
+                    ViewData["Message"] = "La richiesta di logout è stata rifiutata.";
+                    ViewData["ErrorMessage"] = $"StatusCode: {idpLogoutResponse.StatusCodeInnerValue} con StatusMessage: {idpLogoutResponse.StatusMessage} e StatusDetail: {idpLogoutResponse.StatusDetail}.";
+                    return View("Error");
+                }
+
+                // Verifica la corrispondenza del valore di spidLogoutRequestId ricavato da cookie con quello restituito dalla risposta
+                if (!SpidHelper.ValidLogoutResponse(idpLogoutResponse, spidLogoutRequestId))
+                {
+                    log.Error($"Error on ACSController [HttpPost]Index method: La risposta dell'IdP non è valida (InResponseTo != spidLogoutRequestId).");
+                    ViewData["Message"] = "La risposta dell'IdP non è valida perché non corrisponde alla richiesta.";
+                    ViewData["ErrorMessage"] = $"RequestId: _{spidLogoutRequestId}, RequestPath: {Request.Url.ToString()}, InResponseTo: {idpLogoutResponse.InResponseTo}.";
+                    return View("Error");
+                }
+
+                return View("Logout");
+            }
+
+            catch (Exception ex)
+            {
+                log.Error("Error on ACSController [HttpPost]Index method", ex);
+                ViewData["Message"] = "Errore nella lettura della risposta ricevuta dal provider.";
+                ViewData["ErrorMessage"] = ex.Message;
                 return View("Error");
             }
         }
+
     }
 }
