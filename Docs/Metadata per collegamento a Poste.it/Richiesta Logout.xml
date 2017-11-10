@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<saml2p:LogoutRequest xmlns:saml2="urn:oasis:names:tc:SAML:2.0:assertion"
+                      ID="_79bf94c0-0a1a-4aac-9bff-4ab080fb8993"
+                      Version="2.0"
+                      IssueInstant="2017-10-27T20:11:02.041Z"
+                      Destination="https://spidposte.test.poste.it/jod-fs/sloserviceresponsepost"
+                      Reason="urn:oasis:names:tc:SAML:2.0:logout:user"
+                      NotOnOrAfter="2017-10-27T20:21:02.0416215Z"
+                      xmlns:saml2p="urn:oasis:names:tc:SAML:2.0:protocol">
+	<saml2:Issuer NameQualifier="https://www.tpcware.com"
+	              Format="urn:oasis:names:tc:SAML:2.0:nameid-format:entity">https://www.tpcware.com</saml2:Issuer>
+	<Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+		<SignedInfo>
+			<CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" />
+			<SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256" />
+			<Reference URI="#_79bf94c0-0a1a-4aac-9bff-4ab080fb8993">
+				<Transforms>
+					<Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
+					<Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" />
+				</Transforms>
+				<DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256" />
+				<DigestValue>CxufxeWgjUJ+XM9LMUkzBccFsDsAKSLqm1u12eVBF1o=</DigestValue>
+			</Reference>
+		</SignedInfo>
+		<SignatureValue>
+			...omissis...
+		</SignatureValue>
+		<KeyInfo>
+			<X509Data>
+				<X509Certificate>
+					...omissis...
+				</X509Certificate>
+			</X509Data>
+		</KeyInfo>
+	</Signature>
+	<saml2:NameID SPNameQualifier="https://www.tpcware.com"
+	              Format="urn:oasis:names:tc:SAML:2.0:nameid-format:transient">
+		SPID-852dd995-f083-4c67-801c-a6856de3db9a
+	</saml2:NameID>
+	<saml2p:SessionIndex>stGXWSaidWezagxWCzOFxwJleCNY6TAWtEprAwwyp19kkilshOxCNQzOklsPGCb7</saml2p:SessionIndex>
+</saml2p:LogoutRequest>

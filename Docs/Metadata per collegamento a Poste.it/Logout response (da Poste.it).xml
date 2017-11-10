@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<saml2p:LogoutResponse xmlns:saml2p="urn:oasis:names:tc:SAML:2.0:protocol"
+                       Destination="http://localhost:62371/acs/logout"
+                       ID="_fea42262-9892-47b0-a604-27e45de0c0ea"
+                       InResponseTo="_cba8821c-f3d3-4f65-80ab-9e69021bbefa"
+                       IssueInstant="2017-11-10T08:41:17.195Z"
+                       Version="2.0">
+	<saml2:Issuer xmlns:saml2="urn:oasis:names:tc:SAML:2.0:assertion"
+	              Format="urn:oasis:names:tc:SAML:2.0:nameid-format:entity">https://spidposte.test.poste.it</saml2:Issuer>
+	<Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+		<SignedInfo>
+			<CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/>
+			<SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256"/>
+			<Reference URI="#_fea42262-9892-47b0-a604-27e45de0c0ea">
+				<Transforms>
+					<Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/>
+					<Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/>
+				</Transforms>
+				<DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+				<DigestValue>ZWb7gMGRwjVWMCDfd2obz+tO5FbPmgMox9kBmzUwBL0=</DigestValue>
+			</Reference>
+		</SignedInfo>
+		<SignatureValue>...</SignatureValue>
+		<KeyInfo>
+			<X509Data>
+				<X509Certificate>...</X509Certificate>
+			</X509Data>
+		</KeyInfo>
+	</Signature>
+	<saml2p:Status>
+		<saml2p:StatusCode Value="urn:oasis:names:tc:SAML:2.0:status:Success"/>
+	</saml2p:Status>
+</saml2p:LogoutResponse>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<saml2p:AuthnRequest xmlns:saml2="urn:oasis:names:tc:SAML:2.0:assertion"
+                     ID="_ee76c2c7-861a-453c-bb17-e27f581467f9"
+                     Version="2.0"
+                     IssueInstant="2017-10-27T20:10:04.409Z"
+                     Destination="https://spidposte.test.poste.it/jod-fs/ssoservicepost"
+                     AssertionConsumerServiceIndex="1"
+                     AttributeConsumingServiceIndex="1"
+                     xmlns:saml2p="urn:oasis:names:tc:SAML:2.0:protocol">
+	<saml2:Issuer NameQualifier="https://www.tpcware.com"
+	              Format="urn:oasis:names:tc:SAML:2.0:nameid-format:entity">https://www.tpcware.com</saml2:Issuer>
+	<Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+		<SignedInfo>
+			<CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" />
+			<SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256" />
+			<Reference URI="#_ee76c2c7-861a-453c-bb17-e27f581467f9">
+				<Transforms>
+					<Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
+					<Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" />
+				</Transforms>
+				<DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256" />
+				<DigestValue>9ZgTQg1GL0nXwn8H+uivuICADQ/eQLMwVspne9DRKb8=</DigestValue>
+			</Reference>
+		</SignedInfo>
+		<SignatureValue>...omissis...</SignatureValue>
+		<KeyInfo>
+			<X509Data>
+				<X509Certificate>...omissis...</X509Certificate>
+			</X509Data>
+		</KeyInfo>
+	</Signature>
+	<saml2p:NameIDPolicy Format="urn:oasis:names:tc:SAML:2.0:nameid-format:transient"
+	                     AllowCreate="true" />
+	<saml2:Conditions NotBefore="2017-10-27T20:08:04.409Z"
+	                  NotOnOrAfter="2017-10-27T20:20:04.409Z" />
+	<saml2p:RequestedAuthnContext Comparison="minimum">
+		<saml2:AuthnContextClassRef>https://www.spid.gov.it/SpidL1</saml2:AuthnContextClassRef>
+	</saml2p:RequestedAuthnContext>
+</saml2p:AuthnRequest>

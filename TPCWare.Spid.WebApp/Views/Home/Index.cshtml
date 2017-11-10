@@ -1,0 +1,100 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="jumbotron">
+    <h1>SPID.NET</h1>
+    <p class="lead">Benvenuto nel progetto SPID per .Net!</p>
+    @ViewBag.Message
+
+    @if (ViewBag.Name != null && ViewBag.Surname != null)
+    {
+        <h3><b>Utente autenticato: @ViewBag.Name @ViewBag.Surname</b></h3> 
+    }
+</div>
+
+<div class="row">
+    <div class="col-md-3">
+        <div class="LoginBoxSPID">
+            <a class="italia-it-button italia-it-button-size-m button-spid" aria-expanded="false" id="ddlSPID"
+               aria-haspopup="true" style="font-size: 15px;" href="#"
+               spid-idp-button="#spid-idp-button-medium-post">
+                <span class="italia-it-button-icon">
+                    <img title="" alt="" src="~/Content/images/spid-ico-circle-bb.png">
+                </span>
+                <span class="italia-it-button-text">Entra con SPID</span>
+            </a>
+
+            <div class="spid-idp-button spid-idp-button-tip spid-idp-button-relative hideDDL" id="spid-idp-button-medium-post" style="text-align: left;">
+                <ul class="spid-idp-button-menu" id="spid-idp-list-medium-root-post" aria-labelledby="spid-idp">
+
+                    <li class="spid-idp-button-link">
+                        <a href='@Url.Action("SpidRequest", "Home",new { idpLabel = "poste_id" })'>
+                            <img class="idp-button-idp-logo" title="Poste ID" alt="Poste ID" src='@Url.Content("~/Content/images/spid-idp-posteid.png")' />
+                        </a>
+                    </li>
+
+                    <li class="spid-idp-button-link">
+                        <a href='@Url.Action("SpidRequest", "Home",new { idpLabel = "tim_id" })'>
+                            <img class="idp-button-idp-logo" title="Tim ID" alt="Tim ID" src='@Url.Content("~/Content/images/spid-idp-timid.png")' />
+                        </a>
+                    </li>
+
+                    <li class="spid-idp-button-link">
+                        <a href='@Url.Action("SpidRequest", "Home",new { idpLabel = "sielte_id" })'>
+                            <img class="idp-button-idp-logo" title="Sielte ID" alt="Sielte ID" src='@Url.Content("~/Content/images/spid-idp-sielteid.png")' />
+                        </a>
+                    </li>
+
+                    <li class="spid-idp-button-link">
+                        <a href='@Url.Action("SpidRequest", "Home",new { idpLabel = "infocert_id" })'>
+                            <img class="idp-button-idp-logo" title="Infocert ID" alt="Infocert ID" src='@Url.Content("~/Content/images/spid-idp-infocertid.png")' />
+                        </a>
+                    </li>
+
+                    <li class="spid-idp-support-link">
+                        <a style="font-size: 15px;" href="http://www.spid.gov.it" target="_blank">Maggiori info</a>
+                    </li>
+
+                    <li class="spid-idp-support-link">
+                        <a style="font-size: 15px;" href="http://www.spid.gov.it/#registrati" target="_blank">Non hai SPID?</a>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    @if (ViewBag.Logged ?? false)
+    {
+        <div class="col-md-3">
+            <div class="LogoutBoxSPID">
+                <a class="italia-it-button italia-it-button-size-m button-spid" aria-expanded="false" id="ddlSPID"
+               aria-haspopup="true" style="font-size: 15px;" href='@Url.Action("LogoutRequest", "Home")' 
+               spid-idp-button="#spid-idp-button-medium-post">
+                    <span class="italia-it-button-icon">
+                        <img title="" alt="" src="~/Content/images/logout-circle.png">
+                    </span>
+                    <span class="italia-it-button-text">Logout</span>
+                </a>
+            </div>
+        </div>
+    }
+</div>
+
+@section Scripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#ddlSPID").click(function () {
+                if ($("#spid-idp-button-medium-post").hasClass('hideDDL')) {
+                    $('#spid-idp-button-medium-post').removeClass('hideDDL');
+                    $('#spid-idp-button-medium-post').addClass('showDDL');
+                }
+                else {
+                    $('#spid-idp-button-medium-post').addClass('hideDDL');
+                    $('#spid-idp-button-medium-post').removeClass('showDDL');
+                }
+            });
+        });
+    </script>
+}

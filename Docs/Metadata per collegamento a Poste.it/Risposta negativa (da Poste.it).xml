@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<saml2p:Response xmlns:saml2p="urn:oasis:names:tc:SAML:2.0:protocol" Destination="http://localhost:62371/acs" ID="_8491e8fb-04f8-4f36-82ea-224919e54937" InResponseTo="_93d9f989-93c9-4638-acbf-787b5898cf0c" IssueInstant="2017-10-25T14:15:32.563Z" Version="2.0">
+	<saml2:Issuer xmlns:saml2="urn:oasis:names:tc:SAML:2.0:assertion">https://spidposte.test.poste.it</saml2:Issuer>
+	<Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+		<SignedInfo>
+			<CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/>
+			<SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256"/>
+			<Reference URI="#_8491e8fb-04f8-4f36-82ea-224919e54937">
+				<Transforms>
+					<Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/>
+					<Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/>
+				</Transforms>
+				<DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+				<DigestValue>1NlFy8WPWjSmKvz+9y2IzXtrUEUi70zNt/sIJSD8IWM=</DigestValue>
+			</Reference>
+		</SignedInfo>
+		<SignatureValue>igSSW66LeAWcgvsVykUkC2sdEAfxVdqidRs6CJlT+uwrdttDBNH+zBS45WYwSEdmXw5lQaTcj2Ei
+/IxdOU3YO1tr5+0gEOQrZgQrLp1vGzqYwLzLeRH16N6/6TwNvuDq0m19EEu8/L8Xs6m+BgKpgvs3
+UkRnLYsrf+uPO14pvyiM53pRvpetGIxitPpqvf3zqm24MQE2uvp51D6RWfo6DOS6EJfai3lGscyz
+3yKTzjvkRjLjgvaC1Ebao73jQROVWNDw8kdfQRlbkgN1OmDE845GMsF6ksLG0rWy/KjIScHM3djB
+htz1XDxw2nVPpz3xhgNs6u1+IU7CDRSWMoozVQ==</SignatureValue>
+		<KeyInfo>
+			<X509Data>
+				<X509Certificate>MIIFQzCCBCugAwIBAgIMEYkZpT7m9TU6ykcYMA0GCSqGSIb3DQEBCwUAMGYxCzAJBgNVBAYTAkJF
+MRkwFwYDVQQKExBHbG9iYWxTaWduIG52LXNhMTwwOgYDVQQDEzNHbG9iYWxTaWduIE9yZ2FuaXph
+dGlvbiBWYWxpZGF0aW9uIENBIC0gU0hBMjU2IC0gRzIwHhcNMTcwMjE0MTIzMTA2WhcNMTgwMjE1
+MTIzMTA2WjBtMQswCQYDVQQGEwJJVDENMAsGA1UECBMEUk9NQTENMAsGA1UEBxMEUk9NQTEeMBwG
+A1UEChMVUE9TVEUgSVRBTElBTkUgUy5wLkEuMSAwHgYDVQQDExdzcGlkcG9zdGUudGVzdC5wb3N0
+ZS5pdDCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMMJKm5pnPhufl4uh5UmFD+pa0NC
+rAuPp8I2VmyyMkQW/2hDCTwEmqJ/nBM2xqyeesuSz2nCg9t4NhSlpSNfPNTQApkUQdB2u3Gr7Z0X
+3I8mnf8mQSy59MiNpRgW4Y7q0biksuLvlRwz7HMYcGyUk8x4kPIYeh+ZNhMRyEOwWBbzXRpRrqqY
+B1QUnU55ojzEwsI8hWt1ZfwpbJCEg1S6VE50Vi7FXcXneI8ZiqmHm+kDV2C2mc9dRdqjQjHJnUoB
+H06DRHWBob7ZvmgkTQSdiJl7nGfW0ckt1HtTxyXTz7+poDFDHexMrPGvAKa0AsYfWG8uU+af3Rdr
+7rsdxqz+rFECAwEAAaOCAegwggHkMA4GA1UdDwEB/wQEAwIFoDCBoAYIKwYBBQUHAQEEgZMwgZAw
+TQYIKwYBBQUHMAKGQWh0dHA6Ly9zZWN1cmUuZ2xvYmFsc2lnbi5jb20vY2FjZXJ0L2dzb3JnYW5p
+emF0aW9udmFsc2hhMmcycjEuY3J0MD8GCCsGAQUFBzABhjNodHRwOi8vb2NzcDIuZ2xvYmFsc2ln
+bi5jb20vZ3Nvcmdhbml6YXRpb252YWxzaGEyZzIwVgYDVR0gBE8wTTBBBgkrBgEEAaAyARQwNDAy
+BggrBgEFBQcCARYmaHR0cHM6Ly93d3cuZ2xvYmFsc2lnbi5jb20vcmVwb3NpdG9yeS8wCAYGZ4EM
+AQICMAkGA1UdEwQCMAAwSQYDVR0fBEIwQDA+oDygOoY4aHR0cDovL2NybC5nbG9iYWxzaWduLmNv
+bS9ncy9nc29yZ2FuaXphdGlvbnZhbHNoYTJnMi5jcmwwIgYDVR0RBBswGYIXc3BpZHBvc3RlLnRl
+c3QucG9zdGUuaXQwHQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMCMB0GA1UdDgQWBBQj7EVJ
+4p5yY3DbWyhzdtO2mZQ8fDAfBgNVHSMEGDAWgBSW3mHxvRwWKVMcwMx9O4MAQOYafDANBgkqhkiG
+9w0BAQsFAAOCAQEAZin9adiKoqGr2/hM1viuqQbytg6BBtjnH3NnSGkX0Ckqwsefab8XokLgz+ro
+Dr9sJO5nwL71AbH0TebVt3FlEJ9FwpaGhMNDeVt8yARMsL+82XtPdeNVlZWgA047Wo2JQA5BlyUD
+5WyP1Hga8Ae3e5GRbHCK/n0D/lFkPGY0KogAEg4YNCxgnHuarHpmp2dkOQkJkc9psEMFHZysnzsf
+JuJzU7QpojQotimZ/yK5osERY5fVeoyzhOGzXPtSrGvbZSJ6MQFAH4Ba4PJYGQqG2vx4dQJ2UiwJ
+LaYfzhAJ18RYYFrzX7LzFvk7vqagM+gCmKwbQP/JU15kv421l2E/tg==</X509Certificate>
+			</X509Data>
+		</KeyInfo>
+	</Signature>
+	<saml2p:Status>
+		<saml2p:StatusCode Value="urn:oasis:names:tc:SAML:2.0:status:Requester">
+			<saml2p:StatusCode Value="urn:oasis:names:tc:SAML:2.0:status:RequestDenied"/>
+		</saml2p:StatusCode>
+		<saml2p:StatusMessage>ErrorCode nr13</saml2p:StatusMessage>
+	</saml2p:Status>
+</saml2p:Response>
