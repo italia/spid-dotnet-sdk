@@ -48,7 +48,7 @@ namespace TPCWare.Spid.WebApp.Controllers
 
             try
             {
-                IdpSaml2Response idpSaml2Response = Saml2Helper.GetSpidAuthnResponse(formCollection["SAMLResponse"].ToString());
+                IdpAuthnResponse idpSaml2Response = Saml2Helper.GetSpidAuthnResponse(formCollection["SAMLResponse"].ToString());
 
                 if (!idpSaml2Response.IsSuccessful)
                 {

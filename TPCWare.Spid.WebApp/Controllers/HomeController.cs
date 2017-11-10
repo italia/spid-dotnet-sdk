@@ -54,7 +54,7 @@ namespace TPCWare.Spid.WebApp.Controllers
                 string spidRequestId = Guid.NewGuid().ToString();
 
                 // Select the Identity Provider
-                IdentityProvider idp = IdentityProviderSelector.GetIdpFromUserChoice(idpLabel, forTesting: true);
+                IdentityProvider idp = IdentityProviderSelector.GetIdpFromIdPLabel(idpLabel, forTesting: true);
 
                 // Retrieve the signing certificate
                 var certificate = X509Helper.GetCertificateFromStore(
@@ -133,7 +133,7 @@ namespace TPCWare.Spid.WebApp.Controllers
                 string logoutRequestId = Guid.NewGuid().ToString();
 
                 // Select the Identity Provider
-                IdentityProvider idp = IdentityProviderSelector.GetIdpFromUserChoice(idpLabel, forTesting: true);
+                IdentityProvider idp = IdentityProviderSelector.GetIdpFromIdPLabel(idpLabel, forTesting: true);
 
                 // Retrieve the signing certificate
                 var certificate = X509Helper.GetCertificateFromStore(
@@ -149,7 +149,7 @@ namespace TPCWare.Spid.WebApp.Controllers
                     consumerServiceURL: ConfigurationManager.AppSettings["SPID_DOMAIN_VALUE"],
                     certificate: certificate,
                     identityProvider: idp,
-                    subjectNameId: subjectNameId,
+                    subjectNameId: subjectNameId.Replace("SPID-",""),
                     authnStatementSessionIndex: authnStatementSessionIndex);
 
                 ViewData["data"] = spidLogoutRequest;

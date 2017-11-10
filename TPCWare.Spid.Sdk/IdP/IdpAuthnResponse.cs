@@ -4,7 +4,7 @@ using System.Text;
 
 namespace TPCWare.Spid.Sdk.IdP
 {
-    public class IdpSaml2Response
+    public class IdpAuthnResponse
     {
         public string Destination { get; private set; }
 
@@ -61,7 +61,7 @@ namespace TPCWare.Spid.Sdk.IdP
             get { return StatusCodeValue == "Success"; }
         }
 
-        public IdpSaml2Response(string destination, string id, string inResponseTo, DateTimeOffset issueInstant, string version, string issuer,
+        public IdpAuthnResponse(string destination, string id, string inResponseTo, DateTimeOffset issueInstant, string version, string issuer,
                                 string statusCodeValue, string statusCodeInnerValue, string statusMessage, string statusDetail,
                                 string assertionId, DateTimeOffset assertionIssueInstant, string assertionVersion, string assertionIssuer,
                                 string subjectNameId, string subjectConfirmationMethod, string subjectConfirmationDataInResponseTo,

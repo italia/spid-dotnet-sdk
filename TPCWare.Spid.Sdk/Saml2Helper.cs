@@ -150,7 +150,7 @@ namespace TPCWare.Spid.Sdk
         /// </summary>
         /// <param name="base64Response"></param>
         /// <returns>IdpSaml2Response</returns>
-        public static IdpSaml2Response GetSpidAuthnResponse(string base64Response)
+        public static IdpAuthnResponse GetSpidAuthnResponse(string base64Response)
         {
             const string VALUE_NOT_AVAILABLE = "N/A";
             string idpAsciiResponse;
@@ -269,7 +269,7 @@ namespace TPCWare.Spid.Sdk
                     }
                 }
 
-                return new IdpSaml2Response(destination, id, inResponseTo, issueInstant, version, issuer,
+                return new IdpAuthnResponse(destination, id, inResponseTo, issueInstant, version, issuer,
                                             statusCodeValue, statusCodeInnerValue, statusMessage, statusDetail,
                                             assertionId, assertionIssueInstant, assertionVersion, assertionIssuer,
                                             subjectNameId, subjectConfirmationMethod, subjectConfirmationDataInResponseTo,
@@ -286,7 +286,7 @@ namespace TPCWare.Spid.Sdk
             }
         }
 
-        public static bool ValidResponse(IdpSaml2Response idpSaml2Response, string spidRequestId, string route)
+        public static bool ValidResponse(IdpAuthnResponse idpSaml2Response, string spidRequestId, string route)
         {
             return (idpSaml2Response.InResponseTo == "_" + spidRequestId) && (idpSaml2Response.SubjectConfirmationDataRecipient == route);
         }

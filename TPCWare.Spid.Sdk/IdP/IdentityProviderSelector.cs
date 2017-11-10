@@ -9,7 +9,7 @@ namespace TPCWare.Spid.Sdk.IdP
     {
         private static ILog log = log4net.LogManager.GetLogger(typeof(IdentityProviderSelector));
 
-        public static IdentityProvider GetIdpFromUserChoice(string idpLabel, bool forTesting = false)
+        public static IdentityProvider GetIdpFromIdPLabel(string idpLabel, bool forTesting = false)
         {
             IdentityProvider idp;
 
@@ -25,7 +25,7 @@ namespace TPCWare.Spid.Sdk.IdP
                     idp = new IdentityProvider(
                         providerName: "Poste Italiane",
                         spidServiceUrl: forTesting ? "https://spidposte.test.poste.it/jod-fs/ssoservicepost" : "",
-                        logoutServiceUrl: forTesting ? "https://spidposte.test.poste.it/jod-fs/sloserviceresponsepost" : "",
+                        logoutServiceUrl: forTesting ? "https://spidposte.test.poste.it/jod-fs/sloservicepost" : "",
                         now: (now) => { return now.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fff'Z'"); },
                         after: (after) => { return after.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fff'Z'"); },
                         notBefore: (now) => { return now.AddMinutes(-2).ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fff'Z'"); }
