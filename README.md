@@ -211,7 +211,7 @@ public ActionResult ACS(IFormCollection collection)
 <br/><br/>
 ## Demo:
 ___
-
+**Prerequisito**: Per eseguire la demo di ASP.NET Core 2 è necessario installare la verione 2 di .NET Core da https://www.microsoft.com/net/download <br/>
 E' possibile utilizzare una demo funzionante, basta scaricare da GitHub la cartella Developers.Italia.SPID.Test.AspNetCore2 che si trova sotto la directory Test, aprire la finestra di comando ed eseguire i seguenti comandi:
 
 ```shell
@@ -221,7 +221,7 @@ Developers.Italia.SPID.Test.AspNetCore2> dotnet run
 
 Una volta finito basterà andare all'indirizzo https://localhost:44355 sul browser e provare l'autenticazione tramite Poste.IT.
 
->Username demo: test.attiva@poste.it
+>Username demo: test.attiva@poste.it<br/>
 >Password demo: Password01
 
 
