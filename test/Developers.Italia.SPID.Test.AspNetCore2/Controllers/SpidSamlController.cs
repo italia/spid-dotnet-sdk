@@ -30,9 +30,9 @@ namespace Developers.Italia.SPID.Test.AspNetCore2.Controllers
             {
                 samlResponse = Encoding.UTF8.GetString(Convert.FromBase64String(collection["SAMLResponse"]));
                 redirect = Encoding.UTF8.GetString(Convert.FromBase64String(collection["RelayState"]));
-                
+
                 resp.Deserialize(samlResponse);
-                
+
             }
             catch (Exception ex)
             {
@@ -43,7 +43,29 @@ namespace Developers.Italia.SPID.Test.AspNetCore2.Controllers
             ViewData["RelayState"] = redirect;
             return View();
         }
+        // POST: SpidSaml/ACS
+        [HttpPost]
+        public ActionResult Logout(IFormCollection collection)
+        {
+            string samlResponse = "";
+            string redirect = "";
+            SAML.AuthResponse resp = new SAML.AuthResponse();
+            try
+            {
+                samlResponse = Encoding.UTF8.GetString(Convert.FromBase64String(collection["SAMLResponse"]));
+                redirect = Encoding.UTF8.GetString(Convert.FromBase64String(collection["RelayState"]));
 
+                resp.Deserialize(samlResponse);
 
+            }
+            catch (Exception ex)
+            {
+                //TODO LOG
+            }
+
+            ViewData["SAMLResponse"] = JsonConvert.SerializeObject(resp);
+            ViewData["RelayState"] = redirect;
+            return View("ACS");
+        }
     }
 }

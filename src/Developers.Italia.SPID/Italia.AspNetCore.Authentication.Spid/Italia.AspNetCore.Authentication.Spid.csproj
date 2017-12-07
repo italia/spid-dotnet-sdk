@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <AssemblyVersion>0.1.0.0</AssemblyVersion>
+    <FileVersion>0.1.0.0</FileVersion>
+    <Version>0.1.0</Version>
+    <Authors>Luca Congiu</Authors>
+    <Company>Developers Italia</Company>
+    <Copyright>Developers Italia - Luca Congiu</Copyright>
+    <Description>.NET SPID Authentication middleware to Italian Identity Provider using SPID</Description>
+    <PackageLicenseUrl>https://github.com/congiuluc/spid-dotnet-sdk</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/congiuluc/spid-dotnet-sdk</PackageProjectUrl>
+    <PackageIconUrl>https://developers.italia.it/assets/icons/logo-it.png</PackageIconUrl>
+    <RepositoryUrl>https://github.com/congiuluc/spid-dotnet-sdk</RepositoryUrl>
+    <RepositoryType>GitHub</RepositoryType>
+    <PackageTags>ASP.NET CORE SPID Authentication Middleware</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Developers.Italia.SPID.SAML" Version="1.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication" Version="2.0.1" />
+  </ItemGroup>
+
+</Project>

@@ -347,11 +347,15 @@ namespace Developers.Italia.SPID.SAML
         /// <returns></returns>
         private XmlElement SignXmlDocument(XmlDocument doc, X509Certificate2 cert)
         {
+            string xmlPrivateKey="";
             //Full Framework Only
-            //var xmlPrivateKey = cert.PrivateKey.ToXmlString(true);
+#if FULLFRAMEWORK
+            xmlPrivateKey = cert.PrivateKey.ToXmlString(true);
+#endif
             //.Net Standard Extension
-            var xmlPrivateKey = RSAKeyExtensions.ToXmlString((RSA)cert.PrivateKey, true);
-            
+#if NETSTANDARD2
+            xmlPrivateKey = RSAKeyExtensions.ToXmlString((RSA)cert.PrivateKey, true);
+#endif
             return SignXmlDocument(doc, cert, xmlPrivateKey);
         }
 
@@ -365,15 +369,16 @@ namespace Developers.Italia.SPID.SAML
         /// <returns></returns>
         private XmlElement SignXmlDocument(XmlDocument doc, X509Certificate2 cert, string xmlPrivateKey)
         {
-
-        
-
             var key = new RSACryptoServiceProvider(new CspParameters(24));
             key.PersistKeyInCsp = false;
             //Full Framework Only
-            //key.FromXmlString(xmlPrivateKey);
+#if FULLFRAMEWORK
+            key.FromXmlString(xmlPrivateKey);
+#endif
             //.Net Standard Extension
+#if NETSTANDARD2
             RSAKeyExtensions.FromXmlString(key, xmlPrivateKey);
+#endif
 
             SignedXml signedXml = new SignedXml(doc);
             signedXml.SigningKey = key;

@@ -110,5 +110,8 @@
   <PropertyGroup Condition=" '$(TargetFramework)' == 'net35'">
     <DefineConstants>NET35;NETFULL</DefineConstants>
   </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="LogoutRequest.cs" />
+  </ItemGroup>
 
 </Project>
