@@ -239,3 +239,7 @@ http://spid-regole-tecniche.readthedocs.io/en/latest/index.html
 
 ### Raccolta Documenti:
 https://github.com/congiuluc/spid-dotnet-sdk/tree/master/docs/AgID
+
+### Avvisi SPID:
+http://www.agid.gov.it/agenda-digitale/infrastrutture-architetture/spid/avvisi
+
