@@ -16,6 +16,7 @@
     <RepositoryUrl>https://github.com/congiuluc/spid-dotnet-sdk</RepositoryUrl>
     <RepositoryType>GitHub</RepositoryType>
     <PackageTags>ASP.NET CORE SPID Authentication Middleware</PackageTags>
+    <PackageReleaseNotes>First Release</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>

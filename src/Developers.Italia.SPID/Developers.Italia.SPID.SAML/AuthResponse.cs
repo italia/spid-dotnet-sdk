@@ -27,6 +27,8 @@ namespace Developers.Italia.SPID.SAML
         public int ErrorNumber { get; set; }
 
         public string ErrorDescription { get; set; }
+                
+        public DateTime SessionIdExpireDate { get; set; }
 
         public AuthResponse()
         {
@@ -42,7 +44,6 @@ namespace Developers.Italia.SPID.SAML
                 {
                     var serializer = new System.Xml.Serialization.XmlSerializer(typeof(ResponseType));
                     response = (ResponseType)serializer.Deserialize(sr);
-
 
                     this.Version = response.Version;
                     this.UUID = response.ID;
@@ -133,8 +134,17 @@ namespace Developers.Italia.SPID.SAML
                         {
                             if (item.GetType()==typeof(AssertionType)) {
                                 AssertionType ass = (AssertionType)item;
+                                this.SessionIdExpireDate = (ass.Conditions.NotOnOrAfter != null) ? ass.Conditions.NotOnOrAfter : DateTime.Now.AddMinutes(20);
+                               
                                 foreach (var assItem in ass.Items)
                                 {
+                                    if (assItem.GetType() == typeof(AuthnStatementType))
+                                    {
+                                        AuthnStatementType authnStatement = (AuthnStatementType)assItem;
+                                        this.SessionId = authnStatement.SessionIndex;
+                                        this.SessionIdExpireDate = (authnStatement.SessionNotOnOrAfterSpecified) ? authnStatement.SessionNotOnOrAfter : this.SessionIdExpireDate;
+                                    }
+
                                     if (assItem.GetType() == typeof(AttributeStatementType))
                                     {
                                         AttributeStatementType statement = (AttributeStatementType)assItem;
