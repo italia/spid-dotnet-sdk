@@ -13,7 +13,7 @@ Il repository contiene i seguenti progetti:
 
 ### Libreria di autenticazione
 
-La libreria implementa tutte le funzionalità relative a SAML 2.0 e al protocollo di comunicazione tra SP e IdP traimite i seguenti servizi:
+La libreria implementa tutte le funzionalità relative a SAML 2.0 e al protocollo di comunicazione tra SP e IdP tramite i seguenti servizi:
 
 #### Creazione e configurazione dell'elenco degli IdP
 
@@ -41,7 +41,7 @@ Nelle more della messa in produzione del Registro SPID da parte di AgID, al mome
 
 La libreria contiene inoltre una serie di Helpers, utili alle applicazioni che la utilizzano:
 
-- Helper per il reperimento di certificati X509 dal contenitore sicuro (al momento disponibile solo quando l'applicazione web gira su Windows, negli altri casi è possibile passare alla libreria direttamente il certificato stesso).
+- Helper per il reperimento di certificati X509 dal contenitore sicuro (disponibile solo quando l'applicazione web gira su Windows, negli altri casi è possibile passare alla libreria direttamente il certificato stesso).
 
 - Helper per la crittografia delle richieste da inviare e per la verifica crittografica delle risposte ricevute.
 
@@ -68,6 +68,9 @@ Per un tour visivo del funzionamento dell'app si rimanda alla [documentazione](h
 
 - Creazione di un progetto Xamarin, con applicazione dimostrativa per Android e iOS.
 
+- Utilizzo del servizio locale di test hostato su Docker container Linux.
+
+- Test dell'applicazione Web ASP.NET Core 2.0 su Docker container Linux.
 
 # Build and Test
 
