@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace Italia.Spid.AspNEt.WebApp.Models
+namespace Italia.Spid.AspNet.WebApp.Models
 {
     public class AppUser
     {

@@ -11,7 +11,7 @@ using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
 
-namespace Italia.Spid.AspNEt.WebApp
+namespace Italia.Spid.AspNet.WebApp
 {
     public class MvcApplication : System.Web.HttpApplication
     {

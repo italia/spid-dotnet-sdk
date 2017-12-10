@@ -8,19 +8,14 @@ using System.Web;
 using System.Web.Mvc;
 using Italia.Spid.Authentication;
 using Italia.Spid.Authentication.IdP;
-using Italia.Spid.AspNEt.WebApp.Models;
+using Italia.Spid.AspNet.WebApp.Models;
 
-namespace Italia.Spid.AspNEt.WebApp.Controllers
+namespace Italia.Spid.AspNet.WebApp.Controllers
 {
     public class HomeController : Controller
     {
         private ILog log = LogManager.GetLogger(typeof(HomeController));
         private readonly string SPID_COOKIE = ConfigurationManager.AppSettings["SPID_COOKIE"];
-
-        public HomeController()
-        {
-
-        }
 
         public ActionResult Index()
         {

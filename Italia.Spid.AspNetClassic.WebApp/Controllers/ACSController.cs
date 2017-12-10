@@ -11,10 +11,10 @@ using System.Web.Mvc;
 using System.Xml;
 using Italia.Spid.Authentication;
 using Italia.Spid.Authentication.IdP;
-using Italia.Spid.AspNEt.WebApp.Models;
+using Italia.Spid.AspNet.WebApp.Models;
 using Italia.Spid.Authentication.Schema;
 
-namespace Italia.Spid.AspNEt.WebApp.Controllers
+namespace Italia.Spid.AspNet.WebApp.Controllers
 {
     public class ACSController : Controller
     {

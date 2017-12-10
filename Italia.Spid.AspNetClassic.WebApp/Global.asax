@@ -1,1 +1,1 @@
-﻿<%@ Application Codebehind="Global.asax.cs" Inherits="Italia.Spid.AspNEt.WebApp.MvcApplication" Language="C#" %>
+﻿<%@ Application Codebehind="Global.asax.cs" Inherits="Italia.Spid.AspNet.WebApp.MvcApplication" Language="C#" %>
