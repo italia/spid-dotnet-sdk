@@ -7,6 +7,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Italia.Spid.Authentication"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Italia.Spid.AspNet.WebApp", "Italia.Spid.AspNetClassic.WebApp\Italia.Spid.AspNet.WebApp.csproj", "{10CA747F-89CA-432C-8E80-C2D9695A840F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Italia.Spid.AspNetCore.WebApp", "Italia.Spid.AspNetCore.WebApp\Italia.Spid.AspNetCore.WebApp.csproj", "{48FB4208-76DB-4872-B9CF-0C655B024FD3}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{15B3EE39-37BB-4DE9-8B84-814E726D0462}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +25,14 @@ Global
 		{10CA747F-89CA-432C-8E80-C2D9695A840F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{10CA747F-89CA-432C-8E80-C2D9695A840F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{10CA747F-89CA-432C-8E80-C2D9695A840F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{48FB4208-76DB-4872-B9CF-0C655B024FD3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{48FB4208-76DB-4872-B9CF-0C655B024FD3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{48FB4208-76DB-4872-B9CF-0C655B024FD3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{48FB4208-76DB-4872-B9CF-0C655B024FD3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{15B3EE39-37BB-4DE9-8B84-814E726D0462}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{15B3EE39-37BB-4DE9-8B84-814E726D0462}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{15B3EE39-37BB-4DE9-8B84-814E726D0462}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{15B3EE39-37BB-4DE9-8B84-814E726D0462}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
