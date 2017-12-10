@@ -2,7 +2,7 @@
 
 ## Origini
 Questo progetto tra origine dal progetto TPCWare SPID, frutto dell'[hackaton day](https://hack.developers.italia.it/) che si è tenuto in diverse sedi italiane il 7 e 8 ottobre 2017, realizzato da Nicolò Carandini e Antimo Musone.
-Per maggiori informazioni vedi il [README](https://github.com/mrcarbook/spid-dotnet-sdk/blob/sdk-core/README.md) del progetto.
+Per maggiori informazioni vedi il [README](https://github.com/mrcarbook/spid-dotnet-sdk/blob/sdk-core/README.md) del progetto originario.
 
 ## Contenuto
 Il repository contiene i seguenti progetti:
