@@ -45,6 +45,12 @@ namespace SPID_ASPNET_CORE_2_0_NoIdentity.Controllers
         }
 
 
+        [Route("account/login")]
+        public IActionResult AccountLogin()
+        {
+            return View("Login");
+        }
+
         public string GetSpidAuthRequest(SpidProviderConfiguration spidProviderConfiguration)
         {
             string result = "";
@@ -283,6 +289,8 @@ namespace SPID_ASPNET_CORE_2_0_NoIdentity.Controllers
 
             //return RedirectToAction("Index","Home");
         }
+
+
     }
 
 
