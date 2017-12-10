@@ -87,7 +87,7 @@ Una volta installato il tool, aprire da cmd.exe la cartella C:\OpenSSL-Win64\  
 
 Ora occorre importare il certificato myspidcertificate.pfx in local machine/My e tramite lo strumento di gestione dei certificati della macchina (START + "Gestisci i certificati computer") esportare il file .CER in formato BASE64, facendo attenzione di non esportare la private key.
 
-Se l'applicazione Web da errore la causa più probabile è che il certificato dev'essere reinstallato, perché dopo qualche giorno, se pur presente, il certificato scade e dev'essere reinstallato con la medesima procedura di cui sopra.
+Se l'applicazione Web da errore "Unable to find private key in the X509Certificate" la causa più probabile è che il certificato non è più valido e deve essere reinstallato con la medesima procedura di cui sopra.
 
 La chiave così esportata è un mero file di testo che contiene la chiave pubblica da copiare nell'apposito campo della [pagina web di creazione del file di metadati](https://backoffice-spidtest.apps.justcodeon.it/).
 
