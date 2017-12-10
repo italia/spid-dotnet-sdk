@@ -91,7 +91,21 @@ namespace Developers.Italia.SPID.SAML
         /// </value>
         public TimeSpan NotOnOrAfter { get; set; }
 
+        /// <summary>
+        /// Gets or sets the session identifier.
+        /// </summary>
+        /// <value>
+        /// The session identifier.
+        /// </value>
+        public string SessionId { get; set; }
 
+        /// <summary>
+        /// Gets or sets the subject name identifier.
+        /// </summary>
+        /// <value>
+        /// The subject name identifier.
+        /// </value>
+        public string SubjectNameId { get; set; }
 
     }
     /// <summary>
@@ -138,7 +152,12 @@ namespace Developers.Italia.SPID.SAML
             //Request DateTime
             request.IssueInstant = requestDatTime;
 
-            //Request Force Authn
+            //SLO Destination URI
+            request.Destination = this.Options.Destination;
+
+            request.SessionIndex = new string[] { this.Options.SessionId };
+
+            //Request Logout Level
             if (this.Options.LogoutLevel == LogoutLevel.Admin)
             {
                 request.Reason = "urn:oasis:names:tc:SAML:2.0:logout:admin";
@@ -147,11 +166,6 @@ namespace Developers.Italia.SPID.SAML
             {
                 request.Reason = "urn:oasis:names:tc:SAML:2.0:logout:user";
             }
-            
-
-            //SSO Destination URI
-            request.Destination = this.Options.Destination;
-
 
             //Issuer Data
             request.Issuer = new NameIDType()
@@ -162,14 +176,15 @@ namespace Developers.Italia.SPID.SAML
 
             };
 
-            request.Item = new NameIDPolicyType()
+            request.Item = new NameIDType()
             {
                 Format = "urn:oasis:names:tc:SAML:2.0:nameid-format:transient",
-                SPNameQualifier = Options.SPUID
+                SPNameQualifier = Options.SPUID,
+                Value = Options.SubjectNameId,
             };
 
             request.NotOnOrAfterSpecified = true;
-            request.NotOnOrAfter =  requestDatTime.Add(Options.NotOnOrAfter);
+            request.NotOnOrAfter = requestDatTime.Add(Options.NotOnOrAfter);
 
 
             string samlString = "";
@@ -189,6 +204,7 @@ namespace Developers.Italia.SPID.SAML
                 {
                     XmlSerializerNamespaces namespaces = new XmlSerializerNamespaces();
                     namespaces.Add("saml2p", "urn:oasis:names:tc:SAML:2.0:protocol");
+                    namespaces.Add("saml2", "urn:oasis:names:tc:SAML:2.0:assertion");
 
                     serializer.Serialize(writer, request, namespaces);
 

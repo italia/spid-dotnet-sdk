@@ -16,10 +16,15 @@ namespace Developers.Italia.SPID.SAML
 
         public string UUID { get; set; }
 
+
         public string SPUID { get; set; }
+
+        public string SubjectNameId { get; set; }
 
         public string SessionId { get; set; }
 
+        public DateTime SessionIdExpireDate { get; set; }
+              
         public SpidUserData User { get; set; }
 
         public SamlRequestStatus RequestStatus { get; set; }
@@ -27,8 +32,7 @@ namespace Developers.Italia.SPID.SAML
         public int ErrorNumber { get; set; }
 
         public string ErrorDescription { get; set; }
-                
-        public DateTime SessionIdExpireDate { get; set; }
+
 
         public AuthResponse()
         {
@@ -135,7 +139,16 @@ namespace Developers.Italia.SPID.SAML
                             if (item.GetType()==typeof(AssertionType)) {
                                 AssertionType ass = (AssertionType)item;
                                 this.SessionIdExpireDate = (ass.Conditions.NotOnOrAfter != null) ? ass.Conditions.NotOnOrAfter : DateTime.Now.AddMinutes(20);
-                               
+
+                                foreach (var subitem in ass.Subject.Items)
+                                {
+                                    if (subitem.GetType() == typeof(NameIDType))
+                                    {
+                                        NameIDType nameId = (NameIDType)subitem;
+                                        this.SubjectNameId = nameId.Value; //.Replace("SPID-","");
+                                    }
+                                }
+
                                 foreach (var assItem in ass.Items)
                                 {
                                     if (assItem.GetType() == typeof(AuthnStatementType))

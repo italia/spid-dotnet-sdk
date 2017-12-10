@@ -6,10 +6,11 @@ using System.Xml;
 
 namespace Developers.Italia.SPID.SAML
 {
-#if NETSTANDARD2
     internal static class RSAKeyExtensions
     {
-       
+
+
+        #region XML
 
         public static void FromXmlString(this RSA rsa, string xmlString)
         {
@@ -58,7 +59,6 @@ namespace Developers.Italia.SPID.SAML
                   parameters.D != null ? Convert.ToBase64String(parameters.D) : null);
         }
 
-
+        #endregion
     }
-#endif
 }

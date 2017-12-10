@@ -1,0 +1,61 @@
+﻿@if (Context.User.Identity.IsAuthenticated)
+{
+    <form asp-area="" asp-controller="Spid" asp-action="Logout" method="post" id="logoutForm" class="navbar-right">
+        <ul class="nav navbar-nav navbar-right">
+            <li>
+                <a asp-area="" asp-controller="Manage" asp-action="Index" title="Manage">Hello @Context.User.Identity.Name!</a>
+            </li>
+            <li>
+                <button type="submit" class="btn btn-link navbar-btn navbar-link">Log out</button>
+            </li>
+        </ul>
+    </form>
+}
+else
+{
+    <ul class="nav navbar-nav navbar-right">
+
+        <li id="spid">
+            <!-- AGID - SPID IDP BUTTON MEDIUM "ENTRA CON SPID" * begin * -->
+            <a href="#" class="italia-it-button italia-it-button-size-m button-spid" spid-idp-button="#spid-idp-button-medium-get" aria-haspopup="true" aria-expanded="false">
+                <span class="italia-it-button-icon"><img src="/images/spid-ico-circle-bb.svg" onerror="this.src='/images/spid-ico-circle-bb.png'; this.onerror=null;" alt="" /></span>
+                <span class="italia-it-button-text">Entra con SPID</span>
+            </a>
+            <div id="spid-idp-button-medium-get" class="spid-idp-button spid-idp-button-tip spid-idp-button-relative">
+                <ul id="spid-idp-list-medium-root-get" class="spid-idp-button-menu" aria-labelledby="spid-idp">
+                    <li class="spid-idp-button-link" data-idp="arubaid">
+                        <a href="/spid/login?providerId=ArubaID"><span class="spid-sr-only">Aruba ID</span><img src="/images/spid-idp-arubaid.svg" onerror="this.src='/images/spid-idp-arubaid.png'; this.onerror=null;" alt="Aruba ID" /></a>
+                    </li>
+                    <li class="spid-idp-button-link" data-idp="infocertid">
+                        <a href="/spid/login?providerId=InfocertID"><span class="spid-sr-only">Infocert ID</span><img src="/images/spid-idp-infocertid.svg" onerror="this.src='/images/spid-idp-infocertid.png'; this.onerror=null;" alt="Infocert ID" /></a>
+                    </li>
+                    <li class="spid-idp-button-link" data-idp="namirialid">
+                        <a href="/spid/login?providerId=NamirialID"><span class="spid-sr-only">Namirial ID</span><img src="/images/spid-idp-namirialid.svg" onerror="this.src='/images/spid-idp-namirialid.png'; this.onerror=null;" alt="Namirial ID" /></a>
+                    </li>
+                    <li class="spid-idp-button-link" data-idp="posteid">
+                        <a href="/spid/login?providerId=PosteID"><span class="spid-sr-only">Poste ID</span><img src="/images/spid-idp-posteid.svg" onerror="this.src='/images/spid-idp-posteid.png'; this.onerror=null;" alt="Poste ID" /></a>
+                    </li>
+                    <li class="spid-idp-button-link" data-idp="spiditalia">
+                        <a href="/spid/login?providerId=RegisterID"><span class="spid-sr-only">SPIDItalia Register.it</span><img src="/images/spid-idp-spiditalia.svg" onerror="this.src='/images/spid-idp-spiditalia.png'; this.onerror=null;" alt="SpidItalia" /></a>
+                    </li>
+                    <li class="spid-idp-button-link" data-idp="sielteid">
+                        <a href="/spid/login?providerId=SielteID"><span class="spid-sr-only">Sielte ID</span><img src="/images/spid-idp-sielteid.svg" onerror="this.src='/images/spid-idp-sielteid.png'; this.onerror=null;" alt="Sielte ID" /></a>
+                    </li>
+                    <li class="spid-idp-button-link" data-idp="timid">
+                        <a href="/spid/login?providerId=TimID"><span class="spid-sr-only">Tim ID</span><img src="/images/spid-idp-timid.svg" onerror="this.src='/images/spid-idp-timid.png'; this.onerror=null;" alt="Tim ID" /></a>
+                    </li>
+                    <li class="spid-idp-support-link">
+                        <a href="https://www.spid.gov.it">Maggiori informazioni</a>
+                    </li>
+                    <li class="spid-idp-support-link">
+                        <a href="https://www.spid.gov.it/richiedi-spid">Non hai SPID?</a>
+                    </li>
+                    <li class="spid-idp-support-link">
+                        <a href="https://www.spid.gov.it/serve-aiuto">Serve aiuto?</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- AGID - SPID IDP BUTTON MEDIUM "ENTRA CON SPID" * end * -->
+        </li>
+    </ul>
+}

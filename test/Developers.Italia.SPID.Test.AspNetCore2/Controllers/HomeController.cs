@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Hosting;
 using System.Xml.Serialization;
 using System.IO;
 using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Developers.Italia.SPID.Test.AspNetCore2.Controllers
 {
@@ -24,6 +25,11 @@ namespace Developers.Italia.SPID.Test.AspNetCore2.Controllers
         }
         public IActionResult Index()
         {
+            var spidCookie = Request.Cookies["SPID_COOKIE"];
+             
+            if (spidCookie != null) {
+                
+            }
             return View();
         }
 
@@ -34,7 +40,15 @@ namespace Developers.Italia.SPID.Test.AspNetCore2.Controllers
             return View();
         }
 
-       
+        [Authorize]
+        public IActionResult Contact()
+        {
+            ViewData["Message"] = "Your application contact page.";
+
+            return View();
+        }
+
+
         // GET: Home/Spid/5
         public ActionResult Spid(int id)
         {

@@ -1,0 +1,18 @@
+version: '3'
+
+services:
+  spid_aspnet_core_2_0:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - "80"
+  spid_aspnet_core_2_0_noidentity:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - "80"
+networks:
+  default:
+    external:
+      name: nat
+

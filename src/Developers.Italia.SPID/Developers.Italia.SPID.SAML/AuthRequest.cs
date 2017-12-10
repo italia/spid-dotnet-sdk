@@ -146,7 +146,7 @@ namespace Developers.Italia.SPID.SAML
             request.Version = Options.Version;
 
             //Unique UUID
-            request.ID = "_" +this.Options.UUID;
+            request.ID = "_" + this.Options.UUID;
 
             //Request DateTime
             request.IssueInstant = requestDatTime;
@@ -186,7 +186,7 @@ namespace Developers.Italia.SPID.SAML
                 Format = "urn:oasis:names:tc:SAML:2.0:nameid-format:entity",
                 Value = Options.SPUID,
                 NameQualifier = Options.SPUID
-
+                
             };
 
             request.NameIDPolicy = new NameIDPolicyType()
@@ -199,9 +199,9 @@ namespace Developers.Italia.SPID.SAML
             request.Conditions = new ConditionsType()
             {
                 NotBefore = requestDatTime.Add(this.Options.NotBefore),
-                NotBeforeSpecified=true,
+                NotBeforeSpecified = true,
                 NotOnOrAfter = requestDatTime.Add(this.Options.NotOnOrAfter),
-                NotOnOrAfterSpecified=true
+                NotOnOrAfterSpecified = true
             };
 
             RequestedAuthnContextType requestedAuthn = new RequestedAuthnContextType
@@ -240,7 +240,7 @@ namespace Developers.Italia.SPID.SAML
             }
             result = samlString;
 
-            
+
             return result;
 
         }
@@ -266,7 +266,7 @@ namespace Developers.Italia.SPID.SAML
 #if NETSTANDARD1_0
             xmlPrivateKey = RSAKeyExtensions.ToXmlString((RSA)cert.PrivateKey, true);
 #endif
-           
+
 
             return GetSignedAuthRequest(cert, xmlPrivateKey);
         }
@@ -289,7 +289,7 @@ namespace Developers.Italia.SPID.SAML
 
             doc.DocumentElement.InsertAfter(signature, doc.DocumentElement.ChildNodes[0]);
 
-            result =  doc.OuterXml;
+            result = doc.OuterXml;
 
 
             return result;
@@ -328,7 +328,7 @@ namespace Developers.Italia.SPID.SAML
             XmlDocument doc = new XmlDocument();
             doc.LoadXml(result);
 
-            XmlElement signature = SignXmlDocument(doc, cert,xmlPrivateKey);
+            XmlElement signature = SignXmlDocument(doc, cert, xmlPrivateKey);
 
             doc.DocumentElement.InsertAfter(signature, doc.DocumentElement.ChildNodes[0]);
 
@@ -347,15 +347,11 @@ namespace Developers.Italia.SPID.SAML
         /// <returns></returns>
         private XmlElement SignXmlDocument(XmlDocument doc, X509Certificate2 cert)
         {
-            string xmlPrivateKey="";
             //Full Framework Only
-#if FULLFRAMEWORK
-            xmlPrivateKey = cert.PrivateKey.ToXmlString(true);
-#endif
+            //var xmlPrivateKey = cert.PrivateKey.ToXmlString(true);
             //.Net Standard Extension
-#if NETSTANDARD2
-            xmlPrivateKey = RSAKeyExtensions.ToXmlString((RSA)cert.PrivateKey, true);
-#endif
+            var xmlPrivateKey = RSAKeyExtensions.ToXmlString((RSA)cert.PrivateKey, true);
+
             return SignXmlDocument(doc, cert, xmlPrivateKey);
         }
 
@@ -369,16 +365,15 @@ namespace Developers.Italia.SPID.SAML
         /// <returns></returns>
         private XmlElement SignXmlDocument(XmlDocument doc, X509Certificate2 cert, string xmlPrivateKey)
         {
+
+
+
             var key = new RSACryptoServiceProvider(new CspParameters(24));
             key.PersistKeyInCsp = false;
             //Full Framework Only
-#if FULLFRAMEWORK
-            key.FromXmlString(xmlPrivateKey);
-#endif
+            //key.FromXmlString(xmlPrivateKey);
             //.Net Standard Extension
-#if NETSTANDARD2
             RSAKeyExtensions.FromXmlString(key, xmlPrivateKey);
-#endif
 
             SignedXml signedXml = new SignedXml(doc);
             signedXml.SigningKey = key;

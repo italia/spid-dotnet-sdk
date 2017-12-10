@@ -6,6 +6,11 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Text;
 using Newtonsoft.Json;
+using Microsoft.AspNetCore.Identity;
+using System.Security.Claims;
+using System.Security.Principal;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace Developers.Italia.SPID.Test.AspNetCore2.Controllers
 {
@@ -21,7 +26,7 @@ namespace Developers.Italia.SPID.Test.AspNetCore2.Controllers
         // POST: SpidSaml/ACS
         [HttpPost]
 
-        public ActionResult ACS(IFormCollection collection)
+        public async Task<ActionResult> ACS(IFormCollection collection)
         {
             string samlResponse = "";
             string redirect = "";
@@ -37,6 +42,35 @@ namespace Developers.Italia.SPID.Test.AspNetCore2.Controllers
             catch (Exception ex)
             {
                 //TODO LOG
+            }
+            if ( resp.RequestStatus== SAML.AuthResponse.SamlRequestStatus.Success)
+            {
+                CookieOptions options = new CookieOptions();
+                options.Expires = resp.SessionIdExpireDate;
+                Response.Cookies.Delete("SPID_COOKIE");
+                Response.Cookies.Append("SPID_COOKIE",JsonConvert.SerializeObject(resp), options);
+
+                var claims = new List<Claim> {
+                        new Claim(ClaimTypes.Name, resp.User.Name??"", ClaimValueTypes.String, resp.Issuer),
+                        new Claim(ClaimTypes.Surname, resp.User.FamilyName??"", ClaimValueTypes.String, resp.Issuer),
+                        new Claim(ClaimTypes.Email, resp.User.Email??"", ClaimValueTypes.String, resp.Issuer),
+                        new Claim("FiscalNumber", resp.User.FiscalNumber??"", ClaimValueTypes.String, resp.Issuer),
+                        new Claim("SessionId", resp.SessionId??"", ClaimValueTypes.String, resp.Issuer),
+                    };
+
+                var userIdentity = new ClaimsIdentity(new GenericIdentity(resp.User.Name,"SPID"), claims);
+
+                var userPrincipal = new ClaimsPrincipal(userIdentity);
+
+           
+
+                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, userPrincipal,
+                    new Microsoft.AspNetCore.Authentication.AuthenticationProperties
+                    {
+                        ExpiresUtc = DateTime.UtcNow.AddMinutes(20),
+                        IsPersistent = false,
+                        AllowRefresh = false
+                    });
             }
 
             ViewData["SAMLResponse"] = JsonConvert.SerializeObject(resp);
