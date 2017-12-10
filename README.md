@@ -55,10 +55,9 @@ Per l'uso in produzione, si consiglia di utilizzare la libreria aggiungendo al p
 
 ### Web App
 
-Per quanto riguarda la Web app abbiamo scritto un codice il più pulito e commentato possibile (ma si puo sempre migliorare...) in modo da farla diventare una reference app che documenti in modo pratico l'uso dell'SDK.
-Inoltre è stata aggiunta la possibilità di richiedere il logout, una volta che si è stati autenticati.
+Per quanto riguarda le Web app (ASP.NET e ASP.NET Core 2.0) abbiamo cercato di scrivere un codice il più pulito e commentato possibile (ma si puo sempre migliorare...) in modo da farla diventare una reference app che documenti in modo pratico l'uso della libreria di autenticazione.
 
-Per un tour visivo del funzionamento dell'app si rimanda alla [documentazione](https://github.com/mrcarbook/spid-dotnet-sdk/blob/sdk-core/Docs/Web%20App%20(Classic)/Documentazione%20Wep%20App.pdf)
+Per un tour visivo del funzionamento dell'app si rimanda alla [documentazione](https://github.com/ncarandini/spid-dotnet-sdk/blob/master/Docs/Web%20App%20(Classic)/Documentazione%20Wep%20App.pdf)
 
 # Sviluppi futuri
 
@@ -71,6 +70,8 @@ Per un tour visivo del funzionamento dell'app si rimanda alla [documentazione](h
 - Utilizzo del servizio locale di test hostato su Docker container Linux.
 
 - Test dell'applicazione Web ASP.NET Core 2.0 su Docker container Linux.
+
+- Scrittura della documentazione, al momento (davvero troppo) minimale.
 
 # Build and Test
 
