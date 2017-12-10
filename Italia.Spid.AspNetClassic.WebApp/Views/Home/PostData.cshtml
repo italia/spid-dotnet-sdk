@@ -1,0 +1,37 @@
+﻿
+@{
+    ViewBag.Title = "PostData";
+}
+
+
+
+<div class="row">
+    <div style="height:400px;">
+        <form id="spidform" action="@ViewData["action"]" method="post">
+            <input type="text" hidden="hidden" name="SAMLRequest" value="@ViewData["data"]" />
+            @*<input type="submit" title ="SUBMIT" value="SUBMIT" />*@
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+
+    <script>
+        function isIEVersionNine() {
+            var myNav = navigator.userAgent.toLowerCase();
+            return (myNav.indexOf('msie') != -1) ? (parseInt(myNav.split('msie')[1]) > 8 ? true : false) : true;
+        }
+        if (isIEVersionNine()) {
+          //  waitingDialog.show('Attendere Prego....');
+            $('#spidform').submit();
+        }
+        else
+            document.getElementById("spidform").submit();
+    </script>
+}
+
+
+
+
+
+

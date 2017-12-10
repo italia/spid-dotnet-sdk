@@ -1,0 +1,15 @@
+﻿
+@{
+    ViewBag.Title = "UserData";
+
+    Dictionary<string, string> userInfo = (Dictionary<string, string>)ViewData["UserInfo"];
+}
+
+<h2>Dati Utenti SPID</h2>
+
+<div>
+    @foreach (var item in userInfo)
+    {
+        <h6><b>@item.Key</b></h6> <span>@item.Value</span> 
+    }
+</div>

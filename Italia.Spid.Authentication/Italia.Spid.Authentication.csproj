@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2.0;net461</TargetFrameworks>
+    <Authors>Nicolò Carandini</Authors>
+    <Company>TPCWare</Company>
+    <Description>SPID authentication, SAML2 compliant.</Description>
+    <Copyright>Copyright (c) 2017 TEAM PER LA TRASFORMAZIONE DIGITALE</Copyright>
+    <PackageReleaseNotes>First release 0.1 just to check package creation and publishing</PackageReleaseNotes>
+    <PackageTags>spid authentication</PackageTags>
+    <PackageLicenseUrl>https://github.com/ncarandini/spid-dotnet-sdk/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageProjectUrl>https://github.com/ncarandini/spid-dotnet-sdk</PackageProjectUrl>
+    <Version>0.1.0</Version>
+    <PackageIconUrl>https://raw.githubusercontent.com/ncarandini/spid-dotnet-sdk/master/ArtWorks/SPID.png</PackageIconUrl>
+    <RepositoryUrl>https://github.com/ncarandini/spid-dotnet-sdk</RepositoryUrl>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Security.Cryptography.Xml" Version="4.4.0" />
+  </ItemGroup>
+
+</Project>
