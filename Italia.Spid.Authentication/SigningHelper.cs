@@ -54,8 +54,7 @@ namespace Italia.Spid.Authentication
                 throw new FieldAccessException("Unable to find private key in the X509Certificate", ex);
             }
 
-            var exportedKeyMaterial = certificate.PrivateKey.ToXmlString(true);
-
+#if NET461
             var key = new RSACryptoServiceProvider(new CspParameters(24))
             {
                 PersistKeyInCsp = false
@@ -63,11 +62,17 @@ namespace Italia.Spid.Authentication
 
             key.FromXmlString(privateKey.ToXmlString(true));
 
-
             SignedXml signedXml = new SignedXml(doc)
             {
                 SigningKey = key
             };
+#else
+            SignedXml signedXml = new SignedXml(doc)
+            {
+                SigningKey = privateKey // key
+            };
+#endif
+
             signedXml.SignedInfo.SignatureMethod = "http://www.w3.org/2001/04/xmldsig-more#rsa-sha256";
             signedXml.SignedInfo.CanonicalizationMethod = SignedXml.XmlDsigExcC14NTransformUrl;
 

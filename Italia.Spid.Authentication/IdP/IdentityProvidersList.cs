@@ -125,7 +125,7 @@ namespace Italia.Spid.Authentication.IdP
                 throw new ArgumentNullException("The idpName parameter can't be null.");
             }
 
-            IdentityProvider idp = IdpList.FirstOrDefault(x => x.ProviderName == idpName);
+            IdentityProvider idp = IdpList?.FirstOrDefault(x => x.ProviderName == idpName);
 
             if (idp == null)
             {
