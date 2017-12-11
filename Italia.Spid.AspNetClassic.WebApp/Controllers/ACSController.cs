@@ -88,25 +88,9 @@ namespace Italia.Spid.AspNet.WebApp.Controllers
                      Email =  SpidUserInfoHelper.Email(idpAuthnResponse.SpidUserInfo)
                 };
 
-                // necessario per il checkSPID
-                System.Web.HttpContext.Current.Application.Lock();
-
-                List<AppUser> allAuthenticatedUsers = (List<AppUser>)System.Web.HttpContext.Current.Application["Users"];
-
-                if (allAuthenticatedUsers == null)
-
-                    allAuthenticatedUsers =  new List<AppUser>();
-
-                allAuthenticatedUsers.Add(appUser);
-
-                System.Web.HttpContext.Current.Application["Users"] = allAuthenticatedUsers;
-
-                System.Web.HttpContext.Current.Application.UnLock();
-
                 Session.Add("AppUser", appUser);
 
                 ViewData["UserInfo"] = idpAuthnResponse.SpidUserInfo;
-
                 return View("UserData");
             }
 
