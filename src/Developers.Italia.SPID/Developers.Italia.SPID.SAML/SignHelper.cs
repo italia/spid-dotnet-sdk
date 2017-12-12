@@ -20,7 +20,7 @@ namespace Developers.Italia.SPID.SAML
         {
             string xmlPrivateKey = "";
             //Full Framework Only
-#if FULLFRAMEWORK
+#if NETFULL
             xmlPrivateKey = cert.PrivateKey.ToXmlString(true);
 #else
             //.Net Standard Extension
@@ -43,7 +43,7 @@ namespace Developers.Italia.SPID.SAML
             var key = new RSACryptoServiceProvider(new CspParameters(24));
             key.PersistKeyInCsp = false;
             //Full Framework Only
-#if FULLFRAMEWORK
+#if NETFULL
             key.FromXmlString(xmlPrivateKey);
 
 #else
@@ -80,8 +80,6 @@ namespace Developers.Italia.SPID.SAML
 
     internal static class RSAKeyExtensions
     {
-
-
         #region XML
 
         public static void FromXmlString(this RSA rsa, string xmlString)

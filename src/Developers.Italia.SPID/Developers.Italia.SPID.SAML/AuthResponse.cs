@@ -3,13 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
-//#if NET35 
-//using System.IdentityModel.Claims;
-//#elif NET40
-//using System.IdentityModel.Claims;
-//#else
-using System.Security.Claims;
-//#endif
 
 using System.Text;
 using System.Xml;
@@ -45,40 +38,44 @@ namespace Developers.Italia.SPID.SAML
             RequestStatus= SamlRequestStatus.GenericError;
         }
 
-        public List<Claim> GetClaims() {
-            List<Claim> claims = new List<Claim>();
+        public Dictionary<string, string> GetClaims()
+        {
+            Dictionary<string, string> claims = new Dictionary<string, string>();
 
-            claims.Add(new Claim("SpidCode", this.User.SpidCode ?? "", ClaimValueTypes.String, this.Issuer));
 
-            claims.Add(new Claim("Name", this.User.Name ?? "", ClaimValueTypes.String, this.Issuer));
-            claims.Add(new Claim("FamilyName", this.User.FamilyName ?? "", ClaimValueTypes.String, this.Issuer));
+            claims.Add("SpidCode", this.User.SpidCode ?? "");
 
-            claims.Add(new Claim("PlaceOfBirth", this.User.PlaceOfBirth ?? "", ClaimValueTypes.String, this.Issuer));
-            claims.Add(new Claim("CountyOfBirth", this.User.CountyOfBirth ?? "", ClaimValueTypes.String, this.Issuer));
-            claims.Add(new Claim("DateOfBirth", this.User.DateOfBirth ?? "", ClaimValueTypes.String, this.Issuer));
+            claims.Add("Name", this.User.Name ?? "");
+            claims.Add("FamilyName", this.User.FamilyName ?? "");
 
-            claims.Add(new Claim("Gender", this.User.Gender ?? "", ClaimValueTypes.String, this.Issuer));
+            claims.Add("PlaceOfBirth", this.User.PlaceOfBirth ?? "");
+            claims.Add("CountyOfBirth", this.User.CountyOfBirth ?? "");
+            claims.Add("DateOfBirth", this.User.DateOfBirth ?? "");
 
-            claims.Add(new Claim("CompanyName", this.User.CompanyName ?? "", ClaimValueTypes.String, this.Issuer));
-            claims.Add(new Claim("RegisteredOffice", this.User.RegisteredOffice ?? "", ClaimValueTypes.String, this.Issuer));
-            claims.Add(new Claim("FiscalNumber", this.User.FiscalNumber ?? "", ClaimValueTypes.String, this.Issuer));
-            claims.Add(new Claim("IvaCode", this.User.IvaCode ?? "", ClaimValueTypes.String, this.Issuer));
+            claims.Add("Gender", this.User.Gender ?? "");
 
-            claims.Add(new Claim("IdCard", this.User.IdCard ?? "", ClaimValueTypes.String, this.Issuer));
-            claims.Add(new Claim("ExpirationDate", this.User.ExpirationDate ?? "", ClaimValueTypes.String, this.Issuer));
+            claims.Add("CompanyName", this.User.CompanyName ?? "");
+            claims.Add("RegisteredOffice", this.User.RegisteredOffice ?? "");
+            claims.Add("FiscalNumber", this.User.FiscalNumber ?? "");
+            claims.Add("IvaCode", this.User.IvaCode ?? "");
 
-            claims.Add(new Claim("Email", this.User.Email ?? "", ClaimValueTypes.String, this.Issuer));
-            claims.Add(new Claim("Address", this.User.Address ?? "", ClaimValueTypes.String, this.Issuer));
-            claims.Add(new Claim("DigitalAddress", this.User.DigitalAddress ?? "", ClaimValueTypes.String, this.Issuer));
-            claims.Add(new Claim("MobilePhone", this.User.MobilePhone ?? "", ClaimValueTypes.String, this.Issuer));
+            claims.Add("IdCard", this.User.IdCard ?? "");
+            claims.Add("ExpirationDate", this.User.ExpirationDate ?? "");
 
-            claims.Add(new Claim("SessionId", this.SessionId ?? "", ClaimValueTypes.String, this.Issuer));
-            claims.Add(new Claim("SessionIdExpireDate", this.SessionIdExpireDate.ToString(), ClaimValueTypes.String, this.Issuer));
-            claims.Add(new Claim("SubjectNameId", this.SubjectNameId ?? "", ClaimValueTypes.String, this.Issuer));
- 
+            claims.Add("Email", this.User.Email ?? "");
+            claims.Add("Address", this.User.Address ?? "");
+            claims.Add("DigitalAddress", this.User.DigitalAddress ?? "");
+            claims.Add("MobilePhone", this.User.MobilePhone ?? "");
+
+            claims.Add("SessionId", this.SessionId ?? "");
+            claims.Add("SessionIdExpireDate", this.SessionIdExpireDate.ToString());
+            claims.Add("SubjectNameId", this.SubjectNameId ?? "");
+
             return claims;
 
         }
+
+
         public void Deserialize(string samlResponse)
         {
             ResponseType response = new ResponseType();

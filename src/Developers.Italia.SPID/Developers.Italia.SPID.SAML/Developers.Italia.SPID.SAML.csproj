@@ -2,7 +2,7 @@
 
   <PropertyGroup>
    <!-- <TargetFrameworks>netstandard1.0;netstandard1.1;netstandard1.2;netstandard1.3;netstandard1.4;netstandard1.5;netstandard1.6;netstandard2.0;net35;net40;net45;net451;net452;net46;net461;net462;net47;</TargetFrameworks>-->
-    <TargetFrameworks>netstandard2.0;net45;net451;net452;net46;net461;net462;net47;</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;net35;net40;net45;net451;net452;net46;net461;net462;net47;</TargetFrameworks>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Company>Developers Italia</Company>
     <Authors>Luca Congiu</Authors>
@@ -20,16 +20,13 @@
   </PropertyGroup>
 
   <!-- Conditionally obtain references for the .NET Framework target -->
-  <!--
   <ItemGroup Condition=" '$(TargetFramework)' == 'net35' ">
     <Reference Include="System.Security" />
-	 <Reference Include="System.IdentityModel" />
   </ItemGroup>
   <ItemGroup Condition=" '$(TargetFramework)' == 'net40' ">
     <Reference Include="System.Security" />
-  <Reference Include="System.IdentityModel" />
   </ItemGroup>
--->
+
   <ItemGroup Condition=" '$(TargetFramework)' == 'net45' ">
     <Reference Include="System.Security" />
   </ItemGroup>
@@ -108,12 +105,10 @@
   <PropertyGroup Condition=" '$(TargetFramework)' == 'net45'">
     <DefineConstants>NET45;NETFULL</DefineConstants>
   </PropertyGroup>
-  <!--
   <PropertyGroup Condition=" '$(TargetFramework)' == 'net40'">
     <DefineConstants>NET40;NETFULL</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(TargetFramework)' == 'net35'">
     <DefineConstants>NET35;NETFULL</DefineConstants>
   </PropertyGroup>
--->
 </Project>

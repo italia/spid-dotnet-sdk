@@ -95,7 +95,7 @@ namespace SPID_ASPNET_CORE_2_0_NoIdentity.Controllers
                 SPUID = spidProviderConfiguration.ServiceProviderId,
                 UUID = Guid.NewGuid().ToString(),
                 SessionId = sessionId,
-                SubjectNameId=nameId
+                SubjectNameId = nameId
             };
 
             LogoutRequest request = new LogoutRequest(requestOptions);
@@ -117,46 +117,64 @@ namespace SPID_ASPNET_CORE_2_0_NoIdentity.Controllers
 
         public async Task<IActionResult> Login([FromQuery] string providerId)
         {
-            var spidProviderConfiguration = new SpidProviderConfiguration();
-            _configuration.GetSection("Spid:" + providerId).Bind(spidProviderConfiguration);
 
-            string spidAuthRequest = GetSpidAuthRequest(spidProviderConfiguration);
-
-            string redirectUri = Request.Headers["Referer"].ToString();// Request.QueryString["RedirectUrl"];
-            Dictionary<string, string> parameters = new Dictionary<string, string>();
-
-            parameters.Add("SAMLRequest", System.Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(spidAuthRequest)));
-            parameters.Add("RelayState", System.Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(redirectUri)));
-
-
-            var inputs = new StringBuilder();
-
-
-            foreach (var parameter in parameters)
+            if (string.IsNullOrEmpty(providerId))
             {
-                var name = (parameter.Key);
-                var value = (parameter.Value);
-
-                var input = string.Format(CultureInfo.InvariantCulture, InputTagFormat, name, value);
-                inputs.AppendLine(input);
+                return View("Login");
             }
+            else
+            {
+                
+                var spidProviderConfiguration = new SpidProviderConfiguration();
+                _configuration.GetSection("Spid:" + providerId).Bind(spidProviderConfiguration);
+
+                if (string.IsNullOrEmpty(spidProviderConfiguration.IdentityProviderName)){
+                    return View("Login");
+                }
+                else
+                {
+                    Response.Cookies.Delete("SpidIdp");
+                    Response.Cookies.Append("SpidIdp", providerId);
+
+
+                    string spidAuthRequest = GetSpidAuthRequest(spidProviderConfiguration);
+
+                    string redirectUri = Request.Headers["Referer"].ToString();// Request.QueryString["RedirectUrl"];
+                    Dictionary<string, string> parameters = new Dictionary<string, string>();
+
+                    parameters.Add("SAMLRequest", System.Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(spidAuthRequest)));
+                    parameters.Add("RelayState", System.Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(redirectUri)));
+
+
+                    var inputs = new StringBuilder();
+
+
+                    foreach (var parameter in parameters)
+                    {
+                        var name = (parameter.Key);
+                        var value = (parameter.Value);
+
+                        var input = string.Format(CultureInfo.InvariantCulture, InputTagFormat, name, value);
+                        inputs.AppendLine(input);
+                    }
 
 
 
-            var content = string.Format(CultureInfo.InvariantCulture, HtmlFormFormat, spidProviderConfiguration.IdentityProviderLoginPostUrl, inputs);
-            var buffer = Encoding.UTF8.GetBytes(content);
+                    var content = string.Format(CultureInfo.InvariantCulture, HtmlFormFormat, spidProviderConfiguration.IdentityProviderLoginPostUrl, inputs);
+                    var buffer = Encoding.UTF8.GetBytes(content);
 
-            Response.ContentLength = buffer.Length;
-            Response.ContentType = "text/html;charset=UTF-8";
+                    Response.ContentLength = buffer.Length;
+                    Response.ContentType = "text/html;charset=UTF-8";
 
-            // Emit Cache-Control=no-cache to prevent client caching.
-            Response.Headers[HeaderNames.CacheControl] = "no-cache";
-            Response.Headers[HeaderNames.Pragma] = "no-cache";
-            Response.Headers[HeaderNames.Expires] = "-1";
+                    // Emit Cache-Control=no-cache to prevent client caching.
+                    Response.Headers[HeaderNames.CacheControl] = "no-cache";
+                    Response.Headers[HeaderNames.Pragma] = "no-cache";
+                    Response.Headers[HeaderNames.Expires] = "-1";
 
-            await Response.Body.WriteAsync(buffer, 0, buffer.Length);
-            return Ok();
-            //return View();
+                    await Response.Body.WriteAsync(buffer, 0, buffer.Length);
+                    return Ok();
+                }
+            }
         }
 
 
@@ -185,13 +203,22 @@ namespace SPID_ASPNET_CORE_2_0_NoIdentity.Controllers
                 //Response.Cookies.Delete("SPID_COOKIE");
                 //Response.Cookies.Append("SPID_COOKIE", JsonConvert.SerializeObject(resp), options);
 
-                var claims = resp.GetClaims();
-                        
-
                 var scheme = "SPIDCookie"; //CookieAuthenticationDefaults.AuthenticationScheme
 
+                var claims = resp.GetClaims();
 
-                var identity = new ClaimsIdentity(claims, scheme);
+                var identityClaims = new List<Claim>();
+
+                foreach (var item in claims)
+                {
+                    identityClaims.Add(new Claim(item.Key, item.Value, ClaimValueTypes.String, resp.Issuer));
+                }
+                identityClaims.Add(new Claim(ClaimTypes.Name, claims["Name"], ClaimValueTypes.String, resp.Issuer));
+                identityClaims.Add(new Claim(ClaimTypes.Surname, claims["FamilyName"], ClaimValueTypes.String, resp.Issuer));
+                identityClaims.Add(new Claim(ClaimTypes.Email, claims["Email"], ClaimValueTypes.String, resp.Issuer));
+
+                var identity = new ClaimsIdentity(identityClaims, scheme);
+
                 var principal = new ClaimsPrincipal(identity);
 
                 HttpContext.User = principal;
@@ -205,10 +232,10 @@ namespace SPID_ASPNET_CORE_2_0_NoIdentity.Controllers
                        });
 
 
-              
+
             }
 
-          if (string.IsNullOrEmpty(redirect)) { redirect = "/"; }
+            if (string.IsNullOrEmpty(redirect)) { redirect = "/"; }
 
             return Redirect(redirect);
         }
@@ -218,11 +245,11 @@ namespace SPID_ASPNET_CORE_2_0_NoIdentity.Controllers
             var scheme = "SPIDCookie";
             await AuthenticationHttpContextExtensions.SignOutAsync(HttpContext, scheme);
 
-            providerId = "posteid";
+            providerId = Request.Cookies["SpidIdp"];
+
             var spidProviderConfiguration = new SpidProviderConfiguration();
             _configuration.GetSection("Spid:" + providerId).Bind(spidProviderConfiguration);
-
-
+            
             string spidLogoutRequest = GetSpidLogoutRequest(spidProviderConfiguration);
 
             string redirectUri = Request.Headers["Referer"].ToString();// Request.QueryString["RedirectUrl"];
@@ -268,11 +295,12 @@ namespace SPID_ASPNET_CORE_2_0_NoIdentity.Controllers
         {
             string samlResponse = "";
 
+
             LogoutResponse resp = new LogoutResponse();
             try
             {
                 samlResponse = Encoding.UTF8.GetString(Convert.FromBase64String(collection["SAMLResponse"]));
-           
+
                 resp.Deserialize(samlResponse);
 
             }
@@ -286,8 +314,8 @@ namespace SPID_ASPNET_CORE_2_0_NoIdentity.Controllers
             //   //OK
             //};
 
-             
-          
+
+
             return Redirect("/");
         }
     }
