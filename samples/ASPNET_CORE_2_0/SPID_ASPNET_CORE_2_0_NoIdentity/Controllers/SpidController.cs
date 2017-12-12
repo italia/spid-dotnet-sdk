@@ -104,11 +104,11 @@ namespace SPID_ASPNET_CORE_2_0_NoIdentity.Controllers
 
             if (string.IsNullOrEmpty(spidProviderConfiguration.ServiceProviderPrivatekey))
             {
-                result = request.GetSignedAuthRequest(signinCert);
+                result = request.GetSignedLogoutRequest(signinCert);
             }
             else
             {
-                result = request.GetSignedAuthRequest(signinCert, spidProviderConfiguration.ServiceProviderPrivatekey);
+                result = request.GetSignedLogoutRequest(signinCert, spidProviderConfiguration.ServiceProviderPrivatekey);
             }
 
             return result;
@@ -185,16 +185,8 @@ namespace SPID_ASPNET_CORE_2_0_NoIdentity.Controllers
                 //Response.Cookies.Delete("SPID_COOKIE");
                 //Response.Cookies.Append("SPID_COOKIE", JsonConvert.SerializeObject(resp), options);
 
-                var claims = new List<Claim> {
-                        new Claim(ClaimTypes.Name, resp.User.Name??"", ClaimValueTypes.String, resp.Issuer),
-                        new Claim(ClaimTypes.Surname, resp.User.FamilyName??"", ClaimValueTypes.String, resp.Issuer),
-                        new Claim(ClaimTypes.Email, resp.User.Email??"", ClaimValueTypes.String, resp.Issuer),
-                        new Claim("FiscalNumber", resp.User.FiscalNumber??"", ClaimValueTypes.String, resp.Issuer),
-                        new Claim("SessionId", resp.SessionId??"", ClaimValueTypes.String, resp.Issuer),
-                        new Claim("SubjectNameId", resp.SubjectNameId??"", ClaimValueTypes.String, resp.SubjectNameId)
+                var claims = resp.GetClaims();
                         
-
-            };
 
                 var scheme = "SPIDCookie"; //CookieAuthenticationDefaults.AuthenticationScheme
 
@@ -213,31 +205,12 @@ namespace SPID_ASPNET_CORE_2_0_NoIdentity.Controllers
                        });
 
 
-                //var identity = new GenericIdentity(resp.User.FiscalNumber, "Cookies");
-                //var userIdentity = new ClaimsIdentity(identity,claims, "Cookies", "SPID", "SpidUser");
-                //userIdentity.AddClaim(new Claim("http://schemas.microsoft.com/accesscontrolservice/2010/07/claims/identityprovider", "SPID", "http://www.w3.org/2001/XMLSchema#string"));
-
-                ////var userIdentity = new ClaimsIdentity(new GenericIdentity(resp.User.Name, "SPID"), claims,);
-
-                //var userPrincipal = new ClaimsPrincipal(userIdentity);
-
-                // HttpContext.User = userPrincipal;
-
-                //await HttpContext.SignInAsync("SPID", userPrincipal,
-                //    new AuthenticationProperties
-                //    {
-
-                //        ExpiresUtc = DateTime.UtcNow.AddMinutes(20),
-                //        IsPersistent = true,
-                //        AllowRefresh = false
-                //    });
+              
             }
 
-            //ViewData["SAMLResponse"] = JsonConvert.SerializeObject(resp);
-            //ViewData["RelayState"] = redirect;
-            //return View();
-            //return RedirectToAction("ExternalLoginCallback", "Account");
-            return RedirectToAction("Index", "Home");
+          if (string.IsNullOrEmpty(redirect)) { redirect = "/"; }
+
+            return Redirect(redirect);
         }
 
         public async Task<IActionResult> Logout(string providerId)
@@ -290,7 +263,33 @@ namespace SPID_ASPNET_CORE_2_0_NoIdentity.Controllers
             //return RedirectToAction("Index","Home");
         }
 
+        [HttpPost("/spidsaml/logout")]
+        public async Task<ActionResult> LogoutIdp(IFormCollection collection)
+        {
+            string samlResponse = "";
 
+            LogoutResponse resp = new LogoutResponse();
+            try
+            {
+                samlResponse = Encoding.UTF8.GetString(Convert.FromBase64String(collection["SAMLResponse"]));
+           
+                resp.Deserialize(samlResponse);
+
+            }
+            catch (Exception ex)
+            {
+                //TODO LOG
+            }
+
+            //if (resp.RequestStatus == AuthResponse.SamlRequestStatus.Success)
+            //{
+            //   //OK
+            //};
+
+             
+          
+            return Redirect("/");
+        }
     }
 
 

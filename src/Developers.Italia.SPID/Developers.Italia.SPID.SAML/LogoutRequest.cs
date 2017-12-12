@@ -108,10 +108,9 @@ namespace Developers.Italia.SPID.SAML
         public string SubjectNameId { get; set; }
 
     }
+
     /// <summary>
-    /// Authorization Request
-    /// Refer to spid-regole_tecniche_v1.pdf
-    /// 1.2.2.1. AUTHNREQUEST
+    /// Logout Request
     /// </summary>
     public class LogoutRequest
     {
@@ -121,11 +120,10 @@ namespace Developers.Italia.SPID.SAML
         /// <value>
         /// The options.
         /// </value>
-
         public LogoutRequestOptions Options { get; set; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="LogoutRequest"/> class.
+        /// Initializes a new instance of the <see cref="LogoutRequest" /> class.
         /// </summary>
         /// <param name="options">The options.</param>
         public LogoutRequest(LogoutRequestOptions options)
@@ -223,7 +221,7 @@ namespace Developers.Italia.SPID.SAML
         /// </summary>
         /// <param name="cert">The cert.</param>
         /// <returns></returns>
-        public string GetSignedAuthRequest(X509Certificate2 cert)
+        public string GetSignedLogoutRequest(X509Certificate2 cert)
         {
             var xmlPrivateKey = "";
 
@@ -241,7 +239,7 @@ namespace Developers.Italia.SPID.SAML
 #endif
 
 
-            return GetSignedAuthRequest(cert, xmlPrivateKey);
+            return GetSignedLogoutRequest(cert, xmlPrivateKey);
         }
 
         /// <summary>
@@ -250,7 +248,7 @@ namespace Developers.Italia.SPID.SAML
         /// <param name="cert">The cert.</param>
         /// <param name="privateKey">The private key.</param>
         /// <returns></returns>
-        public string GetSignedAuthRequest(X509Certificate2 cert, string xmlPrivateKey)
+        public string GetSignedLogoutRequest(X509Certificate2 cert, string xmlPrivateKey)
         {
 
             string result = GetLogoutRequest();
@@ -258,7 +256,7 @@ namespace Developers.Italia.SPID.SAML
             XmlDocument doc = new XmlDocument();
             doc.LoadXml(result);
 
-            XmlElement signature = SignXmlDocument(doc, cert, xmlPrivateKey);
+            XmlElement signature = SignHelper.SignXmlDocument(doc, cert, xmlPrivateKey);
 
             doc.DocumentElement.InsertAfter(signature, doc.DocumentElement.ChildNodes[0]);
 
@@ -272,36 +270,36 @@ namespace Developers.Italia.SPID.SAML
         /// <summary>
         /// Signs the authentication request.
         /// </summary>
-        /// <param name="authrequest">The authrequest.</param>
+        /// <param name="logoutRequest">The authrequest.</param>
         /// <param name="cert">The cert.</param>
         /// <returns></returns>
-        public string SignAuthRequest(string authrequest, X509Certificate2 cert)
+        public string SignLogoutRequest(string logoutRequest, X509Certificate2 cert)
         {
             //Full Framework Only
             //var xmlPrivateKey = cert.PrivateKey.ToXmlString(true);
             //.Net Standard Extension
             //var xmlPrivateKey = RSAKeyExtensions.ToXmlString((RSA)cert.PrivateKey, true);
             var xmlPrivateKey = "";
-            return SignAuthRequest(authrequest, cert, xmlPrivateKey);
+            return SignLogoutRequest(logoutRequest, cert, xmlPrivateKey);
         }
 
 
         /// <summary>
         /// Signs the authentication request.
         /// </summary>
-        /// <param name="authrequest">The authrequest.</param>
+        /// <param name="logoutRequest">The authrequest.</param>
         /// <param name="cert">The cert.</param>
         /// <param name="xmlPrivateKey">The XML private key.</param>
         /// <returns></returns>
-        public string SignAuthRequest(string authrequest, X509Certificate2 cert, string xmlPrivateKey)
+        public string SignLogoutRequest(string logoutRequest, X509Certificate2 cert, string xmlPrivateKey)
         {
 
-            string result = authrequest;
+            string result = logoutRequest;
 
             XmlDocument doc = new XmlDocument();
             doc.LoadXml(result);
 
-            XmlElement signature = SignXmlDocument(doc, cert, xmlPrivateKey);
+            XmlElement signature = SignHelper.SignXmlDocument(doc, cert, xmlPrivateKey);
 
             doc.DocumentElement.InsertAfter(signature, doc.DocumentElement.ChildNodes[0]);
 
@@ -312,68 +310,6 @@ namespace Developers.Italia.SPID.SAML
         }
 
 
-        /// <summary>
-        /// Signs the XML document.
-        /// </summary>
-        /// <param name="doc">The document.</param>
-        /// <param name="cert">The cert.</param>
-        /// <returns></returns>
-        private XmlElement SignXmlDocument(XmlDocument doc, X509Certificate2 cert)
-        {
-            string xmlPrivateKey = "";
-            //Full Framework Only
-#if FULLFRAMEWORK
-            xmlPrivateKey = cert.PrivateKey.ToXmlString(true);
-#endif
-            //.Net Standard Extension
-#if NETSTANDARD2
-            xmlPrivateKey = RSAKeyExtensions.ToXmlString((RSA)cert.PrivateKey, true);
-#endif
-            return SignXmlDocument(doc, cert, xmlPrivateKey);
-        }
-
-
-        /// <summary>
-        /// Signs the XML document.
-        /// </summary>
-        /// <param name="doc">The document.</param>
-        /// <param name="cert">The cert.</param>
-        /// <param name="xmlPrivateKey">The XML private key.</param>
-        /// <returns></returns>
-        private XmlElement SignXmlDocument(XmlDocument doc, X509Certificate2 cert, string xmlPrivateKey)
-        {
-            var key = new RSACryptoServiceProvider(new CspParameters(24));
-            key.PersistKeyInCsp = false;
-            //Full Framework Only
-#if FULLFRAMEWORK
-            key.FromXmlString(xmlPrivateKey);
-#endif
-            //.Net Standard Extension
-#if NETSTANDARD2
-            RSAKeyExtensions.FromXmlString(key, xmlPrivateKey);
-#endif
-
-            SignedXml signedXml = new SignedXml(doc);
-            signedXml.SigningKey = key;
-            signedXml.SignedInfo.SignatureMethod = key.SignatureAlgorithm;// "http://www.w3.org/2001/04/xmldsig-more#rsa-sha256";
-            signedXml.SignedInfo.CanonicalizationMethod = SignedXml.XmlDsigExcC14NTransformUrl;
-
-            Reference reference = new Reference();
-            reference.Uri = "";
-            reference.DigestMethod = "http://www.w3.org/2001/04/xmlenc#sha256";
-            reference.AddTransform(new XmlDsigEnvelopedSignatureTransform());
-            reference.AddTransform(new XmlDsigExcC14NTransform());
-
-            signedXml.AddReference(reference);
-
-            KeyInfo keyInfo = new KeyInfo();
-            keyInfo.AddClause(new KeyInfoX509Data(cert));
-            signedXml.KeyInfo = keyInfo;
-            signedXml.ComputeSignature();
-            XmlElement signature = signedXml.GetXml();
-
-            return signature;
-        }
-
+       
     }
 }

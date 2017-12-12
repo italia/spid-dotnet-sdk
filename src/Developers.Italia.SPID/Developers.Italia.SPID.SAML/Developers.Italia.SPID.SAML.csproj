@@ -13,7 +13,7 @@
     <PackageIconUrl>https://developers.italia.it/assets/icons/logo-it.png</PackageIconUrl>
     <Version>1.0.2.0</Version>
     <RepositoryUrl>https://github.com/congiuluc/spid-dotnet-sdk</RepositoryUrl>
-    <PackageTags>.NET SPID SDK</PackageTags>
+    <PackageTags>SPID .NET SDK  SAML AUTHENTICATION</PackageTags>
     <RepositoryType>GitHub</RepositoryType>
     <PackageReleaseNotes>Added logout</PackageReleaseNotes>
     <AssemblyVersion>1.0.2.0</AssemblyVersion>
