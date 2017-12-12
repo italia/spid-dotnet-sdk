@@ -1,0 +1,131 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27004.2009
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Developers.Italia.SPID.SAML", "Developers.Italia.SPID.SAML\Developers.Italia.SPID.SAML.csproj", "{131E421E-EA68-44B7-860D-CBEB110A00FC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SAMLSchemas", "SAMLSchemas", "{30D881FE-B09A-40B7-A886-6C7D6AC21505}"
+	ProjectSection(SolutionItems) = preProject
+		SAMLSchemas\saml-schema-assertion-2.0.xsd = SAMLSchemas\saml-schema-assertion-2.0.xsd
+		SAMLSchemas\saml-schema-authn-context-2.0.xsd = SAMLSchemas\saml-schema-authn-context-2.0.xsd
+		SAMLSchemas\saml-schema-authn-context-auth-telephony-2.0.xsd = SAMLSchemas\saml-schema-authn-context-auth-telephony-2.0.xsd
+		SAMLSchemas\saml-schema-authn-context-ip-2.0.xsd = SAMLSchemas\saml-schema-authn-context-ip-2.0.xsd
+		SAMLSchemas\saml-schema-authn-context-ippword-2.0.xsd = SAMLSchemas\saml-schema-authn-context-ippword-2.0.xsd
+		SAMLSchemas\saml-schema-authn-context-kerberos-2.0.xsd = SAMLSchemas\saml-schema-authn-context-kerberos-2.0.xsd
+		SAMLSchemas\saml-schema-authn-context-mobileonefactor-reg-2.0.xsd = SAMLSchemas\saml-schema-authn-context-mobileonefactor-reg-2.0.xsd
+		SAMLSchemas\saml-schema-authn-context-mobileonefactor-unreg-2.0.xsd = SAMLSchemas\saml-schema-authn-context-mobileonefactor-unreg-2.0.xsd
+		SAMLSchemas\saml-schema-authn-context-mobiletwofactor-reg-2.0.xsd = SAMLSchemas\saml-schema-authn-context-mobiletwofactor-reg-2.0.xsd
+		SAMLSchemas\saml-schema-authn-context-mobiletwofactor-unreg-2.0.xsd = SAMLSchemas\saml-schema-authn-context-mobiletwofactor-unreg-2.0.xsd
+		SAMLSchemas\saml-schema-authn-context-nomad-telephony-2.0.xsd = SAMLSchemas\saml-schema-authn-context-nomad-telephony-2.0.xsd
+		SAMLSchemas\saml-schema-authn-context-personal-telephony-2.0.xsd = SAMLSchemas\saml-schema-authn-context-personal-telephony-2.0.xsd
+		SAMLSchemas\saml-schema-authn-context-pgp-2.0.xsd = SAMLSchemas\saml-schema-authn-context-pgp-2.0.xsd
+		SAMLSchemas\saml-schema-authn-context-ppt-2.0.xsd = SAMLSchemas\saml-schema-authn-context-ppt-2.0.xsd
+		SAMLSchemas\saml-schema-authn-context-pword-2.0.xsd = SAMLSchemas\saml-schema-authn-context-pword-2.0.xsd
+		SAMLSchemas\saml-schema-authn-context-session-2.0.xsd = SAMLSchemas\saml-schema-authn-context-session-2.0.xsd
+		SAMLSchemas\saml-schema-authn-context-smartcard-2.0.xsd = SAMLSchemas\saml-schema-authn-context-smartcard-2.0.xsd
+		SAMLSchemas\saml-schema-authn-context-smartcardpki-2.0.xsd = SAMLSchemas\saml-schema-authn-context-smartcardpki-2.0.xsd
+		SAMLSchemas\saml-schema-authn-context-softwarepki-2.0.xsd = SAMLSchemas\saml-schema-authn-context-softwarepki-2.0.xsd
+		SAMLSchemas\saml-schema-authn-context-spki-2.0.xsd = SAMLSchemas\saml-schema-authn-context-spki-2.0.xsd
+		SAMLSchemas\saml-schema-authn-context-srp-2.0.xsd = SAMLSchemas\saml-schema-authn-context-srp-2.0.xsd
+		SAMLSchemas\saml-schema-authn-context-sslcert-2.0.xsd = SAMLSchemas\saml-schema-authn-context-sslcert-2.0.xsd
+		SAMLSchemas\saml-schema-authn-context-telephony-2.0.xsd = SAMLSchemas\saml-schema-authn-context-telephony-2.0.xsd
+		SAMLSchemas\saml-schema-authn-context-timesync-2.0.xsd = SAMLSchemas\saml-schema-authn-context-timesync-2.0.xsd
+		SAMLSchemas\saml-schema-authn-context-types-2.0.xsd = SAMLSchemas\saml-schema-authn-context-types-2.0.xsd
+		SAMLSchemas\saml-schema-authn-context-x509-2.0.xsd = SAMLSchemas\saml-schema-authn-context-x509-2.0.xsd
+		SAMLSchemas\saml-schema-authn-context-xmldsig-2.0.xsd = SAMLSchemas\saml-schema-authn-context-xmldsig-2.0.xsd
+		SAMLSchemas\saml-schema-dce-2.0.xsd = SAMLSchemas\saml-schema-dce-2.0.xsd
+		SAMLSchemas\saml-schema-ecp-2.0.xsd = SAMLSchemas\saml-schema-ecp-2.0.xsd
+		SAMLSchemas\saml-schema-metadata-2.0.xsd = SAMLSchemas\saml-schema-metadata-2.0.xsd
+		SAMLSchemas\saml-schema-protocol-2.0.xsd = SAMLSchemas\saml-schema-protocol-2.0.xsd
+		SAMLSchemas\saml-schema-x500-2.0.xsd = SAMLSchemas\saml-schema-x500-2.0.xsd
+		SAMLSchemas\saml-schema-xacml-2.0.xsd = SAMLSchemas\saml-schema-xacml-2.0.xsd
+		SAMLSchemas\xenc-schema.xsd = SAMLSchemas\xenc-schema.xsd
+		SAMLSchemas\xmldsig-core-schema.xsd = SAMLSchemas\xmldsig-core-schema.xsd
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Metadata", "Metadata", "{1B3438B2-3020-457B-955F-2AAD7659DE97}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IdP", "IdP", "{4807A731-E160-4C5A-AFE4-79C170A70DF1}"
+	ProjectSection(SolutionItems) = preProject
+		SAML\Metadata\IdP\metadata_aruba.xml = SAML\Metadata\IdP\metadata_aruba.xml
+		SAML\Metadata\IdP\metadata_infocert.xml = SAML\Metadata\IdP\metadata_infocert.xml
+		SAML\Metadata\IdP\metadata_namirial.xml = SAML\Metadata\IdP\metadata_namirial.xml
+		SAML\Metadata\IdP\metadata_poste.xml = SAML\Metadata\IdP\metadata_poste.xml
+		SAML\Metadata\IdP\metadata_register.xml = SAML\Metadata\IdP\metadata_register.xml
+		SAML\Metadata\IdP\metadata_sielte.xml = SAML\Metadata\IdP\metadata_sielte.xml
+		SAML\Metadata\IdP\metadata_telecom.xml = SAML\Metadata\IdP\metadata_telecom.xml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SP", "SP", "{1265F369-BB42-45CA-A5FF-B9DF9477F417}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Developers.Italia.SPID.Test", "..\..\test\Developers.Italia.SPID.Test\Developers.Italia.SPID.Test.csproj", "{971EB5AA-9057-451A-B94E-4590E989FA98}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Developers.Italia.SPID.Test.AspNetCore2", "..\..\test\Developers.Italia.SPID.Test.AspNetCore2\Developers.Italia.SPID.Test.AspNetCore2.csproj", "{39638FB3-6550-45AB-BCB3-ADF12AE28E2A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Developers.Italia.SPID.Test.AspNetMvc5", "..\..\test\Developers.Italia.SPID.Test.AspNetMvc5\Developers.Italia.SPID.Test.AspNetMvc5.csproj", "{46D7D459-1914-4142-A547-4F2719D60CD9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{66B7D64F-F6A2-4D90-81EC-19FB9020CE30}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{B50BF343-3F21-43C6-9FC2-69E7C88BE408}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{D4C5A46D-CE5B-4894-9684-E940028565A2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docker", "Docker", "{7F615E96-A643-441C-B765-615C59780848}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SPID_ASPNET_CORE_2_0_NoIdentity", "..\..\samples\ASPNET_CORE_2_0\SPID_ASPNET_CORE_2_0_NoIdentity\SPID_ASPNET_CORE_2_0_NoIdentity.csproj", "{7C7CB4B6-C745-4BF1-A146-0865959C3F44}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ASPNET_MVC5_NOIDENTITY", "..\..\samples\ASPNET_MVC5\ASPNET_MVC5_NOIDENTITY\ASPNET_MVC5_NOIDENTITY.csproj", "{2A150A8C-8279-4E1F-989B-5183CF8CE5EA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{131E421E-EA68-44B7-860D-CBEB110A00FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{131E421E-EA68-44B7-860D-CBEB110A00FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{131E421E-EA68-44B7-860D-CBEB110A00FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{131E421E-EA68-44B7-860D-CBEB110A00FC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{971EB5AA-9057-451A-B94E-4590E989FA98}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{971EB5AA-9057-451A-B94E-4590E989FA98}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{971EB5AA-9057-451A-B94E-4590E989FA98}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{971EB5AA-9057-451A-B94E-4590E989FA98}.Release|Any CPU.Build.0 = Release|Any CPU
+		{39638FB3-6550-45AB-BCB3-ADF12AE28E2A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{39638FB3-6550-45AB-BCB3-ADF12AE28E2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{39638FB3-6550-45AB-BCB3-ADF12AE28E2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{39638FB3-6550-45AB-BCB3-ADF12AE28E2A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{46D7D459-1914-4142-A547-4F2719D60CD9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{46D7D459-1914-4142-A547-4F2719D60CD9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{46D7D459-1914-4142-A547-4F2719D60CD9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{46D7D459-1914-4142-A547-4F2719D60CD9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B50BF343-3F21-43C6-9FC2-69E7C88BE408}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B50BF343-3F21-43C6-9FC2-69E7C88BE408}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B50BF343-3F21-43C6-9FC2-69E7C88BE408}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B50BF343-3F21-43C6-9FC2-69E7C88BE408}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7C7CB4B6-C745-4BF1-A146-0865959C3F44}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7C7CB4B6-C745-4BF1-A146-0865959C3F44}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7C7CB4B6-C745-4BF1-A146-0865959C3F44}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7C7CB4B6-C745-4BF1-A146-0865959C3F44}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2A150A8C-8279-4E1F-989B-5183CF8CE5EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2A150A8C-8279-4E1F-989B-5183CF8CE5EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2A150A8C-8279-4E1F-989B-5183CF8CE5EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2A150A8C-8279-4E1F-989B-5183CF8CE5EA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{4807A731-E160-4C5A-AFE4-79C170A70DF1} = {1B3438B2-3020-457B-955F-2AAD7659DE97}
+		{1265F369-BB42-45CA-A5FF-B9DF9477F417} = {1B3438B2-3020-457B-955F-2AAD7659DE97}
+		{971EB5AA-9057-451A-B94E-4590E989FA98} = {D4C5A46D-CE5B-4894-9684-E940028565A2}
+		{39638FB3-6550-45AB-BCB3-ADF12AE28E2A} = {D4C5A46D-CE5B-4894-9684-E940028565A2}
+		{46D7D459-1914-4142-A547-4F2719D60CD9} = {D4C5A46D-CE5B-4894-9684-E940028565A2}
+		{B50BF343-3F21-43C6-9FC2-69E7C88BE408} = {7F615E96-A643-441C-B765-615C59780848}
+		{7C7CB4B6-C745-4BF1-A146-0865959C3F44} = {66B7D64F-F6A2-4D90-81EC-19FB9020CE30}
+		{2A150A8C-8279-4E1F-989B-5183CF8CE5EA} = {66B7D64F-F6A2-4D90-81EC-19FB9020CE30}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5C534180-D919-4835-834D-68E2684239E6}
+	EndGlobalSection
+EndGlobal

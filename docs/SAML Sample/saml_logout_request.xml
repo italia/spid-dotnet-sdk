@@ -1,0 +1,5 @@
+<saml2p:LogoutRequest xmlns:saml2="urn:oasis:names:tc:SAML:2.0:assertion" ID="_29dbc04e-02c5-4872-a242-41179a16bdd2" Version="2.0" IssueInstant="2017-12-10T22:17:19.752751Z" Destination="https://spidposte.test.poste.it/jod-fs/sloservicepost" Reason="urn:oasis:names:tc:SAML:2.0:logout:user" NotOnOrAfter="2017-12-10T22:22:19.752751Z" xmlns:saml2p="urn:oasis:names:tc:SAML:2.0:protocol">
+  <saml2:Issuer NameQualifier="https://www.dotnetcode.it" Format="urn:oasis:names:tc:SAML:2.0:nameid-format:entity">https://www.dotnetcode.it</saml2:Issuer>
+  <saml2:NameID SPNameQualifier="https://www.dotnetcode.it" Format="urn:oasis:names:tc:SAML:2.0:nameid-format:transient">SPID-8dc3c0ad-e7bd-471c-b1e8-386fc6f3340f</saml2:NameID>
+  <saml2p:SessionIndex>JtYzNFEDUQpH2wHvbTPr/xIrq/cCqIfkNiR9ljWZJrwgp4S1YKyXGLwzcdC58EvM</saml2p:SessionIndex>
+</saml2p:LogoutRequest>

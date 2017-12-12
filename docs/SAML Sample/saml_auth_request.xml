@@ -1,0 +1,8 @@
+<saml2p:AuthnRequest ID="_cb6d3474-3361-49e3-bab2-00be4979a260" Version="2.0" IssueInstant="2017-12-10T22:14:13.0985886Z" Destination="https://spidposte.test.poste.it/jod-fs/ssoservicepost" ForceAuthn="false" AssertionConsumerServiceIndex="0" AttributeConsumingServiceIndex="2" xmlns:saml2p="urn:oasis:names:tc:SAML:2.0:protocol">
+  <Issuer NameQualifier="https://www.dotnetcode.it" Format="urn:oasis:names:tc:SAML:2.0:nameid-format:entity" xmlns="urn:oasis:names:tc:SAML:2.0:assertion">https://www.dotnetcode.it</Issuer>
+  <saml2p:NameIDPolicy Format="urn:oasis:names:tc:SAML:2.0:nameid-format:transient" />
+  <Conditions NotBefore="2017-12-10T22:12:13.0985886Z" NotOnOrAfter="2017-12-10T22:19:13.0985886Z" xmlns="urn:oasis:names:tc:SAML:2.0:assertion" />
+  <saml2p:RequestedAuthnContext Comparison="minimum">
+    <AuthnContextClassRef xmlns="urn:oasis:names:tc:SAML:2.0:assertion">https://www.spid.gov.it/SpidL1</AuthnContextClassRef>
+  </saml2p:RequestedAuthnContext>
+</saml2p:AuthnRequest>

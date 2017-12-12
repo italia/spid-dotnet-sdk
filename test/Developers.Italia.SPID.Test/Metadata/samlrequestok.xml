@@ -1,0 +1,21 @@
+﻿<saml2p:AuthnRequest ID="_d335aed7-ff22-4351-8d3f-c129b1b765e5" 
+                     Version="2.0" 
+                     IssueInstant="2017-10-14T15:05:06.418Z" 
+                     Destination="https://spidposte.test.poste.it/jod-fs/ssoservicepost" 
+                     AssertionConsumerServiceIndex="0" 
+                     AttributeConsumingServiceIndex="1" 
+                     xmlns:saml2p="urn:oasis:names:tc:SAML:2.0:protocol">
+  <Issuer 
+    NameQualifier="https://www.tpcware.com" 
+    Format="urn:oasis:names:tc:SAML:2.0:nameid-format:entity" 
+    xmlns="urn:oasis:names:tc:SAML:2.0:assertion">
+    https://www.tpcware.com
+  </Issuer>
+  <saml2p:NameIDPolicy 
+    Format="urn:oasis:names:tc:SAML:2.0:nameid-format:transient" 
+    AllowCreate="true" />
+  <Conditions NotBefore="2017-10-14T15:03:06.418Z" NotOnOrAfter="2017-10-14T15:15:06.418Z" xmlns="urn:oasis:names:tc:SAML:2.0:assertion" />
+  <saml2p:RequestedAuthnContext Comparison="minimum">
+    <AuthnContextClassRef xmlns="urn:oasis:names:tc:SAML:2.0:assertion">https://www.spid.gov.it/SpidL1</AuthnContextClassRef>
+  </saml2p:RequestedAuthnContext>
+</saml2p:AuthnRequest>

@@ -1,0 +1,176 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<saml2p:Response xmlns:saml2p="urn:oasis:names:tc:SAML:2.0:protocol" Destination="https://localhost:44355/spidsaml/acs" ID="_254b2758-fea4-4da7-9d63-ae793cf98bdd" InResponseTo="_760e698a-581c-4a6e-ab4c-caa051c4aa6c" IssueInstant="2017-12-11T13:24:52.001Z" Version="2.0">
+  <saml2:Issuer xmlns:saml2="urn:oasis:names:tc:SAML:2.0:assertion">https://spidposte.test.poste.it</saml2:Issuer>
+  <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+    <SignedInfo>
+      <CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/>
+      <SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256"/>
+      <Reference URI="#_254b2758-fea4-4da7-9d63-ae793cf98bdd">
+        <Transforms>
+          <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/>
+          <Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/>
+        </Transforms>
+        <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+        <DigestValue>o9LfVvtDMu8y1S+vad6kztkjNMJwtvLPS90WWl+OL+I=</DigestValue>
+      </Reference>
+    </SignedInfo>
+    <SignatureValue>
+      bDPV20PLa8gzF8HS8HVQAesZCVqbFj04oNwW4yrzRYrpv7U6vOAjy8qOsV7bTcJ4O5BJSRxDZnzB
+      rwcqE6c9mjIs1CFu8PpL+KXnMoHteesI91LFOZbxofumoU1OPqgNsx/Gu3heIZ3Kw+dzUfLI8J0B
+      hJAu9Aq/WmIy0K+RWU0y1an2wZpE42Y0ynPBV6i5PFvUUD/ZuHIZiNVcAfVD6kNyb5sWQioU+iTg
+      6umfjIe9jMLQnBLLylOeMFhUSSYAaYpHCi8mxdjVql7qLq0SqmkrT39C21STF7/YkllT6Ypd8Qvu
+      Pybq0gDL88PvXSSdP1BQO3QNLqauRddZTQtpRA==
+    </SignatureValue>
+    <KeyInfo>
+      <X509Data>
+        <X509Certificate>
+          MIIFQzCCBCugAwIBAgIMEYkZpT7m9TU6ykcYMA0GCSqGSIb3DQEBCwUAMGYxCzAJBgNVBAYTAkJF
+          MRkwFwYDVQQKExBHbG9iYWxTaWduIG52LXNhMTwwOgYDVQQDEzNHbG9iYWxTaWduIE9yZ2FuaXph
+          dGlvbiBWYWxpZGF0aW9uIENBIC0gU0hBMjU2IC0gRzIwHhcNMTcwMjE0MTIzMTA2WhcNMTgwMjE1
+          MTIzMTA2WjBtMQswCQYDVQQGEwJJVDENMAsGA1UECBMEUk9NQTENMAsGA1UEBxMEUk9NQTEeMBwG
+          A1UEChMVUE9TVEUgSVRBTElBTkUgUy5wLkEuMSAwHgYDVQQDExdzcGlkcG9zdGUudGVzdC5wb3N0
+          ZS5pdDCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMMJKm5pnPhufl4uh5UmFD+pa0NC
+          rAuPp8I2VmyyMkQW/2hDCTwEmqJ/nBM2xqyeesuSz2nCg9t4NhSlpSNfPNTQApkUQdB2u3Gr7Z0X
+          3I8mnf8mQSy59MiNpRgW4Y7q0biksuLvlRwz7HMYcGyUk8x4kPIYeh+ZNhMRyEOwWBbzXRpRrqqY
+          B1QUnU55ojzEwsI8hWt1ZfwpbJCEg1S6VE50Vi7FXcXneI8ZiqmHm+kDV2C2mc9dRdqjQjHJnUoB
+          H06DRHWBob7ZvmgkTQSdiJl7nGfW0ckt1HtTxyXTz7+poDFDHexMrPGvAKa0AsYfWG8uU+af3Rdr
+          7rsdxqz+rFECAwEAAaOCAegwggHkMA4GA1UdDwEB/wQEAwIFoDCBoAYIKwYBBQUHAQEEgZMwgZAw
+          TQYIKwYBBQUHMAKGQWh0dHA6Ly9zZWN1cmUuZ2xvYmFsc2lnbi5jb20vY2FjZXJ0L2dzb3JnYW5p
+          emF0aW9udmFsc2hhMmcycjEuY3J0MD8GCCsGAQUFBzABhjNodHRwOi8vb2NzcDIuZ2xvYmFsc2ln
+          bi5jb20vZ3Nvcmdhbml6YXRpb252YWxzaGEyZzIwVgYDVR0gBE8wTTBBBgkrBgEEAaAyARQwNDAy
+          BggrBgEFBQcCARYmaHR0cHM6Ly93d3cuZ2xvYmFsc2lnbi5jb20vcmVwb3NpdG9yeS8wCAYGZ4EM
+          AQICMAkGA1UdEwQCMAAwSQYDVR0fBEIwQDA+oDygOoY4aHR0cDovL2NybC5nbG9iYWxzaWduLmNv
+          bS9ncy9nc29yZ2FuaXphdGlvbnZhbHNoYTJnMi5jcmwwIgYDVR0RBBswGYIXc3BpZHBvc3RlLnRl
+          c3QucG9zdGUuaXQwHQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMCMB0GA1UdDgQWBBQj7EVJ
+          4p5yY3DbWyhzdtO2mZQ8fDAfBgNVHSMEGDAWgBSW3mHxvRwWKVMcwMx9O4MAQOYafDANBgkqhkiG
+          9w0BAQsFAAOCAQEAZin9adiKoqGr2/hM1viuqQbytg6BBtjnH3NnSGkX0Ckqwsefab8XokLgz+ro
+          Dr9sJO5nwL71AbH0TebVt3FlEJ9FwpaGhMNDeVt8yARMsL+82XtPdeNVlZWgA047Wo2JQA5BlyUD
+          5WyP1Hga8Ae3e5GRbHCK/n0D/lFkPGY0KogAEg4YNCxgnHuarHpmp2dkOQkJkc9psEMFHZysnzsf
+          JuJzU7QpojQotimZ/yK5osERY5fVeoyzhOGzXPtSrGvbZSJ6MQFAH4Ba4PJYGQqG2vx4dQJ2UiwJ
+          LaYfzhAJ18RYYFrzX7LzFvk7vqagM+gCmKwbQP/JU15kv421l2E/tg==
+        </X509Certificate>
+      </X509Data>
+    </KeyInfo>
+  </Signature>
+  <saml2p:Status>
+    <saml2p:StatusCode Value="urn:oasis:names:tc:SAML:2.0:status:Success"/>
+  </saml2p:Status>
+  <saml2:Assertion xmlns:saml2="urn:oasis:names:tc:SAML:2.0:assertion" ID="_82511bc3-1e4c-43a2-a1bc-208ae91a2353" IssueInstant="2017-12-11T13:24:51.002Z" Version="2.0">
+    <saml2:Issuer Format="urn:oasis:names:tc:SAML:2.0:nameid-format:entity">https://spidposte.test.poste.it</saml2:Issuer>
+    <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+      <SignedInfo>
+        <CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/>
+        <SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256"/>
+        <Reference URI="#_82511bc3-1e4c-43a2-a1bc-208ae91a2353">
+          <Transforms>
+            <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/>
+            <Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/>
+          </Transforms>
+          <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+          <DigestValue>qV36yWQ1xzyc6KpZdBsOjW6lgwzFTVZPU2/jzqgA/4E=</DigestValue>
+        </Reference>
+      </SignedInfo>
+      <SignatureValue>
+        fCrE4GjVUewxsQHQOBIA+Tkk4r+1/ICD7Fsp6sMMR2+3TTIL3uw6YSrrb2odB8wfIvOXhoI/5RLU
+        zWDmWz27TFODrfdFb2zAXKDEbCz8plPy+6Jq58Uz+V4BmhYCuKMT3JFve21MN1d7LXN7rUTFgZKI
+        vgTLVq2lbCbcrpvucUcmpuHVpw0wkRQSPGLPLEUjHv9GnXL7nAbXrjcOgQ6DLbN78mohiDJhumkW
+        b6vRfGJ7EKsJFYfep+uOOpzYddbNC/r7w3iWzR3GNe+++uO+fWCDNbrBVygAcjSFdnqdD6zKq0Fd
+        Yoe1iG5aNHJZt5+70cgJ3yr0QtBGI5P8DokIPg==
+      </SignatureValue>
+      <KeyInfo>
+        <X509Data>
+          <X509Certificate>
+            MIIFQzCCBCugAwIBAgIMEYkZpT7m9TU6ykcYMA0GCSqGSIb3DQEBCwUAMGYxCzAJBgNVBAYTAkJF
+            MRkwFwYDVQQKExBHbG9iYWxTaWduIG52LXNhMTwwOgYDVQQDEzNHbG9iYWxTaWduIE9yZ2FuaXph
+            dGlvbiBWYWxpZGF0aW9uIENBIC0gU0hBMjU2IC0gRzIwHhcNMTcwMjE0MTIzMTA2WhcNMTgwMjE1
+            MTIzMTA2WjBtMQswCQYDVQQGEwJJVDENMAsGA1UECBMEUk9NQTENMAsGA1UEBxMEUk9NQTEeMBwG
+            A1UEChMVUE9TVEUgSVRBTElBTkUgUy5wLkEuMSAwHgYDVQQDExdzcGlkcG9zdGUudGVzdC5wb3N0
+            ZS5pdDCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMMJKm5pnPhufl4uh5UmFD+pa0NC
+            rAuPp8I2VmyyMkQW/2hDCTwEmqJ/nBM2xqyeesuSz2nCg9t4NhSlpSNfPNTQApkUQdB2u3Gr7Z0X
+            3I8mnf8mQSy59MiNpRgW4Y7q0biksuLvlRwz7HMYcGyUk8x4kPIYeh+ZNhMRyEOwWBbzXRpRrqqY
+            B1QUnU55ojzEwsI8hWt1ZfwpbJCEg1S6VE50Vi7FXcXneI8ZiqmHm+kDV2C2mc9dRdqjQjHJnUoB
+            H06DRHWBob7ZvmgkTQSdiJl7nGfW0ckt1HtTxyXTz7+poDFDHexMrPGvAKa0AsYfWG8uU+af3Rdr
+            7rsdxqz+rFECAwEAAaOCAegwggHkMA4GA1UdDwEB/wQEAwIFoDCBoAYIKwYBBQUHAQEEgZMwgZAw
+            TQYIKwYBBQUHMAKGQWh0dHA6Ly9zZWN1cmUuZ2xvYmFsc2lnbi5jb20vY2FjZXJ0L2dzb3JnYW5p
+            emF0aW9udmFsc2hhMmcycjEuY3J0MD8GCCsGAQUFBzABhjNodHRwOi8vb2NzcDIuZ2xvYmFsc2ln
+            bi5jb20vZ3Nvcmdhbml6YXRpb252YWxzaGEyZzIwVgYDVR0gBE8wTTBBBgkrBgEEAaAyARQwNDAy
+            BggrBgEFBQcCARYmaHR0cHM6Ly93d3cuZ2xvYmFsc2lnbi5jb20vcmVwb3NpdG9yeS8wCAYGZ4EM
+            AQICMAkGA1UdEwQCMAAwSQYDVR0fBEIwQDA+oDygOoY4aHR0cDovL2NybC5nbG9iYWxzaWduLmNv
+            bS9ncy9nc29yZ2FuaXphdGlvbnZhbHNoYTJnMi5jcmwwIgYDVR0RBBswGYIXc3BpZHBvc3RlLnRl
+            c3QucG9zdGUuaXQwHQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMCMB0GA1UdDgQWBBQj7EVJ
+            4p5yY3DbWyhzdtO2mZQ8fDAfBgNVHSMEGDAWgBSW3mHxvRwWKVMcwMx9O4MAQOYafDANBgkqhkiG
+            9w0BAQsFAAOCAQEAZin9adiKoqGr2/hM1viuqQbytg6BBtjnH3NnSGkX0Ckqwsefab8XokLgz+ro
+            Dr9sJO5nwL71AbH0TebVt3FlEJ9FwpaGhMNDeVt8yARMsL+82XtPdeNVlZWgA047Wo2JQA5BlyUD
+            5WyP1Hga8Ae3e5GRbHCK/n0D/lFkPGY0KogAEg4YNCxgnHuarHpmp2dkOQkJkc9psEMFHZysnzsf
+            JuJzU7QpojQotimZ/yK5osERY5fVeoyzhOGzXPtSrGvbZSJ6MQFAH4Ba4PJYGQqG2vx4dQJ2UiwJ
+            LaYfzhAJ18RYYFrzX7LzFvk7vqagM+gCmKwbQP/JU15kv421l2E/tg==
+          </X509Certificate>
+        </X509Data>
+      </KeyInfo>
+    </Signature>
+    <saml2:Subject>
+      <saml2:NameID Format="urn:oasis:names:tc:SAML:2.0:nameid-format:transient" NameQualifier="https://spidposte.test.poste.it">SPID-f82b21c6-ddeb-4032-a534-fcfd815651ec</saml2:NameID>
+      <saml2:SubjectConfirmation Method="urn:oasis:names:tc:SAML:2.0:cm:bearer">
+        <saml2:SubjectConfirmationData InResponseTo="_760e698a-581c-4a6e-ab4c-caa051c4aa6c" NotOnOrAfter="2017-12-11T13:25:51.002Z" Recipient="https://localhost:44355/spidsaml/acs"/>
+      </saml2:SubjectConfirmation>
+    </saml2:Subject>
+    <saml2:Conditions NotBefore="2017-12-11T13:24:51.002Z" NotOnOrAfter="2017-12-11T13:25:51.002Z">
+      <saml2:AudienceRestriction>
+        <saml2:Audience>https://www.dotnetcode.it</saml2:Audience>
+      </saml2:AudienceRestriction>
+    </saml2:Conditions>
+    <saml2:AuthnStatement AuthnInstant="2017-12-11T13:24:51.001Z" SessionIndex="s/YkXSiSWSmSRcic8HcsqPISLQuPCR5CRZkBz44o8fN0GKjG/bO740JPwXwlCK0W">
+      <saml2:AuthnContext>
+        <saml2:AuthnContextClassRef>https://www.spid.gov.it/SpidL1</saml2:AuthnContextClassRef>
+      </saml2:AuthnContext>
+    </saml2:AuthnStatement>
+    <saml2:AttributeStatement>
+      <saml2:Attribute Name="spidCode">
+        <saml2:AttributeValue xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="xs:string">PTITOB59U4BS7F</saml2:AttributeValue>
+      </saml2:Attribute>
+      <saml2:Attribute Name="name">
+        <saml2:AttributeValue xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="xs:string">Testà</saml2:AttributeValue>
+      </saml2:Attribute>
+      <saml2:Attribute Name="gender">
+        <saml2:AttributeValue xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="xs:string">M</saml2:AttributeValue>
+      </saml2:Attribute>
+      <saml2:Attribute Name="placeOfBirth">
+        <saml2:AttributeValue xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="xs:string">H501</saml2:AttributeValue>
+      </saml2:Attribute>
+      <saml2:Attribute Name="ivaCode">
+        <saml2:AttributeValue xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="xs:string">-</saml2:AttributeValue>
+      </saml2:Attribute>
+      <saml2:Attribute Name="companyName">
+        <saml2:AttributeValue xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="xs:string">-</saml2:AttributeValue>
+      </saml2:Attribute>
+      <saml2:Attribute Name="mobilePhone">
+        <saml2:AttributeValue xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="xs:string">+393771111111</saml2:AttributeValue>
+      </saml2:Attribute>
+      <saml2:Attribute Name="address">
+        <saml2:AttributeValue xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="xs:string">-</saml2:AttributeValue>
+      </saml2:Attribute>
+      <saml2:Attribute Name="fiscalNumber">
+        <saml2:AttributeValue xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="xs:string">TINIT-STTRLI70A01F205L</saml2:AttributeValue>
+      </saml2:Attribute>
+      <saml2:Attribute Name="familyName">
+        <saml2:AttributeValue xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="xs:string">Pcom</saml2:AttributeValue>
+      </saml2:Attribute>
+      <saml2:Attribute Name="dateOfBirth">
+        <saml2:AttributeValue xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="xs:date">1970-01-01</saml2:AttributeValue>
+      </saml2:Attribute>
+      <saml2:Attribute Name="countyOfBirth">
+        <saml2:AttributeValue xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="xs:string">RM</saml2:AttributeValue>
+      </saml2:Attribute>
+      <saml2:Attribute Name="idCard">
+        <saml2:AttributeValue xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="xs:string">cartaIdentita AV3121919 comuneRoma 2014-06-17 2024-09-14</saml2:AttributeValue>
+      </saml2:Attribute>
+      <saml2:Attribute Name="registeredOffice">
+        <saml2:AttributeValue xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="xs:string">-</saml2:AttributeValue>
+      </saml2:Attribute>
+      <saml2:Attribute Name="email">
+        <saml2:AttributeValue xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="xs:string">claudio.quaresima@postecom.it</saml2:AttributeValue>
+      </saml2:Attribute>
+    </saml2:AttributeStatement>
+  </saml2:Assertion>
+</saml2p:Response>
+

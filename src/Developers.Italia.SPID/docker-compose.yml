@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  spid_aspnet_core_2_0:
+    image: spid_aspnet_core_2_0
+    build:
+      context: ./../../samples/ASPNET_CORE_2_0/SPID_ASPNET_CORE_2_0
+      dockerfile: Dockerfile
+
+  spid_aspnet_core_2_0_noidentity:
+    image: spid_aspnet_core_2_0_noidentity
+    build:
+      context: ./../../samples/SPID_ASPNET_CORE_2_0_NoIdentity
+      dockerfile: Dockerfile

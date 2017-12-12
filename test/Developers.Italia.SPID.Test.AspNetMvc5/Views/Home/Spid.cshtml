@@ -1,0 +1,22 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Spid</title>
+</head>
+<body onload="javascript:document.forms[0].submit()">
+    <form method="post" action="@Html.Raw(ViewData["FormUrlAction"])">
+        <input type="hidden" name="SAMLRequest"
+               value="@Html.Raw(ViewData["SAMLRequest"])">
+        <input type="hidden" name="RelayState" value="@Html.Raw(ViewData["RelayState"])" />
+        <input type="submit" value="Invia" style="display:none" />
+    </form>
+    <h3>Accesso a Spid in corso....</h3>
+</body>
+</html>

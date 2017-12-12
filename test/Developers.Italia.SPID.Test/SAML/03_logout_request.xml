@@ -1,0 +1,25 @@
+﻿<saml2p:LogoutRequest xmlns:saml2="urn:oasis:names:tc:SAML:2.0:assertion" ID="_8df052c7-01b4-4e66-b71d-083a1a5d6dc2" Version="2.0" IssueInstant="2017-12-11T13:25:48.6816209Z" Destination="https://spidposte.test.poste.it/jod-fs/sloservicepost" Reason="urn:oasis:names:tc:SAML:2.0:logout:user" NotOnOrAfter="2017-12-11T13:30:48.6816209Z" xmlns:saml2p="urn:oasis:names:tc:SAML:2.0:protocol">
+  <saml2:Issuer NameQualifier="https://www.dotnetcode.it" Format="urn:oasis:names:tc:SAML:2.0:nameid-format:entity">https://www.dotnetcode.it</saml2:Issuer>
+  <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+    <SignedInfo>
+      <CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" />
+      <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
+      <Reference URI="">
+        <Transforms>
+          <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
+          <Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" />
+        </Transforms>
+        <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256" />
+        <DigestValue>rCg8AAYFv9LLcNp+84AEjNkWF6GiwmJTQkwcfZ5PCew=</DigestValue>
+      </Reference>
+    </SignedInfo>
+    <SignatureValue>g+ncYt87i73iC1drj9/rDl+TL6Fnb1LTyuj3rvUfcHWdLKYo6g3KNbc8ud0E4bDKzvMH5hdUCv6MWubG70NlPbLdXioBX+XCVkNTcQ495wWHPgYZwWK9bdPjvxDUCFBNt6XTka5aEQbw6JnUpA4srfnmP/6b7EcJBDXVV7C+Q68=</SignatureValue>
+    <KeyInfo>
+      <X509Data>
+        <X509Certificate>MIIDkDCCAncCCQDPxdnsDu/D3DANBgkqhkiG9w0BAQUFADCBiDELMAkGA1UEBhMCaXQxDTALBgNVBAgMBFJvbWExEzARBgNVBAoMCmRvdG5ldGNvZGUxFjAUBgNVBAMMDWRvdG5ldGNvZGUuaXQxDTALBgNVBAcMBFJvbWExCzAJBgNVBAsMAklUMSEwHwYJKoZIhvcNAQkBFhJpbmZvQGRvdG5ldGNvZGUuaXQwHhcNMTcxMDA4MDE0MjU0WhcNMTgxMDA4MDE0MjU0WjCBiDELMAkGA1UEBhMCaXQxDTALBgNVBAgMBFJvbWExEzARBgNVBAoMCmRvdG5ldGNvZGUxFjAUBgNVBAMMDWRvdG5ldGNvZGUuaXQxDTALBgNVBAcMBFJvbWExCzAJBgNVBAsMAklUMSEwHwYJKoZIhvcNAQkBFhJpbmZvQGRvdG5ldGNvZGUuaXQwggEjMA0GCSqGSIb3DQEBAQUAA4IBEAAwggELAoIBAgCsE/DE4HdAz5GHP7/OngJCP2LJKiGY2N8g5G6WupA8OEezie7Hk6hE80Hih4DhBaCJvC+HYC9vcLZ9RDPZWVBLj7cVcwoJkT0cQpNvScqyQto3GNAY228j8jNl021sTo4+B4yivs/Y1ffWX24d9jX0N0TlK4jXEuW/Mk9UDYzdk8EmDskxA/+nkmfVPbIUOQnXzrYTP4gTLAF46Tb2PjFCyL4aD+upvVLdlZBZk4LL2Wfv+qGkwiSWg2CQs/go+AQVmLjj4ODKVNbm1reOZ06Uomcc85/Sb8v6GZL0TmeR+YyyllskUs2UhQPKINqDnbv8+cGQ3wLvT9WZhMmhMxnz2wIDAQABMA0GCSqGSIb3DQEBBQUAA4IBAgBDtDl9nR48QdiNbZenqO4y+D56+xi73doZ7FlPvt0xmSfk9zU/LBoF4cF2ayEDtvUw6h2aWP2PiS0FMIm4ShuvSrfKmNUXLzn7dwSRcs082BnAwaYkQ2D0Cq22Gn/SuzCRAmFicL0X4qDwYswGOcLvYZ0BpAMhuHPLMSr5++IhhtOolNxdJRQdgajIe+XLDi8AO6TTNuzgQZs3kCm9t5i3q6Sq1CcihCymhaAnOPMM1JzNpcTY1gUwFAZbXa3PwZqV0xpHO1+QlUiWXIR3Zsoii4s4tMKYAz6rpd7I5dfNVcza6RAbIApZV/Y1R5IBMegupmx4UijUBxtADkfqIWF2RA==</X509Certificate>
+      </X509Data>
+    </KeyInfo>
+  </Signature>
+  <saml2:NameID SPNameQualifier="https://www.dotnetcode.it" Format="urn:oasis:names:tc:SAML:2.0:nameid-format:transient">SPID-f82b21c6-ddeb-4032-a534-fcfd815651ec</saml2:NameID>
+  <saml2p:SessionIndex>s/YkXSiSWSmSRcic8HcsqPISLQuPCR5CRZkBz44o8fN0GKjG/bO740JPwXwlCK0W</saml2p:SessionIndex>
+</saml2p:LogoutRequest>
