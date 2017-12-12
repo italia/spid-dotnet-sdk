@@ -50,10 +50,40 @@ namespace Developers.Italia.SPID.Test
 
             //AsymmetricAlgorithm privateKey=new AsymmetricAlgorithm();
 
-           
-            
+
+
             string saml = request.GetSignedAuthRequest(signinCert);
 
         }
+
+        [TestMethod]
+        public void GetSignedLogoutRequest()
+        {
+            SAML.LogoutRequestOptions requestOptions = new SAML.LogoutRequestOptions()
+            {
+                
+                Destination = "https://spidposte.test.poste.it/jod-fs/ssoservicepost",
+                SessionId="SessionID",
+                SPUID = "dotnetcode.it",
+                UUID = Guid.NewGuid().ToString(),
+                 LogoutLevel= SAML.LogoutLevel.User,
+                  SubjectNameId= "SubjectNameId"
+            };
+
+            SAML.LogoutRequest request = new SAML.LogoutRequest(requestOptions);
+
+            string certpath = string.Format("{0}\\{1}", Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), ConfigurationManager.AppSettings["CertificatePath"].ToString());
+            string privatekeypath = string.Format("{0}\\{1}", Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), ConfigurationManager.AppSettings["PrivateKeyPath"].ToString());
+
+            X509Certificate2 signinCert = new X509Certificate2("C:\\SourceCode\\spid-dotnet-sdk\\test\\Developers.Italia.SPID.Test\\Certificates\\Hackathon\\www_dotnetcode_it.pfx", "P@ssw0rd!", X509KeyStorageFlags.Exportable);
+
+            //AsymmetricAlgorithm privateKey=new AsymmetricAlgorithm();
+
+
+
+            string saml = request.GetSignedLogoutRequest(signinCert);
+
+        }
+
     }
 }

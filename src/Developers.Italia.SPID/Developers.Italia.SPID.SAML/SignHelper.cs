@@ -1,11 +1,83 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Security.Cryptography;
+using System.Security.Cryptography.X509Certificates;
+using System.Security.Cryptography.Xml;
 using System.Text;
 using System.Xml;
 
 namespace Developers.Italia.SPID.SAML
 {
+    internal static class SignHelper
+    {
+        /// <summary>
+        /// Signs the XML document.
+        /// </summary>
+        /// <param name="doc">The document.</param>
+        /// <param name="cert">The cert.</param>
+        /// <returns></returns>
+        public static XmlElement SignXmlDocument(XmlDocument doc, X509Certificate2 cert)
+        {
+            string xmlPrivateKey = "";
+            //Full Framework Only
+#if FULLFRAMEWORK
+            xmlPrivateKey = cert.PrivateKey.ToXmlString(true);
+#else
+            //.Net Standard Extension
+            xmlPrivateKey = RSAKeyExtensions.ToXmlString((RSA)cert.PrivateKey, true);
+#endif
+
+            return SignXmlDocument(doc, cert, xmlPrivateKey);
+        }
+
+
+        /// <summary>
+        /// Signs the XML document.
+        /// </summary>
+        /// <param name="doc">The document.</param>
+        /// <param name="cert">The cert.</param>
+        /// <param name="xmlPrivateKey">The XML private key.</param>
+        /// <returns></returns>
+        public static XmlElement SignXmlDocument(XmlDocument doc, X509Certificate2 cert, string xmlPrivateKey)
+        {
+            var key = new RSACryptoServiceProvider(new CspParameters(24));
+            key.PersistKeyInCsp = false;
+            //Full Framework Only
+#if FULLFRAMEWORK
+            key.FromXmlString(xmlPrivateKey);
+
+#else
+            //.Net Standard Extension
+            RSAKeyExtensions.FromXmlString(key, xmlPrivateKey);
+#endif
+
+
+            SignedXml signedXml = new SignedXml(doc);
+            signedXml.SigningKey = key;
+            signedXml.SignedInfo.SignatureMethod = key.SignatureAlgorithm;// "http://www.w3.org/2001/04/xmldsig-more#rsa-sha256";
+            signedXml.SignedInfo.CanonicalizationMethod = SignedXml.XmlDsigExcC14NTransformUrl;
+
+            Reference reference = new Reference();
+            reference.Uri = "";
+            reference.DigestMethod = "http://www.w3.org/2001/04/xmlenc#sha256";
+            reference.AddTransform(new XmlDsigEnvelopedSignatureTransform());
+            reference.AddTransform(new XmlDsigExcC14NTransform());
+
+            signedXml.AddReference(reference);
+
+            KeyInfo keyInfo = new KeyInfo();
+            keyInfo.AddClause(new KeyInfoX509Data(cert));
+            signedXml.KeyInfo = keyInfo;
+            signedXml.ComputeSignature();
+            XmlElement signature = signedXml.GetXml();
+
+            return signature;
+        }
+
+    }
+
+
+
     internal static class RSAKeyExtensions
     {
 
@@ -61,4 +133,5 @@ namespace Developers.Italia.SPID.SAML
 
         #endregion
     }
+
 }

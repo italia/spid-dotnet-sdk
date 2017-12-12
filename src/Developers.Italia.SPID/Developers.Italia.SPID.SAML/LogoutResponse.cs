@@ -9,7 +9,7 @@ using System.Xml.Serialization;
 
 namespace Developers.Italia.SPID.SAML
 {
-    public class AuthResponse
+    public class LogoutResponse
     {
         public string Version { get; set; }
 
@@ -20,57 +20,18 @@ namespace Developers.Italia.SPID.SAML
 
         public string SPUID { get; set; }
 
-        public string SubjectNameId { get; set; }
-
-        public string SessionId { get; set; }
-
-        public DateTime SessionIdExpireDate { get; set; }
-              
-        public SpidUserData User { get; set; }
-
+      
         public SamlRequestStatus RequestStatus { get; set; }
 
+     
 
-        public AuthResponse()
+        public LogoutResponse()
         {
-            User = new SpidUserData();
-            RequestStatus= SamlRequestStatus.GenericError;
+          RequestStatus= SamlRequestStatus.GenericError;
         }
 
-        public List<Claim> GetClaims() {
-            List<Claim> claims = new List<Claim>();
+       
 
-            claims.Add(new Claim("SpidCode", this.User.SpidCode ?? "", ClaimValueTypes.String, this.Issuer));
-
-            claims.Add(new Claim("Name", this.User.Name ?? "", ClaimValueTypes.String, this.Issuer));
-            claims.Add(new Claim("FamilyName", this.User.FamilyName ?? "", ClaimValueTypes.String, this.Issuer));
-
-            claims.Add(new Claim("PlaceOfBirth", this.User.PlaceOfBirth ?? "", ClaimValueTypes.String, this.Issuer));
-            claims.Add(new Claim("CountyOfBirth", this.User.CountyOfBirth ?? "", ClaimValueTypes.String, this.Issuer));
-            claims.Add(new Claim("DateOfBirth", this.User.DateOfBirth ?? "", ClaimValueTypes.String, this.Issuer));
-
-            claims.Add(new Claim("Gender", this.User.Gender ?? "", ClaimValueTypes.String, this.Issuer));
-
-            claims.Add(new Claim("CompanyName", this.User.CompanyName ?? "", ClaimValueTypes.String, this.Issuer));
-            claims.Add(new Claim("RegisteredOffice", this.User.RegisteredOffice ?? "", ClaimValueTypes.String, this.Issuer));
-            claims.Add(new Claim("FiscalNumber", this.User.FiscalNumber ?? "", ClaimValueTypes.String, this.Issuer));
-            claims.Add(new Claim("IvaCode", this.User.IvaCode ?? "", ClaimValueTypes.String, this.Issuer));
-
-            claims.Add(new Claim("IdCard", this.User.IdCard ?? "", ClaimValueTypes.String, this.Issuer));
-            claims.Add(new Claim("ExpirationDate", this.User.ExpirationDate ?? "", ClaimValueTypes.String, this.Issuer));
-
-            claims.Add(new Claim("Email", this.User.Email ?? "", ClaimValueTypes.String, this.Issuer));
-            claims.Add(new Claim("Address", this.User.Address ?? "", ClaimValueTypes.String, this.Issuer));
-            claims.Add(new Claim("DigitalAddress", this.User.DigitalAddress ?? "", ClaimValueTypes.String, this.Issuer));
-            claims.Add(new Claim("MobilePhone", this.User.MobilePhone ?? "", ClaimValueTypes.String, this.Issuer));
-
-            claims.Add(new Claim("SessionId", this.SessionId ?? "", ClaimValueTypes.String, this.Issuer));
-            claims.Add(new Claim("SessionIdExpireDate", this.SessionIdExpireDate.ToString(), ClaimValueTypes.String, this.Issuer));
-            claims.Add(new Claim("SubjectNameId", this.SubjectNameId ?? "", ClaimValueTypes.String, this.Issuer));
- 
-            return claims;
-
-        }
         public void Deserialize(string samlResponse)
         {
             ResponseType response = new ResponseType();
@@ -164,105 +125,7 @@ namespace Developers.Italia.SPID.SAML
 
                     }
 
-                    if (this.RequestStatus == SamlRequestStatus.Success) {
-
-                        foreach (var item in response.Items)
-                        {
-                            if (item.GetType()==typeof(AssertionType)) {
-                                AssertionType ass = (AssertionType)item;
-                                this.SessionIdExpireDate = (ass.Conditions.NotOnOrAfter != null) ? ass.Conditions.NotOnOrAfter : DateTime.Now.AddMinutes(20);
-
-                                foreach (var subitem in ass.Subject.Items)
-                                {
-                                    if (subitem.GetType() == typeof(NameIDType))
-                                    {
-                                        NameIDType nameId = (NameIDType)subitem;
-                                        this.SubjectNameId = nameId.Value; //.Replace("SPID-","");
-                                    }
-                                }
-
-                                foreach (var assItem in ass.Items)
-                                {
-                                    if (assItem.GetType() == typeof(AuthnStatementType))
-                                    {
-                                        AuthnStatementType authnStatement = (AuthnStatementType)assItem;
-                                        this.SessionId = authnStatement.SessionIndex;
-                                        this.SessionIdExpireDate = (authnStatement.SessionNotOnOrAfterSpecified) ? authnStatement.SessionNotOnOrAfter : this.SessionIdExpireDate;
-                                    }
-
-                                    if (assItem.GetType() == typeof(AttributeStatementType))
-                                    {
-                                        AttributeStatementType statement = (AttributeStatementType)assItem;
-                                        
-                                        foreach (AttributeType attribute in statement.Items)
-                                        {
-                                            switch (attribute.Name)
-                                            {
-                                                case "spidCode":
-                                                    this.User.SpidCode = attribute.AttributeValue[0].ToString();
-                                                    break;
-                                                case "name":
-                                                    this.User.Name = attribute.AttributeValue[0].ToString();
-                                                    break;
-                                                case "familyName":
-                                                    this.User.FamilyName = attribute.AttributeValue[0].ToString();
-                                                    break;
-                                                case "gender":
-                                                    this.User.Gender  = attribute.AttributeValue[0].ToString();
-                                                    break;
-                                                case "ivaCode":
-                                                    this.User.IvaCode = attribute.AttributeValue[0].ToString();
-                                                    break;
-                                                case "companyName":
-                                                    this.User.CompanyName = attribute.AttributeValue[0].ToString();
-                                                    break;
-                                                case "mobilePhone":
-                                                    this.User.MobilePhone = attribute.AttributeValue[0].ToString();
-                                                    break;
-                                                case "address":
-                                                    this.User.Address = attribute.AttributeValue[0].ToString();
-                                                    break;
-                                                case "fiscalNumber":
-                                                    this.User.FiscalNumber = attribute.AttributeValue[0].ToString();
-                                                    break;
-                                                case "dateOfBirth":
-                                                    this.User.DateOfBirth = attribute.AttributeValue[0].ToString();
-                                                    break;
-                                                case "placeOfBirth":
-                                                    this.User.PlaceOfBirth = attribute.AttributeValue[0].ToString();
-                                                    break;
-                                                case "countyOfBirth":
-                                                    this.User.CountyOfBirth = attribute.AttributeValue[0].ToString();
-                                                    break;
-                                                case "idCard":
-                                                    this.User.IdCard = attribute.AttributeValue[0].ToString();
-                                                    break;
-                                                case "registeredOffice":
-                                                    this.User.RegisteredOffice = attribute.AttributeValue[0].ToString();
-                                                    break;
-                                                case "email":
-                                                    this.User.Email = attribute.AttributeValue[0].ToString();
-                                                    break;
-                                                case "expirationDate":
-                                                    this.User.ExpirationDate = attribute.AttributeValue[0].ToString();
-                                                    break;
-                                                case "digitalAddress":
-                                                    this.User.DigitalAddress = attribute.AttributeValue[0].ToString();
-                                                    break;
-                                             
-                                                default:
-                                                    break;
-                                            }
-                                        }
-
-                                    }
-                                }
-                            }
-                        }
-                      
-
-                    }
-
+                 
                 }
 
             }
@@ -271,10 +134,6 @@ namespace Developers.Italia.SPID.SAML
 
                 throw ex;
             }
-
-
-
-
 
 
         }

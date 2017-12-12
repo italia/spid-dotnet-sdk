@@ -8,6 +8,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.3" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.0" />
+    <PackageReference Include="NLog.Web.AspNetCore" Version="4.4.1" />
   </ItemGroup>
 
   <ItemGroup>
@@ -15,10 +16,17 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="nlog.config" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\..\src\Developers.Italia.SPID\Developers.Italia.SPID.SAML\Developers.Italia.SPID.SAML.csproj" />
   </ItemGroup>
 
   <ItemGroup>
+    <Content Update="nlog.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Update="wwwroot\css\site.css">
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
