@@ -2,7 +2,15 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+
+//#if NET35 
+//using System.IdentityModel.Claims;
+//#elif NET40
+//using System.IdentityModel.Claims;
+//#else
 using System.Security.Claims;
+//#endif
+
 using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
