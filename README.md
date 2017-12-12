@@ -210,6 +210,7 @@ public ActionResult ACS(IFormCollection collection)
 
 <br/><br/>
 ## Demo:
+https://github.com/congiuluc/spid-dotnet-sdk/tree/master/samples/ASPNET_CORE_2_0/SPID_ASPNET_CORE_2_0_NoIdentity
 ___
 **Prerequisito**: Per eseguire la demo di ASP.NET Core 2 è necessario installare la verione 2 di .NET Core da https://www.microsoft.com/net/download <br/>
 E' possibile utilizzare una demo funzionante, basta scaricare da GitHub la cartella Developers.Italia.SPID.Test.AspNetCore2 che si trova sotto la directory Test, aprire la finestra di comando ed eseguire i seguenti comandi:
