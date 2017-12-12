@@ -267,6 +267,10 @@ namespace Developers.Italia.SPID.SAML
             xmlPrivateKey = RSAKeyExtensions.ToXmlString((RSA)cert.PrivateKey, true);
 #endif
 
+#if NETSTANDARD2_0
+            xmlPrivateKey = RSAKeyExtensions.ToXmlString((RSA)cert.PrivateKey, true);
+#endif
+
 
             return GetSignedAuthRequest(cert, xmlPrivateKey);
         }
