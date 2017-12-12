@@ -2,19 +2,19 @@
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;net461</TargetFrameworks>
-    <Authors>Nicolò Carandini</Authors>
-    <Company>TPCWare</Company>
-    <Description>SPID authentication, SAML2 compliant.</Description>
-    <Copyright>Copyright (c) 2017 TEAM PER LA TRASFORMAZIONE DIGITALE</Copyright>
-    <PackageReleaseNotes>First release 0.1 just to check package creation and publishing</PackageReleaseNotes>
-    <PackageTags>spid authentication</PackageTags>
-    <PackageLicenseUrl>https://github.com/ncarandini/spid-dotnet-sdk/blob/master/LICENSE</PackageLicenseUrl>
-    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <PackageProjectUrl>https://github.com/ncarandini/spid-dotnet-sdk</PackageProjectUrl>
-    <Version>0.1.0</Version>
-    <PackageIconUrl>https://raw.githubusercontent.com/ncarandini/spid-dotnet-sdk/master/ArtWorks/SPID.png</PackageIconUrl>
-    <RepositoryUrl>https://github.com/ncarandini/spid-dotnet-sdk</RepositoryUrl>
+      <Authors>Nicolò Carandini</Authors>
+      <Company>TPCWare</Company>
+      <Description>SPID authentication, SAML2 compliant.</Description>
+      <Copyright>Copyright (c) 2017 TPCWare - Nicolò Carandini</Copyright>
+      <PackageReleaseNotes>First release</PackageReleaseNotes>
+      <PackageTags>spid authentication</PackageTags>
+      <PackageLicenseUrl>https://github.com/italia/spid-dotnet-sdk/blob/master/LICENSE</PackageLicenseUrl>
+      <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+      <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+      <PackageProjectUrl>https://github.com/italia/spid-dotnet-sdk</PackageProjectUrl>
+      <Version>1.0.0</Version>
+      <PackageIconUrl>https://raw.githubusercontent.com/italia/spid-dotnet-sdk/master/ArtWorks/SPID.png</PackageIconUrl>
+      <RepositoryUrl>https://github.com/italia/spid-dotnet-sdk</RepositoryUrl>
   </PropertyGroup>
 
   <ItemGroup>

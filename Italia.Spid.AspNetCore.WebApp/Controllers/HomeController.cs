@@ -2,6 +2,7 @@
 using Italia.Spid.AspNetCore.WebApp.Models;
 using Italia.Spid.Authentication;
 using Italia.Spid.Authentication.IdP;
+using Italia.Spid.Authentication.Saml;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -67,7 +68,7 @@ namespace Italia.Spid.AspNetCore.WebApp.Controllers
                     validOnly: false);
 
                 // Create the signed SAML request
-                var spidAuthnRequest = SpidHelper.BuildSpidAuthnPostRequest(
+                var spidAuthnRequest = SamlHelper.BuildAuthnPostRequest(
                     uuid: spidAuthnRequestId,
                     destination: idp.SpidServiceUrl,
                     consumerServiceURL: _configuration["Spid:DomainValue"],
@@ -142,7 +143,7 @@ namespace Italia.Spid.AspNetCore.WebApp.Controllers
                     validOnly: false);
 
                 // Create the signed SAML logout request
-                var spidLogoutRequest = SpidHelper.BuildSpidLogoutPostRequest(
+                var spidLogoutRequest = SamlHelper.BuildLogoutPostRequest(
                     uuid: logoutRequestId,
                     consumerServiceURL: _configuration["Spid:DomainValue"],
                     certificate: certificate,

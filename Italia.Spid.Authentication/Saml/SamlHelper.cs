@@ -1,5 +1,5 @@
 ﻿/*
-  Copyright (c) 2017 TEAM PER LA TRASFORMAZIONE DIGITALE
+  Copyright (c) 2017 TPCWare - Nicolò Carandini
 
   This file is licensed to you under the BSD 3-Clause License.
   See the LICENSE file in the project root for more information.
@@ -19,9 +19,9 @@ using System.Xml.Serialization;
 using Italia.Spid.Authentication.IdP;
 using Italia.Spid.Authentication.Schema;
 
-namespace Italia.Spid.Authentication
+namespace Italia.Spid.Authentication.Saml
 {
-    public static class SpidHelper
+    public static class SamlHelper
     {
         /// <summary>
         /// Build a signed SAML authentication request.
@@ -39,7 +39,7 @@ namespace Italia.Spid.Authentication
         /// <param name="identityProvider"></param>
         /// <param name="enviroment"></param>
         /// <returns>Returns a Base64 Encoded String of the SAML request</returns>
-        public static string BuildSpidAuthnPostRequest(string uuid, string destination, string consumerServiceURL, int securityLevel,
+        public static string BuildAuthnPostRequest(string uuid, string destination, string consumerServiceURL, int securityLevel,
                                                        X509Certificate2 certificate, IdentityProvider identityProvider, int enviroment)
         {
             if (string.IsNullOrWhiteSpace(uuid))
@@ -137,7 +137,7 @@ namespace Italia.Spid.Authentication
             XmlDocument doc = new XmlDocument();
             doc.LoadXml(samlString);
 
-            XmlElement signature = SigningHelper.SignDoc(doc, certificate, "_" + uuid);
+            XmlElement signature = XmlSigningHelper.SignXMLDoc(doc, certificate, "_" + uuid);
             doc.DocumentElement.InsertBefore(signature, doc.DocumentElement.ChildNodes[1]);
 
             return Convert.ToBase64String(Encoding.UTF8.GetBytes("<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + doc.OuterXml));
@@ -148,7 +148,7 @@ namespace Italia.Spid.Authentication
         /// </summary>
         /// <param name="base64Response"></param>
         /// <returns>IdpSaml2Response</returns>
-        public static IdpAuthnResponse GetSpidAuthnResponse(string base64Response)
+        public static IdpAuthnResponse GetAuthnResponse(string base64Response)
         {
             const string VALUE_NOT_AVAILABLE = "N/A";
             string idpResponse;
@@ -172,7 +172,7 @@ namespace Italia.Spid.Authentication
                 // Verify signature
                 XmlDocument xml = new XmlDocument { PreserveWhitespace = true };
                 xml.LoadXml(idpResponse);
-                if (!SigningHelper.VerifySignature(xml))
+                if (!XmlSigningHelper.VerifySignature(xml))
                 {
                     throw new Exception("Unable to verify the signature of the IdP response.");
                 }
@@ -302,7 +302,7 @@ namespace Italia.Spid.Authentication
         /// <param name="subjectNameId"></param>
         /// <param name="authnStatementSessionIndex"></param>
         /// <returns></returns>
-        public static string BuildSpidLogoutPostRequest(string uuid, string consumerServiceURL, X509Certificate2 certificate,
+        public static string BuildLogoutPostRequest(string uuid, string consumerServiceURL, X509Certificate2 certificate,
                                                         IdentityProvider identityProvider, string subjectNameId, string authnStatementSessionIndex)
         {
             if (string.IsNullOrWhiteSpace(uuid))
@@ -386,7 +386,7 @@ namespace Italia.Spid.Authentication
                 XmlDocument doc = new XmlDocument();
                 doc.LoadXml(samlString);
 
-                XmlElement signature = SigningHelper.SignDoc(doc, certificate, "_" + uuid);
+                XmlElement signature = XmlSigningHelper.SignXMLDoc(doc, certificate, "_" + uuid);
                 doc.DocumentElement.InsertBefore(signature, doc.DocumentElement.ChildNodes[1]);
 
                 return Convert.ToBase64String(Encoding.UTF8.GetBytes("<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + doc.OuterXml));
@@ -402,7 +402,7 @@ namespace Italia.Spid.Authentication
         /// </summary>
         /// <param name="base64Response"></param>
         /// <returns></returns>
-        public static IdpLogoutResponse GetSpidLogoutResponse(string base64Response)
+        public static IdpLogoutResponse GetLogoutResponse(string base64Response)
         {
             const string VALUE_NOT_AVAILABLE = "N/A";
             string idpResponse;
@@ -426,7 +426,7 @@ namespace Italia.Spid.Authentication
                 // Verify signature
                 XmlDocument xml = new XmlDocument { PreserveWhitespace = true };
                 xml.LoadXml(idpResponse);
-                if (!SigningHelper.VerifySignature(xml))
+                if (!XmlSigningHelper.VerifySignature(xml))
                 {
                     throw new Exception("Unable to verify the signature of the IdP response.");
                 }

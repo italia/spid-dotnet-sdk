@@ -1,5 +1,5 @@
 ﻿/*
-  Copyright (c) 2017 TEAM PER LA TRASFORMAZIONE DIGITALE
+  Copyright (c) 2017 TPCWare - Nicolò Carandini
 
   This file is licensed to you under the BSD 3-Clause License.
   See the LICENSE file in the project root for more information.
@@ -13,20 +13,14 @@ using System.Security.Cryptography.X509Certificates;
 using System.Security.Cryptography.Xml;
 using System.Xml;
 
-namespace Italia.Spid.Authentication
+namespace Italia.Spid.Authentication.Saml
 {
-    public static class SigningHelper {
-
-        public enum SignatureType {
-            Response,
-            Assertion,
-            Request
-        };
+    internal static class XmlSigningHelper {
 
         /// <summary>
         /// Signs an XML Document for a Saml Response
         /// </summary>
-        public static XmlElement SignDoc(XmlDocument doc, X509Certificate2 certificate, string referenceUri)
+        internal static XmlElement SignXMLDoc(XmlDocument doc, X509Certificate2 certificate, string referenceUri)
         {
             if (doc == null)
             {
@@ -94,7 +88,7 @@ namespace Italia.Spid.Authentication
             return signature;
         }
 
-        public static bool VerifySignature(XmlDocument signedDocument)
+        internal static bool VerifySignature(XmlDocument signedDocument)
         {
             {
                 if (signedDocument == null)

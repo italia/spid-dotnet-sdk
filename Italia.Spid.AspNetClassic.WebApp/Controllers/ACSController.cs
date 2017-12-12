@@ -1,18 +1,13 @@
-﻿using log4net;
-using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.IdentityModel.Tokens;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Web;
-using System.Web.Mvc;
-using System.Xml;
+﻿using Italia.Spid.AspNet.WebApp.Models;
 using Italia.Spid.Authentication;
 using Italia.Spid.Authentication.IdP;
-using Italia.Spid.AspNet.WebApp.Models;
+using Italia.Spid.Authentication.Saml;
 using Italia.Spid.Authentication.Schema;
+using log4net;
+using System;
+using System.Configuration;
+using System.Web;
+using System.Web.Mvc;
 
 namespace Italia.Spid.AspNet.WebApp.Controllers
 {
@@ -49,7 +44,7 @@ namespace Italia.Spid.AspNet.WebApp.Controllers
 
             try
             {
-                IdpAuthnResponse idpAuthnResponse = SpidHelper.GetSpidAuthnResponse(formCollection["SAMLResponse"].ToString());
+                IdpAuthnResponse idpAuthnResponse = SamlHelper.GetAuthnResponse(formCollection["SAMLResponse"].ToString());
 
                 if (!idpAuthnResponse.IsSuccessful)
                 {
@@ -62,7 +57,7 @@ namespace Italia.Spid.AspNet.WebApp.Controllers
                 }
 
                 // Verifica la corrispondenza del valore di spidAuthnRequestId ricavato da cookie con quello restituito dalla risposta
-                if (!SpidHelper.ValidAuthnResponse(idpAuthnResponse, spidAuthnRequestId, Request.Url.ToString()))
+                if (!SamlHelper.ValidAuthnResponse(idpAuthnResponse, spidAuthnRequestId, Request.Url.ToString()))
                 {
                     Session["AppUser"] = null;
 
@@ -138,7 +133,7 @@ namespace Italia.Spid.AspNet.WebApp.Controllers
 
             try
             {
-                IdpLogoutResponse idpLogoutResponse = SpidHelper.GetSpidLogoutResponse(formCollection["SAMLResponse"].ToString());
+                IdpLogoutResponse idpLogoutResponse = SamlHelper.GetLogoutResponse(formCollection["SAMLResponse"].ToString());
 
                 if (!idpLogoutResponse.IsSuccessful)
                 {
@@ -149,7 +144,7 @@ namespace Italia.Spid.AspNet.WebApp.Controllers
                 }
 
                 // Verifica la corrispondenza del valore di spidLogoutRequestId ricavato da cookie con quello restituito dalla risposta
-                if (!SpidHelper.ValidLogoutResponse(idpLogoutResponse, spidLogoutRequestId))
+                if (!SamlHelper.ValidLogoutResponse(idpLogoutResponse, spidLogoutRequestId))
                 {
                     log.Error($"Error on ACSController [HttpPost]Index method: La risposta dell'IdP non è valida (InResponseTo != spidLogoutRequestId).");
                     ViewData["Message"] = "La risposta dell'IdP non è valida perché non corrisponde alla richiesta.";

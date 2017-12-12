@@ -1,14 +1,19 @@
-﻿using log4net;
+﻿
+
+
+
+
+
+using Italia.Spid.AspNet.WebApp.Models;
+using Italia.Spid.Authentication;
+using Italia.Spid.Authentication.IdP;
+using Italia.Spid.Authentication.Saml;
+using log4net;
 using System;
-using System.Collections.Generic;
 using System.Configuration;
-using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Web;
 using System.Web.Mvc;
-using Italia.Spid.Authentication;
-using Italia.Spid.Authentication.IdP;
-using Italia.Spid.AspNet.WebApp.Models;
 
 namespace Italia.Spid.AspNet.WebApp.Controllers
 {
@@ -35,7 +40,6 @@ namespace Italia.Spid.AspNet.WebApp.Controllers
 
         public ActionResult Contact()
         {
-            ViewBag.Message = "Nicolò Carandini n.carandini@outlook.com , Antimo Musone antimo.musone@hotmail.com ";
             return View();
         }
 
@@ -57,7 +61,7 @@ namespace Italia.Spid.AspNet.WebApp.Controllers
                     validOnly: false);
 
                 // Create the signed SAML request
-                var spidAuthnRequest = SpidHelper.BuildSpidAuthnPostRequest(
+                var spidAuthnRequest = SamlHelper.BuildAuthnPostRequest(
                     uuid: spidAuthnRequestId,
                     destination: idp.SpidServiceUrl,
                     consumerServiceURL: ConfigurationManager.AppSettings["SPID_DOMAIN_VALUE"],
@@ -148,7 +152,7 @@ namespace Italia.Spid.AspNet.WebApp.Controllers
                     validOnly: false);
 
                 // Create the signed SAML logout request
-                var spidLogoutRequest = SpidHelper.BuildSpidLogoutPostRequest(
+                var spidLogoutRequest = SamlHelper.BuildLogoutPostRequest(
                     uuid: logoutRequestId,
                     consumerServiceURL: ConfigurationManager.AppSettings["SPID_DOMAIN_VALUE"],
                     certificate: certificate,
