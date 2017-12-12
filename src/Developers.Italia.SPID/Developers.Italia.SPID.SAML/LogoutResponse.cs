@@ -2,15 +2,13 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-
-
 using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
 
 namespace Developers.Italia.SPID.SAML
 {
-    public class AuthResponse
+    public class LogoutResponse
     {
         public string Version { get; set; }
 
@@ -21,60 +19,17 @@ namespace Developers.Italia.SPID.SAML
 
         public string SPUID { get; set; }
 
-        public string SubjectNameId { get; set; }
-
-        public string SessionId { get; set; }
-
-        public DateTime SessionIdExpireDate { get; set; }
-              
-        public SpidUserData User { get; set; }
-
+      
         public SamlRequestStatus RequestStatus { get; set; }
 
+     
 
-        public AuthResponse()
+        public LogoutResponse()
         {
-            User = new SpidUserData();
-            RequestStatus= SamlRequestStatus.GenericError;
+          RequestStatus= SamlRequestStatus.GenericError;
         }
 
-        public Dictionary<string, string> GetClaims()
-        {
-            Dictionary<string, string> claims = new Dictionary<string, string>();
-
-
-            claims.Add("SpidCode", this.User.SpidCode ?? "");
-
-            claims.Add("Name", this.User.Name ?? "");
-            claims.Add("FamilyName", this.User.FamilyName ?? "");
-
-            claims.Add("PlaceOfBirth", this.User.PlaceOfBirth ?? "");
-            claims.Add("CountyOfBirth", this.User.CountyOfBirth ?? "");
-            claims.Add("DateOfBirth", this.User.DateOfBirth ?? "");
-
-            claims.Add("Gender", this.User.Gender ?? "");
-
-            claims.Add("CompanyName", this.User.CompanyName ?? "");
-            claims.Add("RegisteredOffice", this.User.RegisteredOffice ?? "");
-            claims.Add("FiscalNumber", this.User.FiscalNumber ?? "");
-            claims.Add("IvaCode", this.User.IvaCode ?? "");
-
-            claims.Add("IdCard", this.User.IdCard ?? "");
-            claims.Add("ExpirationDate", this.User.ExpirationDate ?? "");
-
-            claims.Add("Email", this.User.Email ?? "");
-            claims.Add("Address", this.User.Address ?? "");
-            claims.Add("DigitalAddress", this.User.DigitalAddress ?? "");
-            claims.Add("MobilePhone", this.User.MobilePhone ?? "");
-
-            claims.Add("SessionId", this.SessionId ?? "");
-            claims.Add("SessionIdExpireDate", this.SessionIdExpireDate.ToString());
-            claims.Add("SubjectNameId", this.SubjectNameId ?? "");
-
-            return claims;
-
-        }
-
+       
 
         public void Deserialize(string samlResponse)
         {
@@ -169,105 +124,7 @@ namespace Developers.Italia.SPID.SAML
 
                     }
 
-                    if (this.RequestStatus == SamlRequestStatus.Success) {
-
-                        foreach (var item in response.Items)
-                        {
-                            if (item.GetType()==typeof(AssertionType)) {
-                                AssertionType ass = (AssertionType)item;
-                                this.SessionIdExpireDate = (ass.Conditions.NotOnOrAfter != null) ? ass.Conditions.NotOnOrAfter : DateTime.Now.AddMinutes(20);
-
-                                foreach (var subitem in ass.Subject.Items)
-                                {
-                                    if (subitem.GetType() == typeof(NameIDType))
-                                    {
-                                        NameIDType nameId = (NameIDType)subitem;
-                                        this.SubjectNameId = nameId.Value; //.Replace("SPID-","");
-                                    }
-                                }
-
-                                foreach (var assItem in ass.Items)
-                                {
-                                    if (assItem.GetType() == typeof(AuthnStatementType))
-                                    {
-                                        AuthnStatementType authnStatement = (AuthnStatementType)assItem;
-                                        this.SessionId = authnStatement.SessionIndex;
-                                        this.SessionIdExpireDate = (authnStatement.SessionNotOnOrAfterSpecified) ? authnStatement.SessionNotOnOrAfter : this.SessionIdExpireDate;
-                                    }
-
-                                    if (assItem.GetType() == typeof(AttributeStatementType))
-                                    {
-                                        AttributeStatementType statement = (AttributeStatementType)assItem;
-                                        
-                                        foreach (AttributeType attribute in statement.Items)
-                                        {
-                                            switch (attribute.Name)
-                                            {
-                                                case "spidCode":
-                                                    this.User.SpidCode = attribute.AttributeValue[0].ToString();
-                                                    break;
-                                                case "name":
-                                                    this.User.Name = attribute.AttributeValue[0].ToString();
-                                                    break;
-                                                case "familyName":
-                                                    this.User.FamilyName = attribute.AttributeValue[0].ToString();
-                                                    break;
-                                                case "gender":
-                                                    this.User.Gender  = attribute.AttributeValue[0].ToString();
-                                                    break;
-                                                case "ivaCode":
-                                                    this.User.IvaCode = attribute.AttributeValue[0].ToString();
-                                                    break;
-                                                case "companyName":
-                                                    this.User.CompanyName = attribute.AttributeValue[0].ToString();
-                                                    break;
-                                                case "mobilePhone":
-                                                    this.User.MobilePhone = attribute.AttributeValue[0].ToString();
-                                                    break;
-                                                case "address":
-                                                    this.User.Address = attribute.AttributeValue[0].ToString();
-                                                    break;
-                                                case "fiscalNumber":
-                                                    this.User.FiscalNumber = attribute.AttributeValue[0].ToString();
-                                                    break;
-                                                case "dateOfBirth":
-                                                    this.User.DateOfBirth = attribute.AttributeValue[0].ToString();
-                                                    break;
-                                                case "placeOfBirth":
-                                                    this.User.PlaceOfBirth = attribute.AttributeValue[0].ToString();
-                                                    break;
-                                                case "countyOfBirth":
-                                                    this.User.CountyOfBirth = attribute.AttributeValue[0].ToString();
-                                                    break;
-                                                case "idCard":
-                                                    this.User.IdCard = attribute.AttributeValue[0].ToString();
-                                                    break;
-                                                case "registeredOffice":
-                                                    this.User.RegisteredOffice = attribute.AttributeValue[0].ToString();
-                                                    break;
-                                                case "email":
-                                                    this.User.Email = attribute.AttributeValue[0].ToString();
-                                                    break;
-                                                case "expirationDate":
-                                                    this.User.ExpirationDate = attribute.AttributeValue[0].ToString();
-                                                    break;
-                                                case "digitalAddress":
-                                                    this.User.DigitalAddress = attribute.AttributeValue[0].ToString();
-                                                    break;
-                                             
-                                                default:
-                                                    break;
-                                            }
-                                        }
-
-                                    }
-                                }
-                            }
-                        }
-                      
-
-                    }
-
+                 
                 }
 
             }
@@ -276,10 +133,6 @@ namespace Developers.Italia.SPID.SAML
 
                 throw ex;
             }
-
-
-
-
 
 
         }

@@ -58,6 +58,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="SAML\01_auth_request.xml" />
+    <Content Include="SAML\02_auth_response.xml" />
+    <Content Include="SAML\03_logout_request.xml" />
     <None Include="App.config" />
     <Content Include="Certificates\Hackathon\www_dotnetcode_it.crs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
