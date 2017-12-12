@@ -256,11 +256,10 @@ namespace Developers.Italia.SPID.SAML
 
 #if NETFULL
            xmlPrivateKey = cert.PrivateKey.ToXmlString(true);
+#else
+           xmlPrivateKey = RSAKeyExtensions.ToXmlString((RSA)cert.PrivateKey, true);
 #endif
 
-#if NETSTANDARD2_0
-            xmlPrivateKey = RSAKeyExtensions.ToXmlString((RSA)cert.PrivateKey, true);
-#endif
             return GetSignedAuthRequest(cert, xmlPrivateKey);
         }
 
