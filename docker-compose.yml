@@ -1,0 +1,8 @@
+version: '3'
+
+services:
+  italia.spid.aspnetcore.webapp:
+    image: italia.spid.aspnetcore.webapp
+    build:
+      context: .
+      dockerfile: Italia.Spid.AspNetCore.WebApp/Dockerfile
