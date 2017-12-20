@@ -14,27 +14,39 @@ namespace Italia.Spid.Authentication.IdP
     public class IdentityProvider
     {
         private string subjectNameIdRemoveText;
-
         private string dateTimeFormat;
         private double nowDelta; // We need this to be compliant with Sielte IdP (value needs to be -2 for Sielte, 0 for all others)
 
-        public string ProviderName { get; private set; }
+        public string EntityID { get; private set; }
 
-        public string SpidServiceUrl { get; private set; }
+        public string OrganizationName { get; set; }
 
-        public string LogoutServiceUrl { get; private set; }
+        public string OrganizationDisplayName { get; set; }
+
+        public string OrganizationUrl { get; set; }
+
+        public string SingleSignOnServiceUrl { get; private set; }
+
+        public string SingleLogoutServiceUrl { get; private set; }
+
 
         public IdentityProvider(
-            string providerName,
-            string spidServiceUrl,
-            string logoutServiceUrl,
+            string entityId,
+            string organizationName,
+            string organizationDisplayName,
+            string organizationUrl,
+            string singleSignOnServiceUrl,
+            string singleLogoutServiceUrl,
             string subjectNameIdRemoveText,
             string dateTimeFormat,
             double nowDelta)
         {
-            ProviderName = providerName;
-            SpidServiceUrl = spidServiceUrl;
-            LogoutServiceUrl = logoutServiceUrl;
+            EntityID = entityId;
+            OrganizationName = organizationName;
+            OrganizationDisplayName = organizationDisplayName;
+            OrganizationUrl = organizationUrl;
+            SingleSignOnServiceUrl = singleSignOnServiceUrl;
+            SingleLogoutServiceUrl = singleLogoutServiceUrl;
             this.subjectNameIdRemoveText = subjectNameIdRemoveText;
             this.dateTimeFormat = dateTimeFormat;
             this.nowDelta = nowDelta;
@@ -60,14 +72,14 @@ namespace Italia.Spid.Authentication.IdP
             return now.AddMinutes(-2).ToString(dateTimeFormat);
         }
 
-        internal void ConfigOverrideSpidServiceUrl(string spidServiceUrl)
+        internal void ConfigOverrideSpidServiceUrl(string singleSignOnServiceUrl)
         {
-            this.SpidServiceUrl = spidServiceUrl;
+            this.SingleSignOnServiceUrl = singleSignOnServiceUrl;
         }
 
-        internal void ConfigOverrideLogoutServiceUrl(string logoutServiceUrl)
+        internal void ConfigOverrideLogoutServiceUrl(string singleLogoutServiceUrl)
         {
-            this.LogoutServiceUrl = logoutServiceUrl;
+            this.SingleLogoutServiceUrl = singleLogoutServiceUrl;
         }
 
         internal void ConfigOverrideDateTimeFormat(string dateTimeFormat)

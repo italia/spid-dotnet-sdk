@@ -50,49 +50,124 @@ namespace Italia.Spid.AspNet.WebApp
             {
                 new IdentityProviderConfigData()
                 {
-                    ProviderName = "Local SPID IdP (WSO2 on Docker container for testing)",
-                    SpidServiceUrl ="https://localhost:9443/samlsso",
-                    LogoutServiceUrl = "https://localhost:9443/samlsso",
+                    EntityId = "WSO2",
+                    OrganizationName = "Local SPID IdP (WSO2 on Docker container for testing)",
+                    OrganizationDisplayName = "Local SPID IdP Test service",
+                    OrganizationUrl = "https://github.com/italia/spid-testenv-docker",
+                    SingleSignOnServiceUrl ="https://localhost:9443/samlsso",
+                    SingleLogoutServiceUrl = "https://localhost:9443/samlsso",
                     SubjectNameIdRemoveText = string.Empty,
                     DateTimeFormat = "yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fff'Z'",
                     NowDelta = 0
                 },
                 new IdentityProviderConfigData()
                 {
-                    ProviderName = "Poste Italiane (Servizio di test)",
-                    SpidServiceUrl ="https://spidposte.test.poste.it/jod-fs/ssoservicepost",
-                    LogoutServiceUrl = "https://spidposte.test.poste.it/jod-fs/sloservicepost",
-                    SubjectNameIdRemoveText = "SPID-",
+                    EntityId = "https://spidposte.test.poste.it",
+                    OrganizationName = "Poste Italiane SpA IDP DI TEST",
+                    OrganizationDisplayName = "Poste Italiane SpA IDP DI TEST",
+                    OrganizationUrl = "https://spidposte.test.poste.it",
+                    SingleSignOnServiceUrl ="https://spidposte.test.poste.it/jod-fs/ssoservicepost",
+                    SingleLogoutServiceUrl = "https://spidposte.test.poste.it/jod-fs/sloservicepost",
+                    SubjectNameIdRemoveText = "SPID-", // We need to remove it from Subject Name ID otherwise subsequent logout will fail
                     DateTimeFormat = "yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fff'Z'",
                     NowDelta = 0
                 },
-                //new IdentityProviderConfigData()
-                //{
-                //    ProviderName = "TIM",
-                //    SpidServiceUrl ="",
-                //    LogoutServiceUrl = "",
-                //    SubjectNameIdRemoveText = "",
-                //    DateTimeFormat = "yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fff'Z'",
-                //    NowDelta = 0
-                //},
-                //new IdentityProviderConfigData()
-                //{
-                //    ProviderName = "Sielte",
-                //    SpidServiceUrl ="",
-                //    LogoutServiceUrl = "",
-                //    SubjectNameIdRemoveText = "",
-                //    DateTimeFormat = "yyyy'-'MM'-'dd'T'HH':'mm':'ss'Z'",
-                //    NowDelta = -2
-                //},
-                //new IdentityProviderConfigData()
-                //{
-                //    ProviderName = "Infocert",
-                //    SpidServiceUrl ="",
-                //    LogoutServiceUrl = "",
-                //    SubjectNameIdRemoveText = "",
-                //    DateTimeFormat = "yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fff'Z'",
-                //    NowDelta = 0
-                //},
+                new IdentityProviderConfigData()
+                {
+                    EntityId = "https://loginspid.aruba.it",
+                    OrganizationName = "ArubaPEC S.p.A.",
+                    OrganizationDisplayName = "ArubaPEC S.p.A.",
+                    OrganizationUrl = "https://www.pec.it/",
+                    SingleSignOnServiceUrl ="https://loginspid.aruba.it/ServiceLoginWelcome",
+                    SingleLogoutServiceUrl = "https://loginspid.aruba.it/ServiceLogoutRequest",
+                    SubjectNameIdRemoveText = string.Empty,
+                    DateTimeFormat = "yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fff'Z'",
+                    NowDelta = 0
+                },
+                new IdentityProviderConfigData()
+                {
+                    EntityId = "https://spid.intesa.it",
+                    OrganizationName = "IN.TE.S.A. S.p.A.",
+                    OrganizationDisplayName = "Intesa S.p.A.",
+                    OrganizationUrl = "https://www.intesa.it/",
+                    SingleSignOnServiceUrl ="https://spid.intesa.it/Time4UserServices/services/idp/AuthnRequest/",
+                    SingleLogoutServiceUrl = "https://spid.intesa.it/Time4UserServices/services/idp/SingleLogout",
+                    SubjectNameIdRemoveText = string.Empty,
+                    DateTimeFormat = "yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fff'Z'",
+                    NowDelta = 0
+                },
+                new IdentityProviderConfigData()
+                {
+                    EntityId = "https://identity.infocert.it",
+                    OrganizationName = "InfoCert S.p.A.",
+                    OrganizationDisplayName = "InfoCert S.p.A.",
+                    OrganizationUrl = "https://www.infocert.it",
+                    SingleSignOnServiceUrl ="https://identity.infocert.it/spid/samlsso",
+                    SingleLogoutServiceUrl = "https://identity.infocert.it/spid/samlslo",
+                    SubjectNameIdRemoveText = string.Empty,
+                    DateTimeFormat = "yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fff'Z'",
+                    NowDelta = 0
+                },
+                new IdentityProviderConfigData()
+                {
+                    EntityId = "https://idp.namirialtsp.com/idp",
+                    OrganizationName = "Namirial",
+                    OrganizationDisplayName = "Namirial S.p.a. Trust Service Provider",
+                    OrganizationUrl = "https://www.namirialtsp.com",
+                    SingleSignOnServiceUrl ="https://idp.namirialtsp.com/idp/profile/SAML2/POST/SSO",
+                    SingleLogoutServiceUrl = "https://idp.namirialtsp.com/idp/profile/SAML2/POST/SLO",
+                    SubjectNameIdRemoveText = string.Empty,
+                    DateTimeFormat = "yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fff'Z'",
+                    NowDelta = 0
+                },
+                new IdentityProviderConfigData()
+                {
+                    EntityId = "https://posteid.poste.it",
+                    OrganizationName = "Poste Italiane SpA",
+                    OrganizationDisplayName = "Poste Italiane SpA",
+                    OrganizationUrl = "https://www.poste.it",
+                    SingleSignOnServiceUrl ="https://posteid.poste.it/jod-fs/ssoservicepost",
+                    SingleLogoutServiceUrl = "https://posteid.poste.it/jod-fs/sloserviceresponsepost",
+                    SubjectNameIdRemoveText = "SPID-", // We need to remove it from Subject Name ID otherwise subsequent logout will fail
+                    DateTimeFormat = "yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fff'Z'",
+                    NowDelta = 0
+                },
+                new IdentityProviderConfigData()
+                {
+                    EntityId = "https://spid.register.it",
+                    OrganizationName = "Register.it S.p.A.",
+                    OrganizationDisplayName = "Register.it S.p.A.",
+                    OrganizationUrl = "https//www.register.it",
+                    SingleSignOnServiceUrl ="https://spid.register.it/login/sso",
+                    SingleLogoutServiceUrl = "https://spid.register.it/login/singleLogout",
+                    SubjectNameIdRemoveText = string.Empty,
+                    DateTimeFormat = "yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fff'Z'",
+                    NowDelta = 0
+                },
+                new IdentityProviderConfigData()
+                {
+                    EntityId = "https://identity.sieltecloud.it",
+                    OrganizationName = "Sielte S.p.A.",
+                    OrganizationDisplayName = "Sielte S.p.A.",
+                    OrganizationUrl = "http://www.sielte.it",
+                    SingleSignOnServiceUrl ="https://identity.sieltecloud.it/simplesaml/saml2/idp/SSO.php",
+                    SingleLogoutServiceUrl = "https://identity.sieltecloud.it/simplesaml/saml2/idp/SLS.php",
+                    SubjectNameIdRemoveText = string.Empty,
+                    DateTimeFormat = "yyyy'-'MM'-'dd'T'HH':'mm':'ss'Z'",
+                    NowDelta = -2 // TODO: Only for Sielte, still valid and required?
+                },
+                new IdentityProviderConfigData()
+                {
+                    EntityId = "https://login.id.tim.it/affwebservices/public/saml2sso",
+                    OrganizationName = "TI Trust Technologies srl",
+                    OrganizationDisplayName = "Trust Technologies srl",
+                    OrganizationUrl = "https://www.trusttechnologies.it",
+                    SingleSignOnServiceUrl ="https://login.id.tim.it/affwebservices/public/saml2sso",
+                    SingleLogoutServiceUrl = "https://login.id.tim.it/affwebservices/public/saml2slo",
+                    SubjectNameIdRemoveText = string.Empty,
+                    DateTimeFormat = "yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fff'Z'",
+                    NowDelta = 0
+                }
             };
 
             using (StreamWriter sw = new StreamWriter(Server.MapPath("~/idpConfigDataList.json")))

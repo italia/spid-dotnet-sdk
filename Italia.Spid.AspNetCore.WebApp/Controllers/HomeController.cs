@@ -70,7 +70,7 @@ namespace Italia.Spid.AspNetCore.WebApp.Controllers
                 // Create the signed SAML request
                 var spidAuthnRequest = SamlHelper.BuildAuthnPostRequest(
                     uuid: spidAuthnRequestId,
-                    destination: idp.SpidServiceUrl,
+                    destination: idp.SingleSignOnServiceUrl,
                     consumerServiceURL: _configuration["Spid:DomainValue"],
                     securityLevel: 1,
                     certificate: certificate,
@@ -78,7 +78,7 @@ namespace Italia.Spid.AspNetCore.WebApp.Controllers
                     enviroment: _env.EnvironmentName == "Development" ? 1 : 0);
 
                 ViewData["data"] = spidAuthnRequest;
-                ViewData["action"] = idp.SpidServiceUrl;
+                ViewData["action"] = idp.SingleSignOnServiceUrl;
 
                 //// Save the IdP label and SPID request id as a cookie
                 //HttpCookie cookie = Request.Cookies.Get(SPID_COOKIE) ?? new HttpCookie(SPID_COOKIE);
@@ -152,7 +152,7 @@ namespace Italia.Spid.AspNetCore.WebApp.Controllers
                     authnStatementSessionIndex: authnStatementSessionIndex);
 
                 ViewData["data"] = spidLogoutRequest;
-                ViewData["action"] = idp.LogoutServiceUrl;
+                ViewData["action"] = idp.SingleLogoutServiceUrl;
 
                 // Save the IdP label and SPID logout request id
                 this.SetCookie("IdPName", idpName, 20);

@@ -11,12 +11,16 @@ namespace Italia.Spid.Authentication.IdP
 {
     public class IdentityProviderMetaData
     {
-        public string ProviderName { get; set; }
+        public string EntityId { get; set; }
 
-        public string SpidServiceUrl { get; set; }
+        public string OrganizationName { get; set; }
 
-        public string LogoutServiceUrl { get; set; }
+        public string OrganizationDisplayName { get; set; }
 
+        public string OrganizationUrl { get; set; }
 
+        public string SingleSignOnServiceUrl { get; set; }
+
+        public string SingleLogoutServiceUrl { get; set; }
     }
 }

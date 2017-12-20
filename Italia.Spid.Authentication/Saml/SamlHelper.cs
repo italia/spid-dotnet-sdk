@@ -330,7 +330,7 @@ namespace Italia.Spid.Authentication.Saml
                 throw new ArgumentNullException("The subjectNameId parameter can't be null or empty.");
             }
 
-            if (string.IsNullOrWhiteSpace(identityProvider.LogoutServiceUrl))
+            if (string.IsNullOrWhiteSpace(identityProvider.SingleLogoutServiceUrl))
             {
                 throw new ArgumentNullException("The LogoutServiceUrl of the identity provider is null or empty.");
             }
@@ -342,7 +342,7 @@ namespace Italia.Spid.Authentication.Saml
                 ID = "_" + uuid,
                 Version = "2.0",
                 IssueInstant = identityProvider.Now(now),
-                Destination = identityProvider.LogoutServiceUrl,
+                Destination = identityProvider.SingleLogoutServiceUrl,
                 Issuer = new NameIDType
                 {
                     Value = consumerServiceURL.Trim(),
