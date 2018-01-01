@@ -4,7 +4,7 @@
     "IdentityProviderType": 1,
     "OrganizationName": "Local SPID IdP (WSO2 on Docker container for testing)",
     "OrganizationDisplayName": "Local SPID IdP Test service",
-    "OrganizationUrl": "https://github.com/italia/spid-testenv-docker",
+    "OrganizationUrl": "https://raw.githubusercontent.com/italia/spid-testenv-docker",
     "OrganizationLogoUrl": "https://upload.wikimedia.org/wikipedia/en/5/56/WSO2_Software_Logo.png",
 
     "Settings": {
@@ -20,7 +20,7 @@
     "OrganizationName": "Poste Italiane SpA IDP DI TEST",
     "OrganizationDisplayName": "Poste Italiane SpA IDP DI TEST",
     "OrganizationUrl": "https://spidposte.test.poste.it",
-    "OrganizationLogoUrl": "https://github.com/italia/spid-graphics/tree/master/idp-logos/spid-idp-posteid.png",
+    "OrganizationLogoUrl": "https://raw.githubusercontent.com/italia/spid-graphics/master/idp-logos/spid-idp-posteid.png",
 
     "Settings": {
       "AssertionConsumerServiceIndex": "1",
@@ -36,7 +36,7 @@
     "OrganizationName": "ArubaPEC S.p.A.",
     "OrganizationDisplayName": "ArubaPEC S.p.A.",
     "OrganizationUrl": "https://www.pec.it/",
-    "OrganizationLogoUrl": "https://github.com/italia/spid-graphics/tree/master/idp-logos/spid-idp-arubaid.png",
+    "OrganizationLogoUrl": "https://raw.githubusercontent.com/italia/spid-graphics/master/idp-logos/spid-idp-arubaid.png",
 
     "Settings": {
       "AssertionConsumerServiceIndex": "1",
@@ -51,7 +51,7 @@
     "OrganizationName": "IN.TE.S.A. S.p.A.",
     "OrganizationDisplayName": "IN.TE.S.A. S.p.A.",
     "OrganizationUrl": "https://www.intesa.it/",
-    "OrganizationLogoUrl": "https://github.com/italia/spid-graphics/tree/master/idp-logos/spid-idp-arubaid.png",
+    "OrganizationLogoUrl": "https://raw.githubusercontent.com/italia/spid-graphics/master/idp-logos/spid-idp-intesaid.png",
 
     "Settings": {
       "AssertionConsumerServiceIndex": "1",
@@ -66,7 +66,7 @@
     "OrganizationName": "InfoCert S.p.A.",
     "OrganizationDisplayName": "InfoCert S.p.A.",
     "OrganizationUrl": "https://www.infocert.it",
-    "OrganizationLogoUrl": "https://github.com/italia/spid-graphics/tree/master/idp-logos/spid-idp-intesaid.png",
+    "OrganizationLogoUrl": "https://raw.githubusercontent.com/italia/spid-graphics/master/idp-logos/spid-idp-infocertid.png",
 
     "Settings": {
       "AssertionConsumerServiceIndex": "1",
@@ -81,7 +81,7 @@
     "OrganizationName": "Namirial",
     "OrganizationDisplayName": "Namirial S.p.a. Trust Service Provider",
     "OrganizationUrl": "https://www.namirialtsp.com",
-    "OrganizationLogoUrl": "https://github.com/italia/spid-graphics/tree/master/idp-logos/spid-idp-namirialid.png",
+    "OrganizationLogoUrl": "https://raw.githubusercontent.com/italia/spid-graphics/master/idp-logos/spid-idp-namirialid.png",
 
     "Settings": {
       "AssertionConsumerServiceIndex": "1",
@@ -96,7 +96,7 @@
     "OrganizationName": "Poste Italiane SpA",
     "OrganizationDisplayName": "Poste Italiane SpA",
     "OrganizationUrl": "https://www.poste.it",
-    "OrganizationLogoUrl": "https://github.com/italia/spid-graphics/tree/master/idp-logos/spid-idp-posteid.png",
+    "OrganizationLogoUrl": "https://raw.githubusercontent.com/italia/spid-graphics/master/idp-logos/spid-idp-posteid.png",
 
     "Settings": {
       "AssertionConsumerServiceIndex": "1",
@@ -112,7 +112,7 @@
     "OrganizationName": "Register.it S.p.A.",
     "OrganizationDisplayName": "Register.it S.p.A.",
     "OrganizationUrl": "https//www.register.it",
-    "OrganizationLogoUrl": "https://github.com/italia/spid-graphics/tree/master/idp-logos/spid-idp-registerid.png",
+    "OrganizationLogoUrl": "https://raw.githubusercontent.com/italia/spid-graphics/master/idp-logos/spid-idp-spiditalia.png",
 
     "Settings": {
       "AssertionConsumerServiceIndex": "1",
@@ -127,7 +127,7 @@
     "OrganizationName": "Sielte S.p.A.",
     "OrganizationDisplayName": "Sielte S.p.A.",
     "OrganizationUrl": "http://www.sielte.it",
-    "OrganizationLogoUrl": "https://github.com/italia/spid-graphics/tree/master/idp-logos/spid-idp-sielteid.png",
+    "OrganizationLogoUrl": "https://raw.githubusercontent.com/italia/spid-graphics/master/idp-logos/spid-idp-sielteid.png",
 
     "Settings": {
       "AssertionConsumerServiceIndex": "1",
@@ -143,7 +143,7 @@
     "OrganizationName": "TI Trust Technologies srl",
     "OrganizationDisplayName": "Trust Technologies srl",
     "OrganizationUrl": "https://www.trusttechnologies.it",
-    "OrganizationLogoUrl": "https://github.com/italia/spid-graphics/tree/master/idp-logos/spid-idp-timid.png",
+    "OrganizationLogoUrl": "https://raw.githubusercontent.com/italia/spid-graphics/master/idp-logos/spid-idp-timid.png",
 
     "Settings": {
       "AssertionConsumerServiceIndex": "1",
