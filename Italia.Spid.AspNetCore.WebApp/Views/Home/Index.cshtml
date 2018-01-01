@@ -1,5 +1,6 @@
 ﻿@{
     ViewBag.Title = "Home Page";
+    var providerList = Italia.Spid.Authentication.IdP.IdentityProvidersList.IdpList;
 }
 
 <div class="jumbotron">
@@ -27,6 +28,14 @@
 
             <div class="spid-idp-button spid-idp-button-tip spid-idp-button-relative hideDDL" id="spid-idp-button-medium-post" style="text-align: left;">
                 <ul class="spid-idp-button-menu" id="spid-idp-list-medium-root-post" aria-labelledby="spid-idp">
+                    @foreach (var item in providerList)
+                    {
+                        <li class="spid-idp-button-link">
+                            <a href='@Url.Action("SpidRequest", "Home",new { IdPName = item.IdentityProviderId })'>
+                                <img class="idp-button-idp-logo" title="@item.OrganizationName" alt="@item.OrganizationName" src='@item.OrganizationLogoUrl' />
+                            </a>
+                        </li>
+                    }
 
                     <li class="spid-idp-button-link">
                         <a href='@Url.Action("SpidRequest", "Home",new { IdPName = "WSO2" })'>

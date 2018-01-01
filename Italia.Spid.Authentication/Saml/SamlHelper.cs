@@ -40,7 +40,7 @@ namespace Italia.Spid.Authentication.Saml
         /// <param name="enviroment"></param>
         /// <returns>Returns a Base64 Encoded String of the SAML request</returns>
         public static string BuildAuthnPostRequest(string uuid, string destination, string consumerServiceURL, int securityLevel,
-                                                       X509Certificate2 certificate, IdentityProvider identityProvider, int enviroment)
+                                                       X509Certificate2 certificate, IdentityProvider identityProvider)
         {
             if (string.IsNullOrWhiteSpace(uuid))
             {
@@ -67,10 +67,40 @@ namespace Italia.Spid.Authentication.Saml
                 throw new ArgumentNullException("The identityProvider parameter can't be null.");
             }
 
-            if (enviroment < 0 )
+         
+            if (string.IsNullOrWhiteSpace(identityProvider.Settings[SamlIdentityProviderSettings.DateTimeFormat]))
             {
-                throw new ArgumentNullException("The enviroment parameter can't be less than zero.");
+                identityProvider.Settings[SamlIdentityProviderSettings.DateTimeFormat] = SamlIdentityProviderSettings.DefaultSettings[SamlIdentityProviderSettings.DateTimeFormat];
             }
+
+            if (string.IsNullOrWhiteSpace(identityProvider.Settings[SamlIdentityProviderSettings.NowDelta]))
+            {
+                identityProvider.Settings[SamlIdentityProviderSettings.NowDelta] = SamlIdentityProviderSettings.DefaultSettings[SamlIdentityProviderSettings.NowDelta];
+            }
+
+            if (string.IsNullOrWhiteSpace(identityProvider.Settings[SamlIdentityProviderSettings.SingleSignOnServiceUrl]))
+            {
+                throw new ArgumentNullException("The Single SignOn Service Url parameter can't be less than zero.");
+            }
+
+            if (string.IsNullOrWhiteSpace(identityProvider.Settings[SamlIdentityProviderSettings.AssertionConsumerServiceIndex]))
+            {
+                identityProvider.Settings[SamlIdentityProviderSettings.AssertionConsumerServiceIndex] = SamlIdentityProviderSettings.DefaultSettings[SamlIdentityProviderSettings.AssertionConsumerServiceIndex];
+            }
+
+            if (string.IsNullOrWhiteSpace(identityProvider.Settings[SamlIdentityProviderSettings.AttributeConsumingServiceIndex]))
+            {
+                identityProvider.Settings[SamlIdentityProviderSettings.AttributeConsumingServiceIndex] = SamlIdentityProviderSettings.DefaultSettings[SamlIdentityProviderSettings.AttributeConsumingServiceIndex];
+            }
+
+
+
+            string dateTimeFormat = identityProvider.Settings[SamlIdentityProviderSettings.DateTimeFormat];
+            double nowDelta = Convert.ToDouble( identityProvider.Settings[SamlIdentityProviderSettings.NowDelta]);
+
+            ushort assertionConsumerServiceIndex = Convert.ToUInt16(identityProvider.Settings[SamlIdentityProviderSettings.AssertionConsumerServiceIndex]);
+            ushort attributeConsumingServiceIndex = Convert.ToUInt16(identityProvider.Settings[SamlIdentityProviderSettings.AttributeConsumingServiceIndex]);
+
 
             DateTime now = DateTime.UtcNow;
 
@@ -78,11 +108,11 @@ namespace Italia.Spid.Authentication.Saml
             {
                 ID = "_" + uuid,
                 Version = "2.0",
-                IssueInstant = identityProvider.Now(now),
+                IssueInstant = now.AddMinutes(nowDelta).ToString(dateTimeFormat),
                 Destination = destination,
-                AssertionConsumerServiceIndex = (ushort)enviroment,
+                AssertionConsumerServiceIndex = assertionConsumerServiceIndex,
                 AssertionConsumerServiceIndexSpecified = true,
-                AttributeConsumingServiceIndex = 1,
+                AttributeConsumingServiceIndex = attributeConsumingServiceIndex,
                 AttributeConsumingServiceIndexSpecified = true,
                 ForceAuthn = (securityLevel > 1),
                 ForceAuthnSpecified = (securityLevel > 1),
@@ -100,9 +130,9 @@ namespace Italia.Spid.Authentication.Saml
                 },
                 Conditions = new ConditionsType
                 {
-                    NotBefore = identityProvider.NotBefore(now),
+                    NotBefore = now.ToString(dateTimeFormat),
                     NotBeforeSpecified = true,
-                    NotOnOrAfter = identityProvider.After(now.AddMinutes(10)),
+                    NotOnOrAfter = now.AddMinutes(10).ToString(dateTimeFormat),
                     NotOnOrAfterSpecified = true
                 },
                 RequestedAuthnContext = new RequestedAuthnContextType
@@ -330,19 +360,36 @@ namespace Italia.Spid.Authentication.Saml
                 throw new ArgumentNullException("The subjectNameId parameter can't be null or empty.");
             }
 
-            if (string.IsNullOrWhiteSpace(identityProvider.SingleLogoutServiceUrl))
+           
+            if (string.IsNullOrWhiteSpace(identityProvider.Settings[SamlIdentityProviderSettings.DateTimeFormat]))
+            {
+                identityProvider.Settings[SamlIdentityProviderSettings.DateTimeFormat] = SamlIdentityProviderSettings.DefaultSettings[SamlIdentityProviderSettings.DateTimeFormat];
+            }
+
+            if (string.IsNullOrWhiteSpace(identityProvider.Settings[SamlIdentityProviderSettings.NowDelta]))
+            {
+                identityProvider.Settings[SamlIdentityProviderSettings.NowDelta] = SamlIdentityProviderSettings.DefaultSettings[SamlIdentityProviderSettings.NowDelta];
+            }
+
+            if (string.IsNullOrWhiteSpace(identityProvider.Settings[SamlIdentityProviderSettings.SingleLogoutServiceUrl]))
             {
                 throw new ArgumentNullException("The LogoutServiceUrl of the identity provider is null or empty.");
             }
-            
+
+            string dateTimeFormat = identityProvider.Settings[SamlIdentityProviderSettings.DateTimeFormat];
+            string subjectNameIdRemoveText = identityProvider.Settings[SamlIdentityProviderSettings.SubjectNameIdRemoveText];
+            double nowDelta = Convert.ToDouble(identityProvider.Settings[SamlIdentityProviderSettings.NowDelta]);
+            string singleLogoutServiceUrl = identityProvider.Settings[SamlIdentityProviderSettings.SingleLogoutServiceUrl];
+
+
             DateTime now = DateTime.UtcNow;
 
             LogoutRequestType logoutRequest = new LogoutRequestType
             {
                 ID = "_" + uuid,
                 Version = "2.0",
-                IssueInstant = identityProvider.Now(now),
-                Destination = identityProvider.SingleLogoutServiceUrl,
+                IssueInstant = now.ToString(dateTimeFormat),
+                Destination = singleLogoutServiceUrl,
                 Issuer = new NameIDType
                 {
                     Value = consumerServiceURL.Trim(),
@@ -353,7 +400,7 @@ namespace Italia.Spid.Authentication.Saml
                 {
                     SPNameQualifier = consumerServiceURL,
                     Format = "urn:oasis:names:tc:SAML:2.0:nameid-format:transient",
-                    Value = identityProvider.SubjectNameIdFormatter(subjectNameId)
+                    Value = subjectNameId.Replace(subjectNameIdRemoveText,"")
                 },
                 NotOnOrAfterSpecified = true,
                 NotOnOrAfter = now.AddMinutes(10),

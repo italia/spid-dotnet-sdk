@@ -224,6 +224,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="idpConfigDataList.json" />
+    <Content Include="IdentityProviderConfig.json" />
     <None Include="Properties\PublishProfiles\TPCWareSPTestWebApp - Web Deploy.pubxml" />
     <Content Include="Content\bootstrap-theme.css.map" />
     <Content Include="Content\bootstrap-theme.min.css.map" />

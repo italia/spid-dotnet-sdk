@@ -1,14 +1,16 @@
 ﻿/*
-  Copyright (c) 2017 TPCWare - Nicolò Carandini
+  Copyright (c) 
 
   This file is licensed to you under the BSD 3-Clause License.
   See the LICENSE file in the project root for more information.
 
-  Authors: Nicolò Carandini (see Git history for other contributors)
+  Authors: Nicolò Carandini - Luca Congiu (see Git history for other contributors)
 */
 
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -18,111 +20,50 @@ namespace Italia.Spid.Authentication.IdP
     {
         public static List<IdentityProvider> IdpList { get; private set; }
 
-        public static void IdentityProvidersListFactory(List<IdentityProviderConfigData> idpConfigDataList)
-        {
-            IdentityProvidersListFactory(null, idpConfigDataList);
-        }
 
-        public static void IdentityProvidersListFactory(List<IdentityProviderMetaData> idpMetaDataList, List<IdentityProviderConfigData> idpConfigDataList = null)
+        public static async Task<bool> LoadFromUrlAsync(string identityProviderListUrl)
         {
-            IdpList = new List<IdentityProvider>();
-
-            // Create IdPConfigData list from metadata and standard values
-            if (idpMetaDataList?.Count > 0)
+            bool result=false;
+            using (var client = new System.Net.Http.HttpClient())
             {
-                foreach (var idpMetaData in idpMetaDataList)
+
+                using (var response = await client.GetAsync(identityProviderListUrl))
                 {
-                    IdpList.Add(new IdentityProvider(
-                        entityId: idpMetaData.EntityId,
-                        organizationName: idpMetaData.OrganizationName,
-                        organizationDisplayName: idpMetaData.OrganizationDisplayName,
-                        organizationUrl: idpMetaData.OrganizationUrl,
-                        singleSignOnServiceUrl: idpMetaData.SingleSignOnServiceUrl,
-                        singleLogoutServiceUrl: idpMetaData.SingleLogoutServiceUrl,
-                        subjectNameIdRemoveText: string.Empty,
-                        dateTimeFormat: "yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fff'Z'",
-                        nowDelta: 0
-                    ));
+                    if (response.IsSuccessStatusCode)
+                    {
+                        string json= await response.Content.ReadAsStringAsync();
+
+                        IdpList= JsonConvert.DeserializeObject<List<IdentityProvider>>(json);
+                        result = IdpList.Count > 0;
+
+                    }
+
                 }
             }
+            return result;
 
-            // Add IdPs from config file, eventually overriding standard values
-            if (idpConfigDataList.Count > 0)
-            {
-                foreach (var idpConfigData in idpConfigDataList)
-                {
-                    if (string.IsNullOrWhiteSpace(idpConfigData.EntityId))
-                    {
-                        throw new ArgumentNullException("The EntityId property of a idpConfigData (Identity Provider configuration data) item can't be null.");
-                    }
-
-                    var foundElement = IdpList.FirstOrDefault(x => x.EntityID == idpConfigData.EntityId);
-
-                    if (foundElement != null)
-                    {
-                        // Override SpidServiceUrl with config data, if present
-                        if (!string.IsNullOrWhiteSpace(idpConfigData.SingleSignOnServiceUrl))
-                        {
-                            foundElement.ConfigOverrideSpidServiceUrl(idpConfigData.SingleSignOnServiceUrl);
-                        }
-                        // Override LogoutServiceUrl with config data, if present
-                        if (!string.IsNullOrWhiteSpace(idpConfigData.SingleLogoutServiceUrl))
-                        {
-                            foundElement.ConfigOverrideLogoutServiceUrl(idpConfigData.SingleLogoutServiceUrl);
-                        }
-                        // Override DateTimeFormat with config data, if present
-                        if (!string.IsNullOrWhiteSpace(idpConfigData.DateTimeFormat))
-                        {
-                            foundElement.ConfigOverrideDateTimeFormat(idpConfigData.DateTimeFormat);
-                        }
-                        // Override NowDelta with config data, if present
-                        foundElement.ConfigOverrideNowDelta(idpConfigData.NowDelta);
-                    }
-                    else
-                    {
-                        // Check config data consistency
-                        if (string.IsNullOrWhiteSpace(idpConfigData.SingleSignOnServiceUrl))
-                        {
-                            throw new ArgumentNullException("When adding a IdP from Config, the SpidServiceUrl property can't be null or empty.");
-                        }
-                        if (string.IsNullOrWhiteSpace(idpConfigData.SingleLogoutServiceUrl))
-                        {
-                            throw new ArgumentNullException("When adding a IdP from Config, the LogoutServiceUrl property can't be null or empty.");
-                        }
-
-                        // Set config details from config data or default values
-                        string subjectNameIdRemoveText = string.IsNullOrWhiteSpace(idpConfigData.SubjectNameIdRemoveText) ? string.Empty : idpConfigData.SubjectNameIdRemoveText;
-                        string nowFormatText = string.IsNullOrWhiteSpace(idpConfigData.DateTimeFormat) ? "yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fff'Z'" : idpConfigData.DateTimeFormat;
-
-                        // Add IdP from config data
-                        IdpList.Add(new IdentityProvider(
-                            entityId: idpConfigData.EntityId,
-                            organizationName: idpConfigData.OrganizationName,
-                            organizationDisplayName: idpConfigData.OrganizationDisplayName,
-                            organizationUrl: idpConfigData.OrganizationUrl,
-                            singleSignOnServiceUrl: idpConfigData.SingleSignOnServiceUrl,
-                            singleLogoutServiceUrl: idpConfigData.SingleLogoutServiceUrl,
-                            subjectNameIdRemoveText: subjectNameIdRemoveText,
-                            dateTimeFormat: nowFormatText,
-                            nowDelta: idpConfigData.NowDelta
-                        ));
-                    }
-                }
-            }
         }
 
-        public static async Task<List<IdentityProviderMetaData>> GetIdpMetaDataListAsync(string idpMetadataListUrl)
+        public static async Task<bool> LoadFromFileAsync(string filePath)
         {
-            List<IdentityProviderMetaData> ipdMetaDataList = new List<IdentityProviderMetaData>();
+          
 
-            // Read IdPs metadata from AGId resource and add to the list
-            if (!string.IsNullOrWhiteSpace(idpMetadataListUrl))
+            if (!File.Exists(filePath)){
+                throw new ArgumentNullException("Invalid FileName");
+            }
+           
+            using (var reader = File.OpenText(filePath))
             {
-                // TODO!
+               var  json = await reader.ReadToEndAsync();
+                IdpList = JsonConvert.DeserializeObject<List<IdentityProvider>>(json);
             }
 
-            return ipdMetaDataList;
+          
+            return IdpList.Count > 0;
+       
+    
         }
+
 
         public static IdentityProvider GetIdpFromIdPName(string idpName)
         {
@@ -131,19 +72,19 @@ namespace Italia.Spid.Authentication.IdP
                 throw new ArgumentNullException("The idpName parameter can't be null.");
             }
 
-            IdentityProvider idp = IdpList?.FirstOrDefault(x => x.EntityID == idpName);
+            IdentityProvider idp = IdpList?.FirstOrDefault(x => x.IdentityProviderId == idpName);
 
             if (idp == null)
             {
                 throw new Exception($"Error on GetIdpFromUserChoice: Identity Provider {idpName} not found.");
             }
 
-            if (string.IsNullOrWhiteSpace(idp.SingleSignOnServiceUrl))
+            if (idp.IdentityProviderType==IdentityProviderType.Saml &&  string.IsNullOrWhiteSpace(idp.Settings[SamlIdentityProviderSettings.SingleSignOnServiceUrl]))
             {
                 throw new Exception($"Error on GetIdpFromUserChoice: Identity Provider {idpName} doesn't have a login endpoint.");
             }
 
-            if (string.IsNullOrWhiteSpace(idp.SingleLogoutServiceUrl))
+            if (idp.IdentityProviderType == IdentityProviderType.Saml && string.IsNullOrWhiteSpace(idp.Settings[SamlIdentityProviderSettings.SingleLogoutServiceUrl]))
             {
                 throw new Exception($"Error on GetIdpFromUserChoice: Identity Provider {idpName} doesn't have a logout endpoint.");
             }
