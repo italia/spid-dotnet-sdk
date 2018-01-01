@@ -1,5 +1,6 @@
 ﻿@{
     ViewBag.Title = "Home Page";
+    var providerList = Italia.Spid.Authentication.IdP.IdentityProvidersList.IdpList;
 }
 
 <div class="jumbotron">
@@ -28,36 +29,14 @@
             <div class="spid-idp-button spid-idp-button-tip spid-idp-button-relative hideDDL" id="spid-idp-button-medium-post" style="text-align: left;">
                 <ul class="spid-idp-button-menu" id="spid-idp-list-medium-root-post" aria-labelledby="spid-idp">
 
-                    <li class="spid-idp-button-link">
-                        <a href='@Url.Action("SpidRequest", "Home",new { IdPName = "WSO2" })'>
-                            <img class="idp-button-idp-logo" title="Docker Test ID" alt="Docker Test ID" src='@Url.Content("~/Content/images/spid-idp-localwso2id.png")' />
-                        </a>
-                    </li>
-
-                    <li class="spid-idp-button-link">
-                        <a href='@Url.Action("SpidRequest", "Home",new { IdPName = "https://spidposte.test.poste.it" })'>
-                            <img class="idp-button-idp-logo" title="Poste ID" alt="Poste ID" src='@Url.Content("~/Content/images/spid-idp-posteid.png")' />
-                        </a>
-                    </li>
-
-                    <li class="spid-idp-button-link">
-                        <a href='@Url.Action("SpidRequest", "Home",new { IdPName = "https://login.id.tim.it/affwebservices/public/saml2sso" })'>
-                            <img class="idp-button-idp-logo" title="Tim ID" alt="Tim ID" src='@Url.Content("~/Content/images/spid-idp-timid.png")' />
-                        </a>
-                    </li>
-
-                    <li class="spid-idp-button-link">
-                        <a href='@Url.Action("SpidRequest", "Home",new { IdPName = "https://identity.sieltecloud.it" })'>
-                            <img class="idp-button-idp-logo" title="Sielte ID" alt="Sielte ID" src='@Url.Content("~/Content/images/spid-idp-sielteid.png")' />
-                        </a>
-                    </li>
-
-                    <li class="spid-idp-button-link">
-                        <a href='@Url.Action("SpidRequest", "Home",new { IdPName = "https://identity.infocert.it" })'>
-                            <img class="idp-button-idp-logo" title="Infocert ID" alt="Infocert ID" src='@Url.Content("~/Content/images/spid-idp-infocertid.png")' />
-                        </a>
-                    </li>
-
+                    @foreach (var item in providerList)
+                    {
+                        <li class="spid-idp-button-link">
+                            <a href='@Url.Action("SpidRequest", "Home",new { IdPName = item.IdentityProviderId })'>
+                                <img class="idp-button-idp-logo" title="@item.OrganizationName" alt="@item.OrganizationName" src='@item.OrganizationLogoUrl' />
+                            </a>
+                        </li>
+                    }
                     <li class="spid-idp-support-link">
                         <a style="font-size: 15px;" href="http://www.spid.gov.it" target="_blank">Maggiori info</a>
                     </li>
