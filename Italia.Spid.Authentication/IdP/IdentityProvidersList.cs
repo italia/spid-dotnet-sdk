@@ -23,19 +23,22 @@ namespace Italia.Spid.Authentication.IdP
             IdentityProvidersListFactory(null, idpConfigDataList);
         }
 
-        public static void IdentityProvidersListFactory(List<IdentityProviderMetaData> ipdMetaDataList, List<IdentityProviderConfigData> idpConfigDataList = null)
+        public static void IdentityProvidersListFactory(List<IdentityProviderMetaData> idpMetaDataList, List<IdentityProviderConfigData> idpConfigDataList = null)
         {
             IdpList = new List<IdentityProvider>();
 
             // Create IdPConfigData list from metadata and standard values
-            if (ipdMetaDataList?.Count > 0)
+            if (idpMetaDataList?.Count > 0)
             {
-                foreach (var ipdMetaData in ipdMetaDataList)
+                foreach (var idpMetaData in idpMetaDataList)
                 {
                     IdpList.Add(new IdentityProvider(
-                        providerName: ipdMetaData.ProviderName,
-                        spidServiceUrl: ipdMetaData.SpidServiceUrl,
-                        logoutServiceUrl: ipdMetaData.LogoutServiceUrl,
+                        entityId: idpMetaData.EntityId,
+                        organizationName: idpMetaData.OrganizationName,
+                        organizationDisplayName: idpMetaData.OrganizationDisplayName,
+                        organizationUrl: idpMetaData.OrganizationUrl,
+                        singleSignOnServiceUrl: idpMetaData.SingleSignOnServiceUrl,
+                        singleLogoutServiceUrl: idpMetaData.SingleLogoutServiceUrl,
                         subjectNameIdRemoveText: string.Empty,
                         dateTimeFormat: "yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fff'Z'",
                         nowDelta: 0
@@ -48,24 +51,24 @@ namespace Italia.Spid.Authentication.IdP
             {
                 foreach (var idpConfigData in idpConfigDataList)
                 {
-                    if (string.IsNullOrWhiteSpace(idpConfigData.ProviderName))
+                    if (string.IsNullOrWhiteSpace(idpConfigData.EntityId))
                     {
-                        throw new ArgumentNullException("The ProviderName property of a idpConfigData (Identity Provider configuration data) item can't be null.");
+                        throw new ArgumentNullException("The EntityId property of a idpConfigData (Identity Provider configuration data) item can't be null.");
                     }
 
-                    var foundElement = IdpList.FirstOrDefault(x => x.ProviderName == idpConfigData.ProviderName);
+                    var foundElement = IdpList.FirstOrDefault(x => x.EntityID == idpConfigData.EntityId);
 
                     if (foundElement != null)
                     {
                         // Override SpidServiceUrl with config data, if present
-                        if (!string.IsNullOrWhiteSpace(idpConfigData.SpidServiceUrl))
+                        if (!string.IsNullOrWhiteSpace(idpConfigData.SingleSignOnServiceUrl))
                         {
-                            foundElement.ConfigOverrideSpidServiceUrl(idpConfigData.SpidServiceUrl);
+                            foundElement.ConfigOverrideSpidServiceUrl(idpConfigData.SingleSignOnServiceUrl);
                         }
                         // Override LogoutServiceUrl with config data, if present
-                        if (!string.IsNullOrWhiteSpace(idpConfigData.LogoutServiceUrl))
+                        if (!string.IsNullOrWhiteSpace(idpConfigData.SingleLogoutServiceUrl))
                         {
-                            foundElement.ConfigOverrideLogoutServiceUrl(idpConfigData.LogoutServiceUrl);
+                            foundElement.ConfigOverrideLogoutServiceUrl(idpConfigData.SingleLogoutServiceUrl);
                         }
                         // Override DateTimeFormat with config data, if present
                         if (!string.IsNullOrWhiteSpace(idpConfigData.DateTimeFormat))
@@ -78,11 +81,11 @@ namespace Italia.Spid.Authentication.IdP
                     else
                     {
                         // Check config data consistency
-                        if (string.IsNullOrWhiteSpace(idpConfigData.SpidServiceUrl))
+                        if (string.IsNullOrWhiteSpace(idpConfigData.SingleSignOnServiceUrl))
                         {
                             throw new ArgumentNullException("When adding a IdP from Config, the SpidServiceUrl property can't be null or empty.");
                         }
-                        if (string.IsNullOrWhiteSpace(idpConfigData.LogoutServiceUrl))
+                        if (string.IsNullOrWhiteSpace(idpConfigData.SingleLogoutServiceUrl))
                         {
                             throw new ArgumentNullException("When adding a IdP from Config, the LogoutServiceUrl property can't be null or empty.");
                         }
@@ -93,9 +96,12 @@ namespace Italia.Spid.Authentication.IdP
 
                         // Add IdP from config data
                         IdpList.Add(new IdentityProvider(
-                            providerName: idpConfigData.ProviderName,
-                            spidServiceUrl: idpConfigData.SpidServiceUrl,
-                            logoutServiceUrl: idpConfigData.LogoutServiceUrl,
+                            entityId: idpConfigData.EntityId,
+                            organizationName: idpConfigData.OrganizationName,
+                            organizationDisplayName: idpConfigData.OrganizationDisplayName,
+                            organizationUrl: idpConfigData.OrganizationUrl,
+                            singleSignOnServiceUrl: idpConfigData.SingleSignOnServiceUrl,
+                            singleLogoutServiceUrl: idpConfigData.SingleLogoutServiceUrl,
                             subjectNameIdRemoveText: subjectNameIdRemoveText,
                             dateTimeFormat: nowFormatText,
                             nowDelta: idpConfigData.NowDelta
@@ -125,19 +131,19 @@ namespace Italia.Spid.Authentication.IdP
                 throw new ArgumentNullException("The idpName parameter can't be null.");
             }
 
-            IdentityProvider idp = IdpList?.FirstOrDefault(x => x.ProviderName == idpName);
+            IdentityProvider idp = IdpList?.FirstOrDefault(x => x.EntityID == idpName);
 
             if (idp == null)
             {
                 throw new Exception($"Error on GetIdpFromUserChoice: Identity Provider {idpName} not found.");
             }
 
-            if (string.IsNullOrWhiteSpace(idp.SpidServiceUrl))
+            if (string.IsNullOrWhiteSpace(idp.SingleSignOnServiceUrl))
             {
                 throw new Exception($"Error on GetIdpFromUserChoice: Identity Provider {idpName} doesn't have a login endpoint.");
             }
 
-            if (string.IsNullOrWhiteSpace(idp.LogoutServiceUrl))
+            if (string.IsNullOrWhiteSpace(idp.SingleLogoutServiceUrl))
             {
                 throw new Exception($"Error on GetIdpFromUserChoice: Identity Provider {idpName} doesn't have a logout endpoint.");
             }
