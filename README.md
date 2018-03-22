@@ -21,7 +21,7 @@ La libreria offre servizi orientati alla creazione dell'elenco degli IdP (Identi
 
 Tale elenco può essere ampliato e arricchito con ulteriori dettagli dall'applicazione che usa la libreria di autenticazione, tipicamente tramite file di configurazione.
 
-Nelle more della messa in produzione del Registro SPID da parte di AgID, al momento le due applicazioni web dimostrative utilizzano il meccanismo di configurazione per la creazione dell'elenco degli IdP.
+Al momento le due applicazioni web dimostrative utilizzano il meccanismo di configurazione per la creazione dell'elenco degli IdP, ma è in corso di sviluppo la funzionalità di lettura dell'elenco IdP dal [registro SPID fornito da AgID](https://registry.spid.gov.it/identity-providers).
 
 #### Richiesta Authn
 
@@ -89,9 +89,9 @@ Ora occorre importare il certificato myspidcertificate.pfx in local machine/My e
 
 Se l'applicazione Web da errore "Unable to find private key in the X509Certificate" la causa più probabile è che il certificato non è più valido e deve essere reinstallato con la medesima procedura di cui sopra.
 
-La chiave così esportata è un mero file di testo che contiene la chiave pubblica da copiare nell'apposito campo della [pagina web di creazione del file di metadati](https://backoffice-spidtest.apps.justcodeon.it/).
+Il file così ottenuto contiene la chiave pubblica da utilizzare per la creazione del file XML dei metadati da inviare all'AgID (Agenzia per l'Italia Digitale) secondo le modalità di accreditamento descritte nella pagina [Come diventare fornitore di servizi Pubblici o Privati con SPID](https://www.spid.gov.it/come-diventare-fornitore-di-servizi-pubblici-e-privati-con-spid).
 
-Il file XML contenente i metadati creato dalla suddetta pagina va poi utilizzato per registrare la nostra applicazione Web come SP (Service Provider) presso ogni IdP che vogliamo rendere disponibile ai nostri potenziali utenti.
+Una volta accreditati con AgID, il suddetto file di metadati verrà inviato direttamenta da AgID ai vari IdP e si potrà testare il servizio e mandarlo in produzione.
 
 Ad oggi, oltre al servizio locale di test, l'unico servizio esterno di test è fornito da Poste.it ed è a loro che va inviato il suddetto file di metadati per accreditarsi come SP e fare poi le prove di autenticazione e logout.
 
