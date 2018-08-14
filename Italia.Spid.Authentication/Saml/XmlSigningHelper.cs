@@ -102,6 +102,8 @@ namespace Italia.Spid.Authentication.Saml
 
                     XmlNodeList nodeList = (signedDocument.GetElementsByTagName("ds:Signature")?.Count > 0) ?
                                            signedDocument.GetElementsByTagName("ds:Signature") :
+                                           (signedDocument.GetElementsByTagName("ns2:Signature")?.Count > 0) ?
+                                           signedDocument.GetElementsByTagName("ns2:Signature") :
                                            signedDocument.GetElementsByTagName("Signature");
 
                     signedXml.LoadXml((XmlElement)nodeList[0]);
