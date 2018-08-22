@@ -1,1 +1,18 @@
-[{"SubjectNameIdRemoveText":"","DateTimeFormat":"yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fff'Z'","NowDelta":0.0,"ProviderName":"Local SPID IdP (WSO2 on Docker container for testing)","SpidServiceUrl":"https://localhost:9443/samlsso","LogoutServiceUrl":"https://localhost:9443/samlsso"},{"SubjectNameIdRemoveText":"SPID-","DateTimeFormat":"yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fff'Z'","NowDelta":0.0,"ProviderName":"Poste Italiane (Servizio di test)","SpidServiceUrl":"https://spidposte.test.poste.it/jod-fs/ssoservicepost","LogoutServiceUrl":"https://spidposte.test.poste.it/jod-fs/sloservicepost"}]
+[
+  {
+    "SubjectNameIdRemoveText": "",
+    "DateTimeFormat": "yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fff'Z'",
+    "NowDelta": 0.0,
+    "ProviderName": "Local SPID IdP (WSO2 on Docker container for testing)",
+    "SpidServiceUrl": "https://localhost:9443/samlsso",
+    "LogoutServiceUrl": "https://localhost:9443/samlsso"
+  },
+  {
+    "SubjectNameIdRemoveText": "SPID-",
+    "DateTimeFormat": "yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fff'Z'",
+    "NowDelta": 0.0,
+    "ProviderName": "Poste Italiane (Servizio di test)",
+    "SpidServiceUrl": "https://spidposte.test.poste.it/jod-fs/ssoservicepost",
+    "LogoutServiceUrl": "https://spidposte.test.poste.it/jod-fs/sloservicepost"
+  }
+]
