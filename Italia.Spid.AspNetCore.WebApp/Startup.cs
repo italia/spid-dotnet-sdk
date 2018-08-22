@@ -1,6 +1,8 @@
 ﻿using Italia.Spid.Authentication.IdP;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
@@ -33,7 +35,15 @@ namespace Italia.Spid.AspNetCore.WebApp
                 // options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
             });
 
-            services.AddMvc();
+            services.Configure<CookiePolicyOptions>(options =>
+            {
+                // This lambda determines whether user consent for non-essential cookies is needed for a given request.
+                options.CheckConsentNeeded = context => true;
+                options.MinimumSameSitePolicy = SameSiteMode.None;
+            });
+
+
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -42,15 +52,18 @@ namespace Italia.Spid.AspNetCore.WebApp
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseBrowserLink();
             }
             else
             {
                 app.UseExceptionHandler("/Home/Error");
+                app.UseHsts();
             }
 
+            app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseCookiePolicy();
             app.UseSession();
+
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
@@ -84,7 +97,7 @@ namespace Italia.Spid.AspNetCore.WebApp
         {
             List<IdentityProviderConfigData> idpConfigDataList = new List<IdentityProviderConfigData>
             {
-new IdentityProviderConfigData()
+                new IdentityProviderConfigData()
                 {
                     EntityId = "WSO2",
                     OrganizationName = "Local SPID IdP (WSO2 on Docker container for testing)",
