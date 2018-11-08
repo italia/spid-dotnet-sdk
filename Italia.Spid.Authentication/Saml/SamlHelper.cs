@@ -94,9 +94,7 @@ namespace Italia.Spid.Authentication.Saml
                 },
                 NameIDPolicy = new NameIDPolicyType
                 {
-                    Format = "urn:oasis:names:tc:SAML:2.0:nameid-format:transient",
-                    AllowCreate = true,
-                    AllowCreateSpecified = true
+                    Format = "urn:oasis:names:tc:SAML:2.0:nameid-format:transient"
                 },
                 Conditions = new ConditionsType
                 {
@@ -351,13 +349,10 @@ namespace Italia.Spid.Authentication.Saml
                 },
                 Item = new NameIDType
                 {
-                    SPNameQualifier = consumerServiceURL,
+                    NameQualifier = consumerServiceURL,
                     Format = "urn:oasis:names:tc:SAML:2.0:nameid-format:transient",
                     Value = identityProvider.SubjectNameIdFormatter(subjectNameId)
                 },
-                NotOnOrAfterSpecified = true,
-                NotOnOrAfter = now.AddMinutes(10),
-                Reason = "urn:oasis:names:tc:SAML:2.0:logout:user",
                 SessionIndex = new string[] { authnStatementSessionIndex }
             };
 
