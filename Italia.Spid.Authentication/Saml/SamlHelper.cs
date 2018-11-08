@@ -340,7 +340,7 @@ namespace Italia.Spid.Authentication.Saml
                 ID = "_" + uuid,
                 Version = "2.0",
                 IssueInstant = identityProvider.Now(now),
-                Destination = identityProvider.SingleLogoutServiceUrl,
+                Destination = identityProvider.EntityID,
                 Issuer = new NameIDType
                 {
                     Value = consumerServiceURL.Trim(),
@@ -353,6 +353,9 @@ namespace Italia.Spid.Authentication.Saml
                     Format = "urn:oasis:names:tc:SAML:2.0:nameid-format:transient",
                     Value = identityProvider.SubjectNameIdFormatter(subjectNameId)
                 },
+                NotOnOrAfterSpecified = true,
+                NotOnOrAfter = now.AddMinutes(10),
+                Reason = "urn:oasis:names:tc:SAML:2.0:logout:user",
                 SessionIndex = new string[] { authnStatementSessionIndex }
             };
 

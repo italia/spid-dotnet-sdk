@@ -70,7 +70,7 @@ namespace Italia.Spid.AspNetCore.WebApp.Controllers
                 // Create the signed SAML request
                 var spidAuthnRequest = SamlHelper.BuildAuthnPostRequest(
                     uuid: spidAuthnRequestId,
-                    destination: idp.SingleSignOnServiceUrl,
+                    destination: idp.EntityID,
                     consumerServiceURL: _configuration["Spid:DomainValue"],
                     securityLevel: 1,
                     certificate: certificate,
