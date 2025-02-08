@@ -1,3 +1,6 @@
+⚠️ Questo repository è deprecato e sconsigliato è il uso in produzione. Si consiglia l'uso di altre SDK SPID disponibili su Developetrs Italia.
+
+
 # spid-dot-net
 
 ## Origini
